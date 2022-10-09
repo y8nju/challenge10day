@@ -1,4 +1,4 @@
-import { Alert, ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import CustomText from "../../components/customText";
@@ -7,14 +7,13 @@ export default function UserInfoScreen({ navigation }) {
 
 	// 로그아웃
 	const logoutHandle = () => {
-		Alert.alert("작심10일", "로그아웃 하시겠습니까?", [
+		Alert.alert("작심10일", "로그아웃 할까요?", [
 			{
 				text: '취소'
 			}, {
 				text: '로그아웃',
 				onPress: () => {
-					// ctx.dispatch({ type: 'logout' });
-					// navigation.navigate("HomeStack", { screen: 'Home', params: { status: 'logout' } });
+					navigation.navigate("UserStack", { screen: 'login', params: { status: 'logout' } });
 				}
 			}
 		])

@@ -1,0 +1,109 @@
+import { useEffect, useState } from "react";
+import { Dimensions, Image, ImageBackground, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { useIsFocused} from "@react-navigation/native";
+
+import defaultStyle from "../style/defaultStyle";
+
+import LoadingOverlay from "../../components/loadingOverlay";
+import CustomText from "../../components/customText";
+import HeaderRightButton from "../../components/headerRightButton";
+
+const windowWidth = Dimensions.get('window').width;
+
+export default function FeedUpdateScreen({navigation, route}) {
+	const {data} = route.params
+	const date = new Date(data.createdAt.slice(0,10));
+	const focused = useIsFocused();
+
+	const [emoji, setEmoji] = useState(null);
+	const [loading, setLoading] = useState(false);
+	const [content, setContent] = useState(data.content);
+
+	useEffect(()=> {
+		navigation.setOptions({
+			title: "피드 수정하기",
+			headerRight: () => <HeaderRightButton onPress={updateHandle}>
+					완료
+				</HeaderRightButton>
+		});
+		if(data.emoji) {
+			switch (data.emoji) {
+				case 'smile':
+					return setEmoji(require('../../assets/images/emoji/smile.png'));
+				case 'angry':
+					return setEmoji(require('../../assets/images/emoji/angry.png'));
+				case 'heartEye':
+					return setEmoji(require('../../assets/images/emoji/heartEye.png'));
+				case 'sad':
+					return setEmoji(require('../../assets/images/emoji/sad.png'));
+				case 'sick':
+					return setEmoji(require('../../assets/images/emoji/sick.png'));
+				case 'sleepy':
+					return setEmoji(require('../../assets/images/emoji/sleepy.png'));
+			}
+		}
+	}, [focused])
+	const updateHandle = () => {
+		Alert.alert("작심10일", "여기를 수정할까요?", [
+			{
+				text: '취소'
+			}, {
+				text: '수정',
+				onPress: () =>{ 
+					setLoading(true);
+					!async function () {
+						try {
+							
+						} catch (e) {
+							console.log(e);
+						}
+					}();
+					
+					setTimeout(()=>{
+						setLoading(false);
+						navigation.navigate('feed', {status: 'update'});
+						// detaile 페이지로 이동하도록 수정
+					}, 1500)
+				}
+			}
+		])
+	}
+	return(<TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
+		<KeyboardAvoidingView behavior={"scroll"} style={{backgroundColor: '#f2f2f2'}}>
+			{loading && <LoadingOverlay />}
+			<ScrollView>
+				<View style={styles.imageArea}>
+					<ImageBackground source={data.imgURI} resizeMode="cover" style={{flex: 1}}/>
+				</View>
+				<View style={{padding: 26}}>
+					<View style={styles.row}>
+						<Image source={emoji} resizeMode="cover" style={{width: 44, height: 44, marginRight: 10}} />
+						<CustomText style={{fontSize: 20}}>{date.getMonth()+1}월 {date.getDate()}일</CustomText>
+					</View>
+					{/* <CustomText style={{textAlign: 'justify', fontSize: 16, lineHeight: 24}} weight={300}> */}
+					<TextInput style={defaultStyle.textArea}
+						onChangeText={(txt) => setContent(txt)}
+						value={content}
+						multiline
+						numberOfLines={6} />
+					<CustomText style={{fontSize: 12, textAlign: 'center', marginTop: 20}} weight={300}>내가 작성한 메세지만 수정할 수 있어요</CustomText>
+				</View>
+			</ScrollView>
+		</KeyboardAvoidingView>
+	</TouchableWithoutFeedback>)
+}
+const styles = StyleSheet.create({
+	imageArea: {
+		width: windowWidth,
+		height: windowWidth,
+		backgroundColor: '#ddd'
+	},
+	row: {
+		flexDirection: 'row', 
+		alignItems: 'center',
+		borderBottomColor: '#ddd', 
+		borderBottomWidth: 1, 
+		marginBottom: 16, 
+		paddingBottom: 12
+	}
+})

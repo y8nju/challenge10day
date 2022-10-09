@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+
 import CustomText from "./customText";
 
-export default function TodoItem({ onPress }) {
-    const [checked, setChecked] = useState(false);
-    useEffect(() => {
+export default function TodoItem({ todoPress, data }) {
+	const {item} = data;
+	const [checked, setChecked] = useState(null);
+	useEffect(() => {
+		setChecked(!item.ing);
+	}, []);
 
-    })
-    return (<Pressable style={styles.totoItem} onPress={onPress}>
-        <BouncyCheckbox
-            size={18}
-            fillColor="#fb5438"
-            isChecked={checked}
-            onPress={() => setChecked(!checked)} />
-        <CustomText style={checked && { textDecorationLine: 'line-through' }}>투두내용</CustomText>
-    </Pressable>);
+	return (<Pressable style={styles.totoItem} onPress={todoPress}>
+		<BouncyCheckbox
+			size={18}
+			fillColor="#fb5438"
+			isChecked={checked}
+			disabled={checked}
+			onPress={() => setChecked(!checked)} />
+		<CustomText type={'hand'} style={checked ? { textDecorationLine: 'line-through' } :{ textDecorationLine: 'none' }  }>{item.todoText}</CustomText>
+	</Pressable>);
 }
 const styles = StyleSheet.create({
-    totoItem: {
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingRight: 40
-    }
+	totoItem: {
+		width: '100%',
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingRight: 40, 
+		marginBottom: 10
+	}
 })
