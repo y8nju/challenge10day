@@ -10,7 +10,9 @@ import TodoItem from "../../components/todoItem";
 
 const dumi = [
 	// test 를 위한 더미 데이터!
-	{_id: 1, todoText: '아이고', ing: true}
+	{_id: 1, todoText: '아이고', ing: false},
+	{_id: 2, todoText: '아이고', ing: false},
+
 ]
 
 export default function TodoEndScreen({ navigation, route }) {
@@ -61,7 +63,7 @@ export default function TodoEndScreen({ navigation, route }) {
 			<FlatList style={{flex: 1}}
 				data={todoList}
 				keyExtractor={({_id})=> _id}
-				renderItem={(one) => <TodoItem todoPress={() => todoDeleteHandle(one.item.todoText)} data={one}/>}
+				renderItem={({item}) => <TodoItem todoPress={() => todoDeleteHandle(item.todoText)} data={item}/>}
 			/>
 			<CustomText style={{fontSize: 12, textAlign: 'center'}} weight={300}>Todo를 탭 해서 삭제하세요!</CustomText>
 		</View>

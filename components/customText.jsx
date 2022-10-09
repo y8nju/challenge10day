@@ -12,7 +12,7 @@ export default function CustomText({ children, style, weight, type }) {
 			return (<Text style={[{ fontFamily: 'Neo-Rg', color: '#504d49' }, style]}>{children}</Text>)
 		}
 	} else if (type == 'hand') {
-		return (<Text style={[{ fontFamily: 'Diary', color: '#504d49' }, style]}>{children}</Text>)
+		return (<Text style={[{ fontFamily: 'Goyang', color: '#504d49' }, style]}>{children}</Text>)
 	}
 }
 

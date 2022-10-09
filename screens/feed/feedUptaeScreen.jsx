@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Dimensions, Image, ImageBackground, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { useIsFocused} from "@react-navigation/native";
 
+import Emoji from "../../util/emoji";
+
 import defaultStyle from "../style/defaultStyle";
 
 import LoadingOverlay from "../../components/loadingOverlay";
@@ -12,8 +14,8 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function FeedUpdateScreen({navigation, route}) {
 	const {data} = route.params
-	const date = new Date(data.createdAt.slice(0,10));
 	const focused = useIsFocused();
+	const date = new Date(data.createdAt.slice(0,10));
 
 	const [emoji, setEmoji] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -27,20 +29,11 @@ export default function FeedUpdateScreen({navigation, route}) {
 				</HeaderRightButton>
 		});
 		if(data.emoji) {
-			switch (data.emoji) {
-				case 'smile':
-					return setEmoji(require('../../assets/images/emoji/smile.png'));
-				case 'angry':
-					return setEmoji(require('../../assets/images/emoji/angry.png'));
-				case 'heartEye':
-					return setEmoji(require('../../assets/images/emoji/heartEye.png'));
-				case 'sad':
-					return setEmoji(require('../../assets/images/emoji/sad.png'));
-				case 'sick':
-					return setEmoji(require('../../assets/images/emoji/sick.png'));
-				case 'sleepy':
-					return setEmoji(require('../../assets/images/emoji/sleepy.png'));
-			}
+			Emoji.forEach(one => {
+				if(data.emoji == one.id) {
+					return setEmoji(one.uri)
+				}
+			})
 		}
 	}, [focused])
 	const updateHandle = () => {

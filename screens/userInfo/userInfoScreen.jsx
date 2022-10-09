@@ -30,11 +30,11 @@ export default function UserInfoScreen({ navigation }) {
 	return (<View style={defaultStyle.wrap}>
 		<View style={{ paddingHorizontal: 20 }}>
 			<View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, paddingBottom: 20, marginBottom: 16 }}>
-				<CustomText style={{ fontSize: 14, textAlign: 'center' }}>계정id</CustomText>
+				<CustomText style={{ fontSize: 14, textAlign: 'center' }} weight={700}>계정id</CustomText>
 			</View>
 			<Pressable onPress={passChangeHandele}>
 				<View style={styles.infoItemRow}>
-					<CustomText>비밀번호 변경</CustomText>
+					<CustomText weight={700}>비밀번호 변경</CustomText>
 					<View style={{ overflow: 'hidden', borderRadius: 8 }}>
 						<MaterialCommunityIcons name="chevron-right" size={18} color="#000" />
 					</View>
@@ -42,7 +42,7 @@ export default function UserInfoScreen({ navigation }) {
 			</Pressable>
 			<Pressable onPress={logoutHandle}>
 				<View style={styles.infoItemRow}>
-					<CustomText>로그아웃</CustomText>
+					<CustomText weight={700}>로그아웃</CustomText>
 					<View style={{ overflow: 'hidden', borderRadius: 8 }}>
 						<MaterialCommunityIcons name="chevron-right" size={18} color="#000" />
 					</View>
@@ -50,7 +50,7 @@ export default function UserInfoScreen({ navigation }) {
 			</Pressable>
 			<Pressable onPress={accountDeleteHandle}>
 				<View style={styles.infoItemRow}>
-					<CustomText>서비스 탈퇴</CustomText>
+					<CustomText weight={700}>서비스 탈퇴</CustomText>
 					<View style={{ overflow: 'hidden', borderRadius: 8 }}>
 						<MaterialCommunityIcons name="chevron-right" size={18} color="#000" />
 					</View>

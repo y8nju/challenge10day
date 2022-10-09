@@ -65,7 +65,7 @@ export default function HomeScreen({navigation, route}) {
 			</View>
 			{challengeList && <FlatList style={{flex: 1}} data={challengeList}
 				keyExtractor={({_id})=> _id}
-				renderItem={one => <ChallengeItem data={one} />}
+				renderItem={({item}) => <ChallengeItem data={item} />}
 			/>}
 		</View>
 		<View style={styles.addBtn}>

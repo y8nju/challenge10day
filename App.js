@@ -35,6 +35,7 @@ function HomeStackNavigator() {
 	return (<Stack.Navigator initialRouteName="home" screenOptions={{
 		headerStyle: { backgroundColor: "#f2f2f2" },
 		headerShadowVisible: false,
+		headerTintColor: "#504d49",
 		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
 		animation: 'slide_from_right'
 	}}>
@@ -52,6 +53,7 @@ function FeedStackNavigator() {
 	return (<Stack.Navigator initialRouteName="feed" screenOptions={{
 		headerStyle: { backgroundColor: "#f2f2f2" },
 		headerShadowVisible: false,
+		headerTintColor: "#504d49",
 		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
 		animation: 'slide_from_right'
 	}}>
@@ -72,12 +74,15 @@ function TodoDrawerNavigator() {
 			paddingTop: 60,
 			paddingLeft: 10
 		},
+		drawerLabelStyle: {
+			fontSize: 16
+		},
 		drawerActiveTintColor: "#fb5438",
 		drawerActiveBackgroundColor: "transparent",
 		drawerInactiveTintColor: "#8E8E8F",
 	}}>
 		<Drawer.Screen name="todoIng" component={TodoScreen}
-			options={{ title: '진행 중'}} />
+			options={{ title: '진행 중' }} />
 		<Drawer.Screen name="todoEnd" component={TodoEndScreen}
 			options={{ title: '완료' }} />
 	</Drawer.Navigator>)
@@ -86,6 +91,7 @@ function UserStackNavigator() {
 	return (<Stack.Navigator initialRouteName="userInfo" screenOptions={{
 		headerStyle: { backgroundColor: "#f2f2f2" },
 		headerShadowVisible: false,
+		headerTintColor: "#504d49",
 		headerTitleAlign: "center",
 		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
 		animation: 'slide_from_right'
@@ -103,6 +109,7 @@ function GuestStackNavigator() {
 		initialRouteName="login" screenOptions={{
 			headerStyle: { backgroundColor: "#f2f2f2" },
 			headerShadowVisible: false,
+			headerTintColor: "#504d49",
 			headerTitleAlign: "center",
 			headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
 			animation: 'slide_from_right'
@@ -122,7 +129,7 @@ export default function App() {
 		'Neo-Rg': require('./assets/fonts/NanumSquareNeo-bRg.ttf'),
 		'Neo-Bd': require('./assets/fonts/NanumSquareNeo-cBd.ttf'),
 		'Neo-Eb': require('./assets/fonts/NanumSquareNeo-dEb.ttf'),
-		'Diary': require('./assets/fonts/EF_Diary.ttf'),
+		'Goyang': require('./assets/fonts/Goyang.ttf'),
 	})
 
 	if (!fontLoaded) {
@@ -139,8 +146,8 @@ export default function App() {
 				{/* challenge */}
 				<Tab.Screen name="HomeStack" component={HomeStackNavigator}
 					options={{
-						headerShown: false,
 						title: '챌린지',
+						headerShown: false, unmountOnBlur: true,
 						tabBarIcon: ({ focused, color, }) => (
 							<MaterialCommunityIcons name={focused ? 'card-bulleted' : 'card-bulleted-outline'} color={color} size={26} />
 						)
@@ -148,8 +155,8 @@ export default function App() {
 				{/* feeed */}
 				<Tab.Screen name="FeedStack" component={FeedStackNavigator}
 					options={{
-						headerShown: false,
 						title: '피드',
+						headerShown: false, unmountOnBlur: true,
 						tabBarIcon: ({ focused, color, }) => (
 							<MaterialCommunityIcons name={focused ? 'image-multiple' : 'image-multiple-outline'} color={color} size={focused ? 24 : 22} />
 						)
@@ -157,8 +164,8 @@ export default function App() {
 				{/* todo < drawer */}
 				<Tab.Screen name="TodoDrawer" component={TodoDrawerNavigator}
 					options={{
-						headerShown: false,
 						title: '투두',
+						headerShown: false, unmountOnBlur: true,
 						tabBarIcon: ({ focused, color, }) => (
 							<MaterialCommunityIcons name={focused ? 'check-circle' : 'check-circle-outline'} color={color} size={24} />
 						)
@@ -166,8 +173,8 @@ export default function App() {
 				{/* user */}
 				<Tab.Screen name="UserStack" component={UserStackNavigator}
 					options={{
-						headerShown: false,
 						title: '마이 페이지',
+						headerShown: false, unmountOnBlur: true,
 						tabBarIcon: ({ focused, color, }) => (
 							<MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} />
 						)

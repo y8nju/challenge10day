@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Dimensions, Image, ImageBackground, StyleSheet, View } from "react-native";
 import { useIsFocused} from "@react-navigation/native";
 
+import Emoji from "../../util/emoji";
+
 import CustomText from "../../components/customText";
 import HeaderRightButton from "../../components/headerRightButton";
 
@@ -9,8 +11,8 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function FeedDetailScreen({navigation, route}) {
 	const {data} = route.params;
-	const date = new Date(data.createdAt.slice(0,10));
 	const focused = useIsFocused();
+	const date = new Date(data.createdAt.slice(0,10));
 	
 	const [emoji, setEmoji] = useState(null);
 
@@ -22,20 +24,11 @@ export default function FeedDetailScreen({navigation, route}) {
 				</HeaderRightButton>
 		});
 		if(data.emoji) {
-			switch (data.emoji) {
-				case 'smile':
-					return setEmoji(require('../../assets/images/emoji/smile.png'));
-				case 'angry':
-					return setEmoji(require('../../assets/images/emoji/angry.png'));
-				case 'heartEye':
-					return setEmoji(require('../../assets/images/emoji/heartEye.png'));
-				case 'sad':
-					return setEmoji(require('../../assets/images/emoji/sad.png'));
-				case 'sick':
-					return setEmoji(require('../../assets/images/emoji/sick.png'));
-				case 'sleepy':
-					return setEmoji(require('../../assets/images/emoji/sleepy.png'));
-			}
+			Emoji.forEach(one => {
+				if(data.emoji == one.id) {
+					return setEmoji(one.uri)
+				}
+			})
 		}
 	}, [focused])
 	return(<View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
@@ -47,7 +40,7 @@ export default function FeedDetailScreen({navigation, route}) {
 				<Image source={emoji} resizeMode="cover" style={{width: 44, height: 44, marginRight: 10}} />
 				<CustomText style={{fontSize: 20}}>{date.getMonth()+1}월 {date.getDate()}일</CustomText>
 			</View>
-			<CustomText style={{textAlign: 'justify', fontSize: 16, lineHeight: 24}} type={'hand'}>
+			<CustomText style={{textAlign: 'justify', fontSize: 18, lineHeight: 24}} type={'hand'}>
 				{data.content}
 			</CustomText>
 		</View>

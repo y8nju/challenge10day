@@ -65,7 +65,7 @@ export default function TodoScreen({ navigation, route }) {
 			<FlatList style={{flex: 1}}
 				data={todoList}
 				keyExtractor={({_id})=> _id}
-				renderItem={(one) => <TodoItem todoPress={()=>todoAdjustmentHandle(one.item.todoText)} data={one} />}
+				renderItem={({item}) => <TodoItem todoPress={()=> todoAdjustmentHandle(item.todoText)} data={item} />}
 			/>
 			<CustomText style={{fontSize: 12, textAlign: 'center', lineHeight: 18}} weight={300}>Todo를 탭 해서 수정하세요! {'\n'} 완료한 Todo는 수정할 수 없어요!</CustomText>
 		</View>

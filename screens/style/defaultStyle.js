@@ -24,8 +24,8 @@ export default defaultStyle = StyleSheet.create({
 		marginBottom: 8,
 	},
 	textArea: {
-		fontSize: 16,
-		fontFamily: 'Diary',
+		fontSize: 18,
+		fontFamily: 'Goyang',
 		textAlign: 'justify',
 		lineHeight: 24,
 		borderWidth: 1,
