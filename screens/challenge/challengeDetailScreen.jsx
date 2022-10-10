@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Keyboard, TouchableWithoutFeedback, View, FlatList, StyleSheet, Pressable, Modal, Button, TextInput, Image} from "react-native";
+import { Keyboard, TouchableWithoutFeedback, View, FlatList, StyleSheet, Pressable, Modal, Button, TextInput, Image, Dimensions, ImageBackground} from "react-native";
 import { format } from "date-fns";
 import ko from "date-fns/esm/locale/ko/index.js";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -10,17 +10,37 @@ import defaultStyle from "../style/defaultStyle";
 
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
-import HeaderRightButton from "../../components/headerRightButton";
+
+const windowWidth = Dimensions.get('window').width;
 
 let confirmArr = []
 for(let i = 1; i <=10; i++ ) {
 	confirmArr.push({_id: i, num: i});
 };
+let confirmArr2 = []
+confirmArr2 =[{_id: 458, emoji: '002', createdAt: "2022-10-07T13:01:17.056Z", confirm: true},
+{_id: 556, confirm: false},
+{_id: 434, emoji: '006', createdAt: "2022-10-09T13:01:17.056Z", confirm: true}]
+
+let confirmArr3;
+if(confirmArr2.length > 0) {
+	let today = new Date().getDate();
+	let lastDate = new Date(confirmArr2[confirmArr2.length-1].createdAt.slice(0, 10)).getDate();
+	if(today - lastDate == 1 ) {
+		confirmArr2.push({_id: 1, num: confirmArr2.length + 1});
+	} else if (today - lastDate > 1) {
+		confirmArr2.push({_id: confirmArr2.length + 1, confirm: false});
+		confirmArr2.push({_id: 1, num: confirmArr2.length + 2});
+	}
+	confirmArr3 = confirmArr2.concat(confirmArr.slice(-(confirmArr.length - confirmArr2.length)));
+}else {
+	confirmArr3 = confirmArr;
+}
 
 export default function ChallengeDetailScreen({route}) {
 	const {data} = route.params
 	const [loading, setLoading] = useState(false);
-	const [confirmList, setConfirmList] = useState(confirmArr);
+	const [confirmList, setConfirmList] = useState(confirmArr3);
 	const [addModalVisible, setAddModalVisible] = useState(false);
 	const [content, setContent] = useState('');
 	const [emoji, setEmoji] = useState(null);
@@ -38,14 +58,28 @@ export default function ChallengeDetailScreen({route}) {
 			return (<Pressable style={[styles.itemArea, {backgroundColor: '#e9e9e9'}]}>
 				<CustomText type={'hand'} style={{color: '#bdbdbd', fontSize: 24}}>{data.num}</CustomText>
 			</Pressable>)
-		} else {
-			//인증된 아이템
+		} else if(data.confirm) {
+			// 인증 데이터가 있는 아이템
+			let confirmEmojiUri;
+			Emoji.forEach(one => {
+				if(one.id == data.emoji) {
+					confirmEmojiUri = one.uri
+				}
+			})
+			return (<Pressable style={styles.itemArea}>
+					<ImageBackground source={confirmEmojiUri} resizeMode='cover' style={{width: '100%', height: '100%'}} />
+				</Pressable>)
+		} else if(!data.confirm) {
+			// 인증 실패한 데이터
+			return (<Pressable style={styles.itemArea}>
+				<ImageBackground source={require('../../assets/images/emoji/false.png')} resizeMode='cover' style={{width: '100%', height: '100%'}} />
+			</Pressable>)
 		}
 	}
 	function EmojiItem({data}) {
 		return(<Pressable onPress={() => setEmoji(data.id)}
-			style={[styles.emojiItm, emoji == data.id && {backgroundColor: '#e1d3c14d'}]}>
-			<Image source={data.uri} resizeMode='cover' style={{width: 50, height:50}} />
+			style={[styles.emojiItem, emoji == data.id && {backgroundColor: '#e1d3c14d'}]}>
+			<Image source={data.uri} resizeMode='cover' style={styles.emojiIcon} />
 			<CustomText style={[{textAlign: 'center', marginTop: 2, color: '#8e8e8f'}, emoji == data.id && {color: '#504d49'}]} type={'hand'}>{data.name}</CustomText>
 		</Pressable>)
 	}
@@ -118,10 +152,10 @@ export default function ChallengeDetailScreen({route}) {
 }
 const styles = StyleSheet.create({
 	itemArea: {
-		width: 70,
-		height: 70,
+		width: (windowWidth - 52 - (8 * 8)) / 4,
+		height: (windowWidth - 52 - (8 * 8)) / 4,
 		borderRadius: 50,
-		margin: 10,
+		margin: 8,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
@@ -161,12 +195,17 @@ const styles = StyleSheet.create({
 		borderRadius: 4, 
 		backgroundColor: "#ededed",
 	}, 
-	emojiItm: {
+	emojiItem: {
 		justifyContent: 'center', 
 		alignItems:'center', 
 		borderRadius: 8,
 		marginRight: 1, 
 		padding: 2, 
 		paddingBottom: 4,
+	},
+	emojiIcon: {
+		width: (windowWidth - 80 - 5 - (4 * 6)) / 6,
+		height: (windowWidth - 80 - 5 - (4 * 6)) / 6,
 	}
 })
+ 

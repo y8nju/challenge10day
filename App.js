@@ -69,7 +69,11 @@ function TodoDrawerNavigator() {
 	return (<Drawer.Navigator initialRouteName="todoIng" screenOptions={{
 		headerStyle: { backgroundColor: "#f2f2f2" },
 		headerShadowVisible: false,
+		headerTintColor: "#504d49",
 		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
+		drawerActiveTintColor: "#fb5438",
+		drawerActiveBackgroundColor: "transparent",
+		drawerInactiveTintColor: "#8E8E8F",
 		drawerStyle: {
 			paddingTop: 60,
 			paddingLeft: 10
@@ -77,9 +81,6 @@ function TodoDrawerNavigator() {
 		drawerLabelStyle: {
 			fontSize: 16
 		},
-		drawerActiveTintColor: "#fb5438",
-		drawerActiveBackgroundColor: "transparent",
-		drawerInactiveTintColor: "#8E8E8F",
 	}}>
 		<Drawer.Screen name="todoIng" component={TodoScreen}
 			options={{ title: '진행 중' }} />
