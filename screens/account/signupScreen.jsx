@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Image, Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Image, Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
 
 import defaultStyle from "../style/defaultStyle";
 
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
+import CustomButton from "../../components/customButton";
 
 export default function SignupScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);
@@ -101,7 +102,7 @@ export default function SignupScreen({ navigation }) {
 				<CustomText style={defaultStyle.chkTxt}>{passChkText}</CustomText>
 			</View>}
 			<View style={defaultStyle.accountBtnArea}>
-				<Button title="가입하기" color="#fb5438" onPress={signupHandle} />
+				<CustomButton title={"가입하기"} onPress={signupHandle} />
 			</View>
 		</View>
 	</TouchableWithoutFeedback>);

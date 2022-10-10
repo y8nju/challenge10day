@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Keyboard, StyleSheet, Switch, TextInput, TouchableWithoutFeedback, View, Pressable} from "react-native";
+import { Keyboard, StyleSheet, Switch, TextInput, TouchableWithoutFeedback, View, Pressable} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { format } from "date-fns";
 import ko from "date-fns/esm/locale/ko/index.js";
@@ -9,6 +9,7 @@ import defaultStyle from "../style/defaultStyle";
 import CustomText from "../../components/customText";
 import LoadingOverlay from "../../components/loadingOverlay";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import CustomButton from "../../components/customButton";
 
 export default function ChallengeChangeScreen({navigation, route}) {
     
@@ -107,7 +108,7 @@ export default function ChallengeChangeScreen({navigation, route}) {
 					/>
 				</View>
 				<View style={{marginTop: 30}}>
-					<Button title="수정하기" color="#fb5438" onPress={ChallengeChangeHandle} />
+					<CustomButton title={"수정하기"} onPress={ChallengeChangeHandle} />
 				</View>
 			</View>
 		</View>

@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
-import CustomText from "../../components/customText";
+import { Alert, Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
+
 import defaultStyle from "../style/defaultStyle";
+
+import CustomButton from "../../components/customButton";
+import CustomText from "../../components/customText";
 
 export default function PassChangeScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);
@@ -72,7 +75,7 @@ export default function PassChangeScreen({ navigation }) {
 				</View>}
 			</View>
 			<View style={[defaultStyle.accountBtnArea, { paddingHorizontal: 26 }]}>
-				<Button title="저장" color="#fb5438" onPress={passChangeHandele} />
+				<CustomButton title={"저장"} onPress={passChangeHandele} />
 			</View>
 		</View>
 	</TouchableWithoutFeedback >);

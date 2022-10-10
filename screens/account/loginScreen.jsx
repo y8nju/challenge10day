@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Image, Keyboard, Pressable, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Image, Keyboard, Pressable, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { CommonActions, useIsFocused} from "@react-navigation/native";
 
 import defaultStyle from "../style/defaultStyle";
 
 import CustomText from "../../components/customText";
+import CustomButton from "../../components/customButton";
 
 export default function LoginScreen({ navigation, route }) {
 	const [loading, setLoading] = useState(false);
@@ -70,7 +71,7 @@ export default function LoginScreen({ navigation, route }) {
 					placeholder="비밀번호를 입력해주세요" />
 			</View>
 			<View style={defaultStyle.accountBtnArea}>
-				<Button title="로그인" color="#fb5438" onPress={loginHandle} />
+				<CustomButton title={"로그인"} onPress={loginHandle} />
 			</View>
 			<View style={{ marginTop: 24, width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
 				<CustomText style={{ textAlign: 'center' }}>계정이 없으신가요?</CustomText>

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Alert, Button, Image, StyleSheet, View } from "react-native";
+import { Alert, Image, StyleSheet, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import CustomButton from "../../components/customButton";
 
 import CustomText from "../../components/customText";
 
@@ -74,7 +75,7 @@ export default function WithdrawScreen({ navigation }) {
 					onPress={checkHandle}
 				/>
 			</View>
-			<Button title="탈퇴" color="#fb5438" onPress={accountDeleteHandle} disabled={isDisabled} />
+			<CustomButton title={"탈퇴"} onPress={accountDeleteHandle} disabled={isDisabled} style={{borderRadius: 0}}/>
 		</View>
 	</View >);
 }

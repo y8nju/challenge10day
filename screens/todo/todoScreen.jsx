@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, FlatList, Modal, Pressable, StyleSheet, View, TextInput, ToastAndroid } from "react-native";
+import { FlatList, Modal, Pressable, StyleSheet, View, TextInput, ToastAndroid } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 
 import defaultStyle from "../style/defaultStyle";
@@ -7,6 +7,7 @@ import defaultStyle from "../style/defaultStyle";
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
 import HeaderRightButton from "../../components/headerRightButton";
+import CustomButton from "../../components/customButton";
 import TodoItem from "../../components/todoItem";
 
 const dumi = [
@@ -58,6 +59,7 @@ export default function TodoScreen({ navigation, route }) {
 	}
 	const todoUpdateHandle = () => {
 		// todo 수정
+		setUpdateModalVisible(false);
 	}
 	return (<View style={defaultStyle.wrap}>
 		{loading && <LoadingOverlay />}
@@ -81,7 +83,7 @@ export default function TodoScreen({ navigation, route }) {
 						autoCapitalize='none'
 						onChangeText={(txt) => setTodo(txt)}
 						placeholder="할 일을 적어주세요" />
-					<Button title="확인" color="#fb5438" onPress={todoAddHandle} />
+					<CustomButton title={"확인"} onPress={todoAddHandle} />
 				</View>
 			</View>
 		</Modal>
@@ -97,10 +99,10 @@ export default function TodoScreen({ navigation, route }) {
 						onChangeText={(txt) => setCheckedTodoText(txt)} />
 					<View style={{ flexDirection: 'row' }}>
 						<View style={{ flex: 1 }}>
-							<Button title="취소" color="#ddd" onPress={()=> setUpdateModalVisible(false)}/>
+							<CustomButton title={"취소"} color={"#ddd"} onPress={()=> setUpdateModalVisible(false)} />
 						</View>
 						<View style={{ flex: 1, marginLeft: 10 }}>
-							<Button title="수정" color="#fb5438" onPress={todoUpdateHandle} />
+							<CustomButton title={"수정"} onPress={todoUpdateHandle} />
 						</View>
 					</View>
 				</View>

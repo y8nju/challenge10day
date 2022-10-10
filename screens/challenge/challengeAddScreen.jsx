@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Keyboard, StyleSheet, Switch, TextInput, TouchableWithoutFeedback, View, Pressable} from "react-native";
+import { Keyboard, StyleSheet, Switch, TextInput, TouchableWithoutFeedback, View, Pressable} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { format } from "date-fns";
 import ko from "date-fns/esm/locale/ko/index.js";
@@ -9,6 +9,7 @@ import defaultStyle from "../style/defaultStyle";
 import CustomText from "../../components/customText";
 import LoadingOverlay from "../../components/loadingOverlay";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import CustomButton from "../../components/customButton";
 
 export default function ChallengeAddScreen({navigation}) {
 	const [loading, setLoading] = useState(false);
@@ -110,7 +111,7 @@ export default function ChallengeAddScreen({navigation}) {
 					/>
 				</View>
 				<View style={{marginTop: 30}}>
-					<Button title="만들기" color="#fb5438" onPress={ChallengeAddHandle} />
+					<CustomButton title={"만들기"} onPress={ChallengeAddHandle} />
 				</View>
 			</View>
 		</View>
