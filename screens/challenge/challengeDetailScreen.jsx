@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Keyboard, TouchableWithoutFeedback, View, FlatList, StyleSheet, Pressable, Modal, Button, TextInput, Image, Dimensions, ImageBackground} from "react-native";
 import { format } from "date-fns";
 import ko from "date-fns/esm/locale/ko/index.js";
@@ -13,6 +13,7 @@ import CustomText from "../../components/customText";
 
 const windowWidth = Dimensions.get('window').width;
 
+//========================인증 데이터 조건 
 let confirmArr = []
 for(let i = 1; i <=10; i++ ) {
 	confirmArr.push({_id: i, num: i});
@@ -36,8 +37,9 @@ if(confirmArr2.length > 0) {
 }else {
 	confirmArr3 = confirmArr;
 }
+//========================
 
-export default function ChallengeDetailScreen({route}) {
+export default function ChallengeDetailScreen({navigation, route}) {
 	const {data} = route.params
 	const [loading, setLoading] = useState(false);
 	const [confirmList, setConfirmList] = useState(confirmArr3);
@@ -45,6 +47,37 @@ export default function ChallengeDetailScreen({route}) {
 	const [content, setContent] = useState('');
 	const [emoji, setEmoji] = useState(null);
 
+	useEffect(() => {
+		navigation.setOptions({
+			headerRight: () => <HeaderRightButton onPress={deleteHandle}>
+					삭제
+				</HeaderRightButton>
+		});
+	})
+	const deleteHandle = () => {
+		Alert.alert("작심10일", "습관을 삭제할까요?", [
+			{
+				text: '취소'
+			}, {
+				text: '수정',
+				onPress: () =>{ 
+					setLoading(true);
+					!async function () {
+						try {
+							
+						} catch (e) {
+							console.log(e);
+						}
+					}();
+					
+					setTimeout(()=>{
+						setLoading(false);
+						navigation.navigate('home', {status: 'deleted'});
+					}, 1500)
+				}
+			}
+		])
+	}
 	function ConfirmItem({data}) {
 		if(data.num) {
 			// 인증되지 않은 아이템

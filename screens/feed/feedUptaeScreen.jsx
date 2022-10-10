@@ -37,7 +37,7 @@ export default function FeedUpdateScreen({navigation, route}) {
 		}
 	}, [focused])
 	const updateHandle = () => {
-		Alert.alert("작심10일", "여기를 수정할까요?", [
+		Alert.alert("작심10일", "피드를 수정할까요?", [
 			{
 				text: '취소'
 			}, {

@@ -13,7 +13,7 @@ export default function FeedDetailScreen({navigation, route}) {
 	const {data} = route.params;
 	const focused = useIsFocused();
 	const date = new Date(data.createdAt.slice(0,10));
-	
+
 	const [emoji, setEmoji] = useState(null);
 
 	useEffect(()=> {
@@ -31,6 +31,7 @@ export default function FeedDetailScreen({navigation, route}) {
 			})
 		}
 	}, [focused])
+	
 	return(<View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
 		<View style={styles.imageArea}>
 			<ImageBackground source={data.imgURI} resizeMode="cover" style={{flex: 1}}/>

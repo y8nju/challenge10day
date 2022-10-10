@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, FlatList, Text, ToastAndroid, View } from "react-native";
+import { Alert, FlatList, ToastAndroid, View } from "react-native";
 import { CommonActions, useIsFocused } from "@react-navigation/native";
 
 import defaultStyle from "../style/defaultStyle";
