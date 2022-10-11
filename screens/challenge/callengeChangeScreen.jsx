@@ -73,7 +73,8 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 		Notifications.scheduleNotificationAsync({
 			content: {
 				title: "Challenge's 10 Days",
-				body: '알림설정이 완료되었습니다.',
+				body:
+					`${(Number(format(new Date(time), 'H', { locale: ko, format: 'HH:mm:ss' })))} : ${(Number(format(new Date(time), 'm', { locale: ko, format: 'MM:dd HH:mm' })))} 시간으로 수정되었습니다.`,
 				data: { data: 'data' },
 			},
 
