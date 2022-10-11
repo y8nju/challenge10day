@@ -5,7 +5,8 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import CustomText from "./customText";
 
 export default function TodoItem({ todoPress, data }) {
-	const [checked, setChecked] = useState(!data.ing);
+	const [checked, setChecked] = useState(data.ing);
+	console.log("data",data);
 
 	return (<Pressable style={styles.todoItem} onPress={todoPress}>
 		<BouncyCheckbox

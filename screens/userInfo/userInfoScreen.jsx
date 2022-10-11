@@ -2,9 +2,12 @@ import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import CustomText from "../../components/customText";
+import { useContext } from "react";
+import { AppContext } from "../../context/app-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function UserInfoScreen({ navigation }) {
-
+	const ctx = useContext(AppContext);
 	// 로그아웃
 	const logoutHandle = () => {
 		Alert.alert("작심10일", "로그아웃 할까요?", [
@@ -13,9 +16,12 @@ export default function UserInfoScreen({ navigation }) {
 			}, {
 				text: '로그아웃',
 				onPress: () => {
-					navigation.navigate("UserStack", { screen: 'login', params: { status: 'logout' } });
-				}
+					ctx.dispatch({type:"logout"});
+                    AsyncStorage.removeItem("authentication").then(()=>{
+                        navigation.navigate("login");
+				})
 			}
+		}
 		])
 	}
 	// 비밀번호 변경

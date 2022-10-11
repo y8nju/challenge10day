@@ -34,6 +34,9 @@ export default function HomeScreen({navigation, route}) {
 				case 'change':
 					ToastAndroid.show("습관을 수정했어요", ToastAndroid.SHORT);
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					case 'signUp':
+						ToastAndroid.show("만나서 반가워요", ToastAndroid.SHORT);
+						return navigation.dispatch(CommonActions.setParams({ status: '' }));
 			}
 		}
 		// setRefresh(false);

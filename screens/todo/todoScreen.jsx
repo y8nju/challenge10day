@@ -9,6 +9,7 @@ import CustomText from "../../components/customText";
 import HeaderRightButton from "../../components/headerRightButton";
 import CustomButton from "../../components/customButton";
 import TodoItem from "../../components/todoItem";
+import { addtodo, getcompletedtodo } from "../../util/todoAPI";
 
 const dumi = [
 	// test 를 위한 더미 데이터!
@@ -21,13 +22,19 @@ export default function TodoScreen({ navigation, route }) {
 	const [addModalVisible, setAddModalVisible] = useState(false);
 	const [updateModalVisible, setUpdateModalVisible] = useState(false);
 	const [checkedTodoText, setCheckedTodoText] = useState('');
-	const [todoList, setTodoList] = useState(dumi)
+	const [todoList, setTodoList] = useState({})
 	const [toto, setTodo] = useState('')
 
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight: () => <HeaderRightButton style={{ marginRight: 16 }} onPress={() => setAddModalVisible(true)}>추가</HeaderRightButton>
 		});
+		!async function(){
+			const falsetodo = await getcompletedtodo(false);
+			setTodoList(falsetodo);
+			console.log("todoList",todoList)
+		}();
+		
 	}, []);
 
 	useEffect(()=> {
@@ -45,7 +52,11 @@ export default function TodoScreen({ navigation, route }) {
 		setLoading(true);
 		!async function () {
 			try {
-				navigation.navigate('todoIng', { status: 'add' });
+			 const response = await addtodo(toto)
+			 if(response.type){
+				 navigation.navigate('todoIng', { status: 'add' });
+				 setAddModalVisible(false)
+			 }
 			} catch (e) {
 				console.log(e);
 			}
@@ -66,7 +77,7 @@ export default function TodoScreen({ navigation, route }) {
 		<View style={{ paddingHorizontal: 24, flex: 1 }}>
 			{/* <TodoItem todoPress={todoAdjustmentHandle} /> */}
 			<FlatList style={{flex: 1}}
-				data={todoList}
+				data={todoList.data}
 				keyExtractor={({_id})=> _id}
 				renderItem={({item}) => <TodoItem todoPress={()=> todoAdjustmentHandle(item.todoText)} data={item} />}
 			/>
@@ -82,7 +93,9 @@ export default function TodoScreen({ navigation, route }) {
 						value={toto}
 						autoCapitalize='none'
 						onChangeText={(txt) => setTodo(txt)}
-						placeholder="할 일을 적어주세요" />
+						placeholder="할 일을 적어주세요" 
+						placeholderTextColor="#656565" />
+		
 					<CustomButton title={"확인"} onPress={todoAddHandle} />
 				</View>
 			</View>

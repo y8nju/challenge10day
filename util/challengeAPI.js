@@ -1,0 +1,84 @@
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+
+
+const SERVER_IP = "http://192.168.4.97:8080"
+
+
+    // 챌린지 생성
+    export async function addchallenge(title,userId,isnotification,hournotification){
+        const token = await AsyncStorage.getItem("authentication");
+        const response = await axios.post(SERVER_IP+"/api/challenge/addchallenge",{
+           title,userId,isnotification,hournotification
+        },{
+            headers:{
+                common:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+        })
+        return response.data
+    }
+
+    // 챌린지 전체 불러오기
+    export  async function readchallenge(userId){
+        const token = await AsyncStorage.getItem("authentication");
+        const response = await axios.post(SERVER_IP+"/api/challenge/readchallenge",{
+           userId
+        },{
+            headers:{
+                common:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+        })
+        return response.data
+
+    }
+
+    // 챌린지 하나 불러오기
+    export  async function readonechallenge(id){
+        const token = await AsyncStorage.getItem("authentication");
+        const response = await axios.get(SERVER_IP+"/api/challenge/readchallenge",{
+           id
+        },{
+            headers:{
+                common:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+        })
+        return response.data
+    }
+
+    //챌린지 시간 수정하기
+    export  async function updatechallenge(id,isnotification,hournotification=null){
+        const token = await AsyncStorage.getItem("authentication");
+        const response = await axios.put(SERVER_IP+"/api/challenge/updatechallenge",{
+           id,isnotification,hournotification
+        },{
+            headers:{
+                common:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+        })
+        return response.data
+    }
+
+    // 챌린지 삭제
+    export  async function deletechallenge(id){
+        const token = await AsyncStorage.getItem("authentication");
+        const response = await axios.delete(SERVER_IP+"/api/challenge/deletechallenge",{
+           id
+        },{
+            headers:{
+                common:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+        })
+        return response.data
+    }
+

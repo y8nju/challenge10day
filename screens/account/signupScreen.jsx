@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alert, Image, Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
 
 import defaultStyle from "../style/defaultStyle";
@@ -6,6 +6,9 @@ import defaultStyle from "../style/defaultStyle";
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
 import CustomButton from "../../components/customButton";
+import { sendRegisterReq } from "../../util/accountAPI";
+import { AppContext } from "../../context/app-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignupScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);
@@ -14,6 +17,7 @@ export default function SignupScreen({ navigation }) {
 	const [pass, setPass] = useState('');
 	const [passChk, setPassChk] = useState('');
 	const [passChkText, setPassChkText] = useState('');
+	const ctx = useContext(AppContext);
 	useEffect(() => {
 		if (pass) {
 			if (!passChk) {
@@ -38,19 +42,21 @@ export default function SignupScreen({ navigation }) {
 				text: '확인'
 			}])
 
-		} else if (!(/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email))) {
-			Alert.alert('작심 10일', '이메일 형식이 아니예요', [{
+		} else if (userId.length<=4) {
+			Alert.alert('작심 10일', '아이디는 4자 이상이에요', [{
 				text: '확인'
 			}])
 		} else {
 			setLoading(true);
 			!async function () {
 				try {
-					const recv = await sendRegisterReq(email, pass);
+					const recv = await sendRegisterReq(userId, pass,userName);
 					console.log(recv);
 					ctx.dispatch({ type: 'login', payload: recv });
 					AsyncStorage.setItem('authentication', JSON.stringify(recv));
-					navigation.navigate('login', { status: 'signup' })
+					navigation.navigate('HomeStack', {
+						screen: 'home', params: { status: 'signup' }
+					})
 				} catch (e) {
 					Alert.alert('작심 10일', '회원가입이 정상적으로 이루어지지 않았어요', [{
 						text: '확인'

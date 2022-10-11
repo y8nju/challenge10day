@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alert, Image, Keyboard, Pressable, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { CommonActions, useIsFocused} from "@react-navigation/native";
 
@@ -6,13 +6,17 @@ import defaultStyle from "../style/defaultStyle";
 
 import CustomText from "../../components/customText";
 import CustomButton from "../../components/customButton";
+import { AppContext } from "../../context/app-context";
+import { sendLoginReq } from "../../util/accountAPI";
+import LoadingOverlay from "../../components/loadingOverlay";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen({ navigation, route }) {
 	const [loading, setLoading] = useState(false);
 	const [inputValues, setInputValues] = useState({ userId: "", password: "" });
 	const { userId, password } = inputValues;
 	const focused = useIsFocused();
-	
+	const ctx = useContext(AppContext);
 	useEffect(()=> {
 		if(route.params) {
 			switch(route.params.staus) {
@@ -37,8 +41,15 @@ export default function LoginScreen({ navigation, route }) {
 		setLoading(true);
 		!async function () {
 			try {
+				const recv = await sendLoginReq(inputValues.userId, inputValues.password);
+                ctx.dispatch({type:"login",payload:recv})
+				
+                if (recv.registered) {
+                    AsyncStorage.setItem("authentication",JSON.stringify(recv))
+					console.log("recv",recv)
+					navigation.navigate("HomeStack", { screen: 'home', params: { status: 'login' } });
+                }
 				// AsyncStorage.setItem('authentication', JSON.stringify(userData));
-				navigation.navigate("HomeStack", { screen: 'home', params: { status: 'login' } });
 			} catch (e) {
 				Alert.alert("작심10일", "아이디 혹은 비밀번호를 확인해보세요", [{
 					text: '확인'
