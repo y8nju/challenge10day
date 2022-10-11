@@ -7,34 +7,37 @@ import defaultStyle from "../style/defaultStyle";
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
 import TodoItem from "../../components/todoItem";
-
-const dumi = [
-	// test 를 위한 더미 데이터!
-	{_id: 1, todoText: '아이고', ing: false},
-	{_id: 2, todoText: '아이고', ing: false},
-
-]
+import { deletetodo, getcompletedtodo } from "../../util/todoAPI";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TodoEndScreen({ navigation, route }) {
 	const [loading, setLoading] = useState(false);
-	const [todoList, setTodoList] = useState(dumi);
+	const [todoList, setTodoList] = useState({});
 	const focused = useIsFocused();
 
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight: () => <></>
 		});
-	});
-	useEffect(()=> {
-		if(route.params) {
-			switch(route.params.status) {
+		!async function () {
+			const data = await AsyncStorage.getItem("authentication");
+			if(data === null){
+				return;
+			}
+			const truetodo = await getcompletedtodo(true);
+			setTodoList(truetodo.data);
+		}();
+	}, [focused]);
+	useEffect(() => {
+		if (route.params) {
+			switch (route.params.status) {
 				case 'delete':
 					ToastAndroid.show("Todo를 삭제했어요", ToastAndroid.SHORT);
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 			}
 		}
 	}, [focused])
-	const todoDeleteHandle = (text) => {
+	const todoDeleteHandle = (id, text) => {
 		Alert.alert("작심10일", `"${text}" 를 삭제할까요?`, [
 			{
 				text: '취소'
@@ -44,7 +47,14 @@ export default function TodoEndScreen({ navigation, route }) {
 					setLoading(true);
 					!async function () {
 						try {
-							navigation.navigate("todoEnd", { status: 'delete' });
+							const response = await deletetodo(id);
+							if (response.type) {
+								const truetodo = await getcompletedtodo(true);
+								setTodoList(truetodo.data);
+								navigation.navigate("todoEnd", { status: 'delete' });
+							} else {
+								Alert.alert("전송에러", "현재서버와 연결이 원활하지 않습니다.")
+							}
 
 						} catch (e) {
 							Alert.alert('작심10일', `"${text}" 가 삭제되지 않았어요`)
@@ -60,12 +70,12 @@ export default function TodoEndScreen({ navigation, route }) {
 	return (<View style={defaultStyle.wrap}>
 		{loading && <LoadingOverlay />}
 		<View style={{ paddingHorizontal: 24, flex: 1 }}>
-			<FlatList style={{flex: 1}}
+			<FlatList style={{ flex: 1 }}
 				data={todoList}
-				keyExtractor={({_id})=> _id}
-				renderItem={({item}) => <TodoItem todoPress={() => todoDeleteHandle(item.todoText)} data={item}/>}
+				keyExtractor={({ _id }) => _id}
+				renderItem={({ item }) => <TodoItem todoPress={() => todoDeleteHandle(item._id, item.todoText)} data={item} />}
 			/>
-			<CustomText style={{fontSize: 12, textAlign: 'center'}} weight={300}>Todo를 탭 해서 삭제하세요!</CustomText>
+			<CustomText style={{ fontSize: 12, textAlign: 'center' }} weight={300}>Todo를 탭 해서 삭제하세요!</CustomText>
 		</View>
 	</View>)
 }
