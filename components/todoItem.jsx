@@ -8,15 +8,17 @@ export default function TodoItem({ todoPress, data }) {
 	const [checked, setChecked] = useState(data.ing);
 	console.log("data",data);
 
-	return (<Pressable style={styles.todoItem} onPress={todoPress}>
+	return (<View style={styles.todoItem}>
 		<BouncyCheckbox
 			size={18}
 			fillColor="#fb5438"
 			isChecked={checked}
 			disabled={checked}
 			onPress={() => setChecked(!checked)} />
-		<CustomText type={'hand'} style={[checked ? { textDecorationLine: 'line-through' } :{ textDecorationLine: 'none' }, {fontSize: 16} ] }>{data.todoText}</CustomText>
-	</Pressable>);
+		<Pressable onPress={todoPress}>
+			<CustomText type={'hand'} style={[checked ? { textDecorationLine: 'line-through' } : { textDecorationLine: 'none' }, { fontSize: 16 }]}>{data.todoText}</CustomText>
+		</Pressable>
+	</View>);
 }
 const styles = StyleSheet.create({
 	todoItem: {
