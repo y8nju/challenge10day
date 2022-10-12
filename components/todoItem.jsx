@@ -6,13 +6,12 @@ import { completedtodo } from "../util/todoAPI";
 import CustomText from "./customText";
 
 
-export default function TodoItem({ todoPress, data }) {
+export default function TodoItem({ completedPress,todoPress, data }) {
 	const [checked, setChecked] = useState(data.ing);
 	
 	const completedHandle= async () =>{
-		const response = await completedtodo(data._id,true)
+		const response = await completedPress()
 		if(response.type === true){
-			console.log(response);
 			setChecked(!checked)
 		}
 	}

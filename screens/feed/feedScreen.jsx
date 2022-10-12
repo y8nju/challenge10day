@@ -1,5 +1,7 @@
-import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import { Dimensions, FlatList, ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
+import NotLogin from "../../components/notLogin";
 
 const windowWidth = Dimensions.get('window').width;
 const dumi = [
@@ -15,21 +17,36 @@ const dumi = [
 		emoji: '006'},
 ]
 
+
 export default function FeedScreen({navigation}) {
+	const [login,setLogin] = useState(false);
+	useEffect(() => {
+		AsyncStorage.getItem("authentication").then((data) => {
+			const token = JSON.parse(data)
+			console.log("token", token == null);
+			if (token == null) {
+				setLogin(false)
+			} else {
+				setLogin(true)
+			}
+		})
+	}, [])
 	const [feedList, setFeedList] = useState(dumi); // feed 데이터 들어옴
 	function FeedItem({data}) {
 		return (<Pressable style={styles.itemArea} onPress={() => navigation.navigate('feedDetail', {data: data})}>
 			<ImageBackground source={data.imgURI} resizeMode="cover" style={{flex: 1}} /> 
 		</Pressable>)
 	}
-	return (<View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
+	return (<>
+	{!login && <NotLogin/>}
+	{login && <View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
 		{feedList ? <FlatList style={{flex: 1}} data={feedList}
 			keyExtractor={({_id})=> _id}
 			numColumns = {3}
 			renderItem={({item}) => <FeedItem data={item} />}
 			/>
 		: <></>}
-	</View>);
+	</View>}</>);
 }
 const styles = StyleSheet.create({
 	itemArea: {

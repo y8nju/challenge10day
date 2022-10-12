@@ -23,10 +23,8 @@ export function AppContextProvider({ children }) {
     useEffect(() => {
         AsyncStorage.getItem("authentication").then((data) => {
             const token = JSON.parse(data)
-            console.log(token);
             if(data){
                 valid(token).then((newdata)=>{
-                    console.log("newdata",newdata)
                    dispatch({type:"login",payload:newdata});
                    setDone(true);
                 })

@@ -4,16 +4,17 @@ import axios from "axios";
 
 
 
-const SERVER_IP = "http://192.168.219.104:8080"
+const SERVER_IP = "http://192.168.4.97:8080"
     // 데이터 등록
-    export async function adddata(imgData,day,emoji,comment,targetId,userId){
-        const token = await AsyncStorage.getItem("authentication");
+    export async function adddata(imgData,day,emoji,comment,targetId){
+        const data = await AsyncStorage.getItem("authentication");
+        const datad = JSON.parse(data);
         const response = await axios.post(SERVER_IP+"/api/data/adddata",{
-            imgData,day,emoji,comment,targetId,userId
+            imgData,day,emoji,comment,targetId,userId:datad.data.userId
         },{
             headers:{
                 common:{
-                    Authorization:`Bearer ${token}`
+                    Authorization:`Bearer ${datad.token}`
                 }
             }
         })
@@ -67,13 +68,14 @@ const SERVER_IP = "http://192.168.219.104:8080"
 
     // 데이터 전체 불러오기
     export async function getalldata(targetId){
-        const token = await AsyncStorage.getItem("authentication");
+        const data = await AsyncStorage.getItem("authentication");
+        const datad = JSON.parse(data);
         const response = await axios.get(SERVER_IP+"/api/data/getalldata",{
-            id
+            targetId
         },{
             headers:{
                 common:{
-                    Authorization:`Bearer ${token}`
+                    Authorization:`Bearer ${datad.token}`
                 }
             }
         })

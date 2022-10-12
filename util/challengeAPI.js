@@ -3,33 +3,35 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 
-const SERVER_IP = "http://192.168.219.104:8080"
+const SERVER_IP = "http://192.168.4.97:8080"
 
 
     // 챌린지 생성
-    export async function addchallenge(title,userId,isnotification,hournotification){
-        const token = await AsyncStorage.getItem("authentication");
+    export async function addchallenge(title,isnotification,checked,hournotification=null){
+        const data = await AsyncStorage.getItem("authentication");
+        const datad = JSON.parse(data);
         const response = await axios.post(SERVER_IP+"/api/challenge/addchallenge",{
-           title,userId,isnotification,hournotification
+           title,userId:datad.data.userId,isnotification,checked,hournotification
         },{
             headers:{
                 common:{
-                    Authorization:`Bearer ${token}`
+                    Authorization:`Bearer ${datad.token}`
                 }
             }
         })
         return response.data
     }
 
-    // 챌린지 전체 불러오기
-    export  async function readchallenge(userId){
-        const token = await AsyncStorage.getItem("authentication");
+    // 챌린지 전체 불러오기 (진행 여부에 따라)
+    export async function readchallenge(isEnd){
+        const data = await AsyncStorage.getItem("authentication");
+        const datad = JSON.parse(data);
         const response = await axios.post(SERVER_IP+"/api/challenge/readchallenge",{
-           userId
+           userId:datad.data.userId,isEnd:isEnd
         },{
             headers:{
                 common:{
-                    Authorization:`Bearer ${token}`
+                    Authorization:`Bearer ${datad.token}`
                 }
             }
         })
@@ -39,13 +41,14 @@ const SERVER_IP = "http://192.168.219.104:8080"
 
     // 챌린지 하나 불러오기
     export  async function readonechallenge(id){
-        const token = await AsyncStorage.getItem("authentication");
-        const response = await axios.get(SERVER_IP+"/api/challenge/readchallenge",{
+        const data = await AsyncStorage.getItem("authentication");
+        const datad = JSON.parse(data);
+        const response = await axios.get(SERVER_IP+"/api/challenge/readonechallenge",{
            id
         },{
             headers:{
                 common:{
-                    Authorization:`Bearer ${token}`
+                    Authorization:`Bearer ${datad.token}`
                 }
             }
         })
@@ -69,13 +72,14 @@ const SERVER_IP = "http://192.168.219.104:8080"
 
     // 챌린지 삭제
     export  async function deletechallenge(id){
-        const token = await AsyncStorage.getItem("authentication");
-        const response = await axios.delete(SERVER_IP+"/api/challenge/deletechallenge",{
+        const data = await AsyncStorage.getItem("authentication");
+        const datad = JSON.parse(data);
+        const response = await axios.post(SERVER_IP+"/api/challenge/deletechallenge",{
            id
         },{
             headers:{
                 common:{
-                    Authorization:`Bearer ${token}`
+                    Authorization:`Bearer ${datad.token}`
                 }
             }
         })

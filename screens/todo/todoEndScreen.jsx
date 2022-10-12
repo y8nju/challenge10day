@@ -9,11 +9,26 @@ import CustomText from "../../components/customText";
 import TodoItem from "../../components/todoItem";
 import { deletetodo, getcompletedtodo } from "../../util/todoAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NotLogin from "../../components/notLogin";
+import NotContent from "../../components/notContentComponent ";
 
 export default function TodoEndScreen({ navigation, route }) {
 	const [loading, setLoading] = useState(false);
 	const [todoList, setTodoList] = useState({});
 	const focused = useIsFocused();
+	const [login,setLogin] = useState(false);
+
+	useEffect(() => {
+		AsyncStorage.getItem("authentication").then((data) => {
+			const token = JSON.parse(data)
+			console.log("token", token == null);
+			if (token == null) {
+				setLogin(false)
+			} else {
+				setLogin(true)
+			}
+		})
+	}, [])
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -67,7 +82,10 @@ export default function TodoEndScreen({ navigation, route }) {
 			}
 		])
 	}
-	return (<View style={defaultStyle.wrap}>
+	return (<>
+	{!login && <NotLogin />}
+	{todoList?.length === 0 && <NotContent type={"투두"} />}
+	{login && todoList?.length > 0 && <View style={defaultStyle.wrap}>
 		{loading && <LoadingOverlay />}
 		<View style={{ paddingHorizontal: 24, flex: 1 }}>
 			<FlatList style={{ flex: 1 }}
@@ -77,5 +95,5 @@ export default function TodoEndScreen({ navigation, route }) {
 			/>
 			<CustomText style={{ fontSize: 12, textAlign: 'center' }} weight={300}>Todo를 탭 해서 삭제하세요!</CustomText>
 		</View>
-	</View>)
+	</View>}</>)
 }

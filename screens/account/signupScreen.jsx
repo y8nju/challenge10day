@@ -42,7 +42,7 @@ export default function SignupScreen({ navigation }) {
 				text: '확인'
 			}])
 
-		} else if (userId.length<=4) {
+		} else if (userId.length<4) {
 			Alert.alert('작심 10일', '아이디는 4자 이상이에요', [{
 				text: '확인'
 			}])

@@ -9,8 +9,10 @@ import CustomText from "../../components/customText";
 import HeaderRightButton from "../../components/headerRightButton";
 import CustomButton from "../../components/customButton";
 import TodoItem from "../../components/todoItem";
-import { addtodo, getcompletedtodo, updatetodo } from "../../util/todoAPI";
+import { addtodo, completedtodo, getcompletedtodo, updatetodo } from "../../util/todoAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NotLogin from "../../components/notLogin";
+import NotContent from "../../components/notContentComponent ";
 
 const dumi = [
 	// test 를 위한 더미 데이터!
@@ -26,6 +28,19 @@ export default function TodoScreen({ navigation, route }) {
 	const [todoList, setTodoList] = useState({})
 	const [toto, setTodo] = useState('')
 	const focused = useIsFocused();
+	const [login,setLogin] = useState(false);
+
+	useEffect(() => {
+		AsyncStorage.getItem("authentication").then((data) => {
+			const token = JSON.parse(data)
+			if (token == null) {
+				setLogin(false)
+			} else {
+				setLogin(true)
+			} 
+		})
+	}, [])
+
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight: () => <HeaderRightButton style={{ marginRight: 16 }} onPress={() => setAddModalVisible(true)}>추가</HeaderRightButton>
@@ -36,6 +51,7 @@ export default function TodoScreen({ navigation, route }) {
 				return;
 			}
 			const falsetodo = await getcompletedtodo(false);
+			console.log("falsetodo",falsetodo);
 			setTodoList(falsetodo);
 		}();
 
@@ -56,6 +72,7 @@ export default function TodoScreen({ navigation, route }) {
 		setLoading(true);
 		!async function () {
 			try {
+				if(toto.trim().length>0){
 				const response = await addtodo(toto)
 				if (response.type) {
 					navigation.navigate('todoIng', { status: 'add' });
@@ -65,6 +82,9 @@ export default function TodoScreen({ navigation, route }) {
 					}();
 					setAddModalVisible(false)
 				}
+			} else {
+				Alert.alert("추가","공백이 아닌 단어를 하나라도 입력해주세요!")
+			}
 			} catch (e) {
 				console.log(e);
 			}
@@ -91,19 +111,30 @@ export default function TodoScreen({ navigation, route }) {
 		}
 
 	}
+	const completedHandle = async (id) => {
+		let response = await completedtodo(id,true)
+		if(response.type===true){
+			const falsetodo = await getcompletedtodo(false);
+			setTodoList(falsetodo);
+		}
+		return response
+	}
+	
 
 
-	return (<View style={defaultStyle.wrap}>
+	return (<>{!login && <NotLogin />}
+	{login &&<View style={defaultStyle.wrap}>
 		{loading && <LoadingOverlay />}
-		<View style={{ paddingHorizontal: 24, flex: 1 }}>
+		{todoList.data?.length === 0 && <NotContent type="투두" />}
+		{todoList.data?.length > 0 && <View style={{ paddingHorizontal: 24, flex: 1 }}>
 			{/* <TodoItem todoPress={todoAdjustmentHandle} /> */}
 			<FlatList style={{ flex: 1 }}
 				data={todoList.data}
 				keyExtractor={({ _id }) => _id}
-				renderItem={({ item }) => <TodoItem todoPress={() => todoAdjustmentHandle(item._id, item.todoText)} data={item} />}
+				renderItem={({ item }) => <TodoItem completedPress={()=>{return completedHandle(item._id)}} todoPress={() => todoAdjustmentHandle(item._id, item.todoText)} data={item} />}
 			/>
 			<CustomText style={{ fontSize: 12, textAlign: 'center', lineHeight: 18 }} weight={300}>Todo를 탭 해서 수정하세요! {'\n'} 완료한 Todo는 수정할 수 없어요!</CustomText>
-		</View>
+		</View>}
 		{/* 추가 모달 */}
 		<Modal animationType="slide" transparent={true} visible={addModalVisible}
 			onRequestClose={() => setAddModalVisible(false)}>
@@ -142,7 +173,7 @@ export default function TodoScreen({ navigation, route }) {
 				</View>
 			</View>
 		</Modal>
-	</View>)
+	</View>}</>)
 }
 
 const styles = StyleSheet.create({
