@@ -53,7 +53,6 @@ export default function TodoScreen({ navigation, route }) {
 				return;
 			}
 			const falsetodo = await getcompletedtodo(false);
-			console.log("falsetodo",falsetodo);
 			setTodoList(falsetodo);
 		}();
 

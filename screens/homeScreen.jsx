@@ -11,7 +11,7 @@ import ChallengeItem from "../components/challengeItem";
 import CustomText from "../components/customText";
 import NotLogin from "../components/notLogin";
 import IosToast from "../components/iosToast";
-
+import NotContent from "../components/notContentComponent ";
 
 export default function HomeScreen({ navigation, route }) {
 	const [loading, setLoading] = useState(false);
@@ -27,31 +27,31 @@ export default function HomeScreen({ navigation, route }) {
 				case 'signup':
 					{
 						Platform.OS === 'ios' ? IosToast('만나서 반가워요') :
-						ToastAndroid.show("만나서 반가워요", ToastAndroid.SHORT);
+							ToastAndroid.show("만나서 반가워요", ToastAndroid.SHORT);
 					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'login':
 					{
 						Platform.OS === 'ios' ? IosToast('어서오세요') :
-						ToastAndroid.show("어서오세요", ToastAndroid.SHORT);
+							ToastAndroid.show("어서오세요", ToastAndroid.SHORT);
 					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'add':
 					{
 						Platform.OS === 'ios' ? IosToast('새로운 습관을 시작했어요') :
-						ToastAndroid.show("새로운 습관을 시작했어요", ToastAndroid.SHORT);
+							ToastAndroid.show("새로운 습관을 시작했어요", ToastAndroid.SHORT);
 					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'deleted':
 					{
 						Platform.OS === 'ios' ? IosToast('습관을 지웠어요') :
-						ToastAndroid.show("습관을 지웠어요", ToastAndroid.SHORT);
+							ToastAndroid.show("습관을 지웠어요", ToastAndroid.SHORT);
 					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'change':
 					{
 						Platform.OS === 'ios' ? IosToast('습관을 수정했어요') :
-						ToastAndroid.show("습관을 수정했어요", ToastAndroid.SHORT)
+							ToastAndroid.show("습관을 수정했어요", ToastAndroid.SHORT)
 					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 			}
@@ -71,16 +71,17 @@ export default function HomeScreen({ navigation, route }) {
 	}, [])
 
 
-	useEffect(()=>{
+	useEffect(() => {
 		!async function () {
-			const response = await readchallenge(challengetype)
-			console.log(response);
-			if(response.type === true ){
-				setChallengeList(response.result)
+			if (login) {
+				const response = await readchallenge(challengetype)
+				if (response.type === true) {
+					setChallengeList(response.result)
+				}
 			}
-		}(); 
+		}();
 
-	},[challengetype,focused])
+	}, [challengetype, focused,login])
 
 	return (<>{!login && <NotLogin />}
 		{login && <View style={defaultStyle.wrap}>
@@ -107,7 +108,8 @@ export default function HomeScreen({ navigation, route }) {
 						<CustomText style={[challengetype == 'success' ? { color: '#fff' } : { color: '#8e8e8f' }]}>완료</CustomText>
 					</Pressable>
 				</View>
-				{challengeList && <FlatList style={{ flex: 1 }} data={challengeList}
+				{challengeList.length==0 && <NotContent type="챌린저스" />}
+				{challengeList.length>0 && <FlatList style={{ flex: 1 }} data={challengeList}
 					keyExtractor={({ _id }) => _id}
 					renderItem={({ item }) => <ChallengeItem data={item} />}
 				/>}

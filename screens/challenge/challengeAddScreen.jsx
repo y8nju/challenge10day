@@ -11,7 +11,6 @@ import LoadingOverlay from "../../components/loadingOverlay";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import CustomButton from "../../components/customButton";
 import { addchallenge } from "../../util/challengeAPI";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ChallengeAddScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);
