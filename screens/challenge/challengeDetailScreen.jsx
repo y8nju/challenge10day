@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Keyboard, TouchableWithoutFeedback, View, FlatList, StyleSheet, Pressable, Modal, Button, TextInput, Image, Dimensions, ImageBackground, Alert } from "react-native";
+import { Keyboard, TouchableWithoutFeedback, View, FlatList, StyleSheet, Pressable, Modal, Button, TextInput, Image, Dimensions, ImageBackground, Alert, KeyboardAvoidingView } from "react-native";
 import { format } from "date-fns";
 import ko from "date-fns/esm/locale/ko/index.js";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -136,7 +136,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 			{loading && <LoadingOverlay />}
 			<View style={{ flex: 1, paddingHorizontal: 26 }}>
 				<View style={{ marginBottom: 20, alignItems: 'center' }}>
-					<CustomText style={{ fontSize: 20, color: '#fb5438' }} weight={700}>{data.title}</CustomText>
+					<CustomText style={{ fontSize: 20, color: '#fb5438' }} weight={500}>{data.title}</CustomText>
 					<CustomText style={{ color: '#8e8e8f', marginTop: 8 }}>{format(new Date(data.createdAt), 'P', { locale: ko })} ~</CustomText>
 				</View>
 				<View>
@@ -154,44 +154,46 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 			</View>
 			<Modal animationType="slide" transparent={true} visible={addModalVisible}
 				onRequestClose={() => setAddModalVisible(false)}>
-				<View style={styles.modalArea}>
-					<Pressable style={styles.touchArea} onPress={() => setAddModalVisible(false)}></Pressable>
-					<View style={styles.modalContent}>
-						<View style={styles.modalHeader}>
-							<Pressable style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={() => setAddModalVisible(false)}>
-								<CustomText>취소</CustomText>
-							</Pressable>
-							<CustomText weight={700} style={{ fontSize: 20 }}>인증하기</CustomText>
-							<Pressable style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={confirmHandle}>
-								<CustomText>인증</CustomText>
-							</Pressable>
-						</View>
-						<View style={{ padding: 40, paddingTop: 0 }}>
-							<View style={{ marginBottom: 10 }}>
-								<FlatList data={Emoji}
-									keyExtractor={({ id }) => id}
-									renderItem={({ item }) => <EmojiItem data={item} />}
-									horizontal
-									showsHorizontalScrollIndicator={false}
-									scrollEnabled={false}
-								/>
-							</View>
-							<View style={{ flexDirection: 'row' }}>
-								{/* 카메라 */}
-								<Pressable style={styles.cameraArea}>
-									<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-										<MaterialCommunityIcons name="camera-enhance" size={34} color="#bdbdbd" />
-									</View>
+				<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+					<View style={styles.modalArea}>
+						<Pressable style={styles.touchArea} onPress={() => setAddModalVisible(false)}></Pressable>
+						<View style={styles.modalContent}>
+							<View style={styles.modalHeader}>
+								<Pressable style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={() => setAddModalVisible(false)}>
+									<CustomText>취소</CustomText>
 								</Pressable>
-								<TextInput style={[defaultStyle.textArea, { flex: 1, height: 110, backgroundColor: '#fff', marginLeft: 10 }]}
-									value={content}
-									multiline
-									onChangeText={(txt) => setContent(txt)}
-									placeholder="인증기록을 남겨보세요" />
+								<CustomText weight={500} style={{ fontSize: 20 }}>인증하기</CustomText>
+								<Pressable style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={confirmHandle}>
+									<CustomText>인증</CustomText>
+								</Pressable>
+							</View>
+							<View style={{ padding: 40, paddingTop: 0 }}>
+								<View style={{ marginBottom: 10 }}>
+									<FlatList data={Emoji}
+										keyExtractor={({ id }) => id}
+										renderItem={({ item }) => <EmojiItem data={item} />}
+										horizontal
+										showsHorizontalScrollIndicator={false}
+										scrollEnabled={false}
+									/>
+								</View>
+								<View style={{ flexDirection: 'row' }}>
+									{/* 카메라 */}
+									<Pressable style={styles.cameraArea}>
+										<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+											<MaterialCommunityIcons name="camera-enhance" size={34} color="#bdbdbd" />
+										</View>
+									</Pressable>
+									<TextInput style={[defaultStyle.textArea, { flex: 1, height: 110, backgroundColor: '#fff', marginLeft: 10 }]}
+										value={content}
+										multiline
+										onChangeText={(txt) => setContent(txt)}
+										placeholder="인증기록을 남겨보세요" />
+								</View>
 							</View>
 						</View>
 					</View>
-				</View>
+				</KeyboardAvoidingView>
 			</Modal>
 		</View>
 		{/* 인증 모달 */}

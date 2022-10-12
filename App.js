@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import { useFonts } from 'expo-font';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -154,53 +155,55 @@ export default function App() {
 		return <></>
 	}
 	return (<>
-		<StatusBar style="auto" />
-		<AppContextProvider>
-		<NavigationContainer>
-			<Tab.Navigator screenOptions={{
-				tabBarLabelStyle: { fontFamily: 'Neo-Bd', paddingBottom: 5 },
-				tabBarActiveTintColor: "#fb5438",
-				tabBarStyle: { backgroundColor: '#f2f2f2' }
-			}}>
-				{/* challenge */}
-				<Tab.Screen name="HomeStack" component={HomeStackNavigator}
-					options={{
-						title: '챌린지',
-						headerShown: false, unmountOnBlur: true,
-						tabBarIcon: ({ focused, color, }) => (
-							<MaterialCommunityIcons name={focused ? 'card-bulleted' : 'card-bulleted-outline'} color={color} size={26} />
-						)
-					}} />
-				{/* feeed */}
-				<Tab.Screen name="FeedStack" component={FeedStackNavigator}
-					options={{
-						title: '피드',
-						headerShown: false, unmountOnBlur: true,
-						tabBarIcon: ({ focused, color, }) => (
-							<MaterialCommunityIcons name={focused ? 'image-multiple' : 'image-multiple-outline'} color={color} size={focused ? 24 : 22} />
-						)
-					}} />
-				{/* todo < drawer */}
-				<Tab.Screen name="TodoDrawer" component={TodoDrawerNavigator}
-					options={{
-						title: '투두',
-						headerShown: false, unmountOnBlur: true,
-						tabBarIcon: ({ focused, color, }) => (
-							<MaterialCommunityIcons name={focused ? 'check-circle' : 'check-circle-outline'} color={color} size={24} />
-						)
-					}} />
-				{/* user */}
-				<Tab.Screen name="UserStack" component={AccountStackNavigator}
-					options={{
-						title: '마이 페이지',
-						headerShown: false, unmountOnBlur: true,
-						tabBarIcon: ({ focused, color, }) => (
-							<MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} />
-						)
-					}} />
-			</Tab.Navigator>
-		</NavigationContainer>
-		</AppContextProvider>
+		<RootSiblingParent> 
+			<StatusBar style="auto" />
+			<AppContextProvider>
+				<NavigationContainer>
+					<Tab.Navigator screenOptions={{
+						tabBarLabelStyle: { fontFamily: 'Neo-Bd', paddingBottom: 5 },
+						tabBarActiveTintColor: "#fb5438",
+						tabBarStyle: { backgroundColor: '#f2f2f2' }
+					}}>
+						{/* challenge */}
+						<Tab.Screen name="HomeStack" component={HomeStackNavigator}
+							options={{
+								title: '챌린지',
+								headerShown: false, unmountOnBlur: true,
+								tabBarIcon: ({ focused, color, }) => (
+									<MaterialCommunityIcons name={focused ? 'card-bulleted' : 'card-bulleted-outline'} color={color} size={26} />
+								)
+							}} />
+						{/* feeed */}
+						<Tab.Screen name="FeedStack" component={FeedStackNavigator}
+							options={{
+								title: '피드',
+								headerShown: false, unmountOnBlur: true,
+								tabBarIcon: ({ focused, color, }) => (
+									<MaterialCommunityIcons name={focused ? 'image-multiple' : 'image-multiple-outline'} color={color} size={focused ? 24 : 22} />
+								)
+							}} />
+						{/* todo < drawer */}
+						<Tab.Screen name="TodoDrawer" component={TodoDrawerNavigator}
+							options={{
+								title: '투두',
+								headerShown: false, unmountOnBlur: true,
+								tabBarIcon: ({ focused, color, }) => (
+									<MaterialCommunityIcons name={focused ? 'check-circle' : 'check-circle-outline'} color={color} size={24} />
+								)
+							}} />
+						{/* user */}
+						<Tab.Screen name="UserStack" component={AccountStackNavigator}
+							options={{
+								title: '마이 페이지',
+								headerShown: false, unmountOnBlur: true,
+								tabBarIcon: ({ focused, color, }) => (
+									<MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} />
+								)
+							}} />
+					</Tab.Navigator>
+				</NavigationContainer>
+			</AppContextProvider>
+  		</RootSiblingParent>
 	</>
 	);
 }

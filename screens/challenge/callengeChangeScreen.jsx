@@ -69,7 +69,7 @@ export default function ChallengeChangeScreen({navigation, route}) {
 						placeholder="새로운 습관의 이름을 입력해주세요" />
 				</View>
 				<View style={{marginTop: 30}}>
-					<View style={styles.row}>
+				<View style={[styles.row, {paddingRight: 14}]}>
 						<CustomText style={{flex: 1, color: '#8e8e8f'}}>알림설정</CustomText>
 						<Switch
 							trackColor={{ false: '#ddd', true: '#e1d3c1' }}
@@ -79,7 +79,7 @@ export default function ChallengeChangeScreen({navigation, route}) {
 							value={isEnabled}
 						/>
 					</View>
-					{isEnabled && <View style={[styles.row, {paddingVertical: 20, paddingRight: 20}]}>
+					{isEnabled && <View style={styles.row}>
 						<CustomText style={{flex: 1, color: '#8e8e8f'}}>시간</CustomText>
 						<Pressable onPress={showTimePicker}>
                             {/* 설정해놓은 알림 시간 있으면 보여주기 */}
@@ -125,13 +125,12 @@ const styles = StyleSheet.create({
 		paddingVertical: 20
 	},
 	row: {
+		height: 50,
 		flexDirection: 'row', 
 		alignItems: 'center',
 		borderRadius: 8,
 		backgroundColor: '#fff',
 		marginBottom: 16,
-		paddingVertical: 4,
-		paddingLeft: 20,
-		paddingRight: 14
+		paddingHorizontal: 20,
 	}
 })

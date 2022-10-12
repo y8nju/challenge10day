@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, ToastAndroid, View } from "react-native"
 import { CommonActions, useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { readchallenge } from "../util/challengeAPI";
 
 import defaultStyle from "./style/defaultStyle"
 import ChallengeItem from "../components/challengeItem";
 import CustomText from "../components/customText";
 import NotLogin from "../components/notLogin";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { readchallenge } from "../util/challengeAPI";
+import IosToast from "../components/iosToast";
 
 
 export default function HomeScreen({ navigation, route }) {
@@ -22,20 +24,35 @@ export default function HomeScreen({ navigation, route }) {
 		// setRefresh(true);
 		if (route.params) {
 			switch (route.params.status) {
+				case 'signup':
+					{
+						Platform.OS === 'ios' ? IosToast('만나서 반가워요') :
+						ToastAndroid.show("만나서 반가워요", ToastAndroid.SHORT);
+					}
+					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'login':
-					ToastAndroid.show("어서오세요", ToastAndroid.SHORT);
+					{
+						Platform.OS === 'ios' ? IosToast('어서오세요') :
+						ToastAndroid.show("어서오세요", ToastAndroid.SHORT);
+					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'add':
-					ToastAndroid.show("새로운 습관을 시작했어요", ToastAndroid.SHORT);
+					{
+						Platform.OS === 'ios' ? IosToast('새로운 습관을 시작했어요') :
+						ToastAndroid.show("새로운 습관을 시작했어요", ToastAndroid.SHORT);
+					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'deleted':
-					ToastAndroid.show("습관을 지웠어요", ToastAndroid.SHORT);
+					{
+						Platform.OS === 'ios' ? IosToast('습관을 지웠어요') :
+						ToastAndroid.show("습관을 지웠어요", ToastAndroid.SHORT);
+					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'change':
-					ToastAndroid.show("습관을 수정했어요", ToastAndroid.SHORT);
-					return navigation.dispatch(CommonActions.setParams({ status: '' }));
-				case 'signUp':
-					ToastAndroid.show("만나서 반가워요", ToastAndroid.SHORT);
+					{
+						Platform.OS === 'ios' ? IosToast('습관을 수정했어요') :
+						ToastAndroid.show("습관을 수정했어요", ToastAndroid.SHORT)
+					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 			}
 		}
@@ -71,7 +88,7 @@ export default function HomeScreen({ navigation, route }) {
 			<View style={{ flex: 1, paddingHorizontal: 26, paddingTop: 16 }}>
 				<View style={{ marginBottom: 20 }}>
 					<View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 'auto' }}>
-						<CustomText style={{ fontSize: 20, textAlign: 'center', marginBottom: 4 }} weight={700}>오늘</CustomText>
+						<CustomText style={{ fontSize: 20, textAlign: 'center', marginBottom: 4 }} weight={500}>오늘</CustomText>
 						<CustomText style={{ fontSize: 12, textAlign: 'center' }}>{new Date().getMonth() + 1}월 {new Date().getDate()}일</CustomText>
 					</View>
 				</View>

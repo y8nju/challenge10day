@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { FlatList, Modal, Pressable, StyleSheet, View, TextInput, ToastAndroid, Alert } from "react-native";
 import { CommonActions, useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { addtodo, completedtodo, getcompletedtodo, updatetodo } from "../../util/todoAPI";
 
 import defaultStyle from "../style/defaultStyle";
 
@@ -9,10 +12,9 @@ import CustomText from "../../components/customText";
 import HeaderRightButton from "../../components/headerRightButton";
 import CustomButton from "../../components/customButton";
 import TodoItem from "../../components/todoItem";
-import { addtodo, completedtodo, getcompletedtodo, updatetodo } from "../../util/todoAPI";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import NotLogin from "../../components/notLogin";
 import NotContent from "../../components/notContentComponent ";
+import IosToast from "../../components/iosToast";
 
 const dumi = [
 	// test 를 위한 더미 데이터!
@@ -61,7 +63,10 @@ export default function TodoScreen({ navigation, route }) {
 		if (route.params) {
 			switch (route.params.status) {
 				case 'add':
-					ToastAndroid.show("새로운 투투가 추가됐어요", ToastAndroid.SHORT);
+					{
+						Platform.OS === 'ios' ? IosToast('새로운 투투가 추가됐어요') :
+						ToastAndroid.show("새로운 투투가 추가됐어요", ToastAndroid.SHORT);
+					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 			}
 		}
@@ -102,6 +107,7 @@ export default function TodoScreen({ navigation, route }) {
 		const response = await updatetodo(checkedTodoText.id, checkedTodoText.todoText)
 		if (response.type) {
 			setUpdateModalVisible(false);
+			navigation.navigate('todoIng', { status: 'update' });
 			!async function () {
 				const falsetodo = await getcompletedtodo(false);
 				setTodoList(falsetodo);

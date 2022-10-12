@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dimensions, Image, ImageBackground, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { Dimensions, Image, ImageBackground, Keyboard, KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { useIsFocused} from "@react-navigation/native";
 
 import Emoji from "../../util/emoji";
@@ -61,29 +61,31 @@ export default function FeedUpdateScreen({navigation, route}) {
 			}
 		])
 	}
-	return(<TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
-		<KeyboardAvoidingView behavior={"scroll"} style={{backgroundColor: '#f2f2f2'}}>
-			{loading && <LoadingOverlay />}
-			<ScrollView>
-				<View style={styles.imageArea}>
-					<ImageBackground source={data.imgURI} resizeMode="cover" style={{flex: 1}}/>
-				</View>
-				<View style={{padding: 26}}>
-					<View style={styles.row}>
-						<Image source={emoji} resizeMode="cover" style={{width: 44, height: 44, marginRight: 10}} />
-						<CustomText style={{fontSize: 20}}>{date.getMonth()+1}월 {date.getDate()}일</CustomText>
-					</View>
-					{/* <CustomText style={{textAlign: 'justify', fontSize: 16, lineHeight: 24}} weight={300}> */}
-					<TextInput style={defaultStyle.textArea}
-						onChangeText={(txt) => setContent(txt)}
-						value={content}
-						multiline
-						numberOfLines={6} />
-					<CustomText style={{fontSize: 12, textAlign: 'center', marginTop: 20}} weight={300}>내가 작성한 메세지만 수정할 수 있어요</CustomText>
-				</View>
-			</ScrollView>
+	return(<SafeAreaView>
+		<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "position" : 'scroll'} style={{ backgroundColor: '#f2f2f2' }}>
+			<TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
+				<>{loading && <LoadingOverlay />}
+					<ScrollView style={{ marginBottom: 36 }}>
+						<View style={styles.imageArea}>
+							<ImageBackground source={data.imgURI} resizeMode="cover" style={{ flex: 1 }} />
+						</View>
+						<View style={{ padding: 26 }}>
+							<View style={styles.row}>
+								<Image source={emoji} resizeMode="cover" style={{ width: 44, height: 44, marginRight: 10 }} />
+								<CustomText style={{ fontSize: 20 }}>{date.getMonth() + 1}월 {date.getDate()}일</CustomText>
+							</View>
+							{/* <CustomText style={{textAlign: 'justify', fontSize: 16, lineHeight: 24}} weight={300}> */}
+							<TextInput style={defaultStyle.textArea}
+								onChangeText={(txt) => setContent(txt)}
+								value={content}
+								multiline
+								numberOfLines={6} />
+							<CustomText style={{ fontSize: 12, textAlign: 'center', marginTop: 20 }} weight={300}>내가 작성한 메세지만 수정할 수 있어요</CustomText>
+						</View>
+					</ScrollView></>
+			</TouchableWithoutFeedback>
 		</KeyboardAvoidingView>
-	</TouchableWithoutFeedback>)
+	</SafeAreaView>)
 }
 const styles = StyleSheet.create({
 	imageArea: {

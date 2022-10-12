@@ -25,7 +25,7 @@ export default function ChallengeItem({data}) {
 		</View>
 		<View style={{marginLeft: 20, flex: 1}}>
 			<Text style={{fontSize: 18, fontFamily: 'Neo-Bd' }} numberOfLines={1}>{data.title}</Text>
-			<CustomText style={{color: '#8e8e8f', marginTop: 10}}>{format(new Date(data.createdAt), 'P', {locale: ko})} ~ {format(new Date(data.createdAt).setDate(new Date(data.createdAt).getDate()+9), 'P', {locale: ko})} </CustomText>
+			<CustomText style={{color: '#8e8e8f', marginTop: 10, fontSize: 12}}>{format(new Date(data.createdAt), 'P', {locale: ko})} ~ {format(new Date(data.createdAt).setDate(new Date(data.createdAt).getDate()+9), 'P', {locale: ko})} </CustomText>
 		</View>
 		<Pressable onPress={() => navigation.navigate('challengeChange', {data: data})} style={{marginRight: -8, padding: 8}}>
 			<MaterialCommunityIcons name="chevron-right-circle" size={24} color="#ffba5d" />
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 14,
 		backgroundColor: '#fff',
+		marginBottom: 10,
 		paddingHorizontal: 20,
 		paddingVertical: 24
 	},

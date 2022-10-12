@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { Alert, FlatList, ToastAndroid, View } from "react-native";
 import { CommonActions, useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { deletetodo, getcompletedtodo } from "../../util/todoAPI";
 
 import defaultStyle from "../style/defaultStyle";
 
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
 import TodoItem from "../../components/todoItem";
-import { deletetodo, getcompletedtodo } from "../../util/todoAPI";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import NotLogin from "../../components/notLogin";
 import NotContent from "../../components/notContentComponent ";
+import IosToast from "../../components/iosToast";
 
 export default function TodoEndScreen({ navigation, route }) {
 	const [loading, setLoading] = useState(false);
@@ -47,7 +49,10 @@ export default function TodoEndScreen({ navigation, route }) {
 		if (route.params) {
 			switch (route.params.status) {
 				case 'delete':
-					ToastAndroid.show("Todo를 삭제했어요", ToastAndroid.SHORT);
+					{
+						Platform.OS === 'ios' ? IosToast('Todo를 삭제했어요') :
+						ToastAndroid.show("Todo를 삭제했어요", ToastAndroid.SHORT);
+					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 			}
 		}

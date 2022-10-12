@@ -5,7 +5,7 @@ export default function CustomButton({onPress, title, color, style, disabled}) {
 	return (<TouchableHighlight onPress={disabled ? null : onPress} 
 		style={[{ overflow: 'hidden', borderRadius: 4}, style]}>
 		<View style={[styles.button, color && {backgroundColor: color}, disabled && {backgroundColor: '#dfdfdf'}]}>
-			<CustomText style={[styles.text, disabled && { color: '#a1a1a1' }]} weight={700} >{title}</CustomText>
+			<CustomText style={[styles.text, disabled && { color: '#a1a1a1' }]} weight={500} >{title}</CustomText>
 		</View>
 	</TouchableHighlight>)
 }

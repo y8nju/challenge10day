@@ -64,7 +64,7 @@ export default function WithdrawScreen({ navigation }) {
 			<Image source={require('../../assets/images/textLogo.png')} resizeMode="contain" style={{ width: 180, height: 80 }} />
 		</View>
 		<View style={{ paddingHorizontal: 24 }}>
-			<CustomText style={{ fontSize: 18 }} weight={600}>
+			<CustomText style={{ fontSize: 18 }} weight={500}>
 				서비스 탈퇴 전{'\n'}아래 주의 사항을 꼭 확인해주세요.
 			</CustomText>
 			<View style={{ marginTop: 24 }}>

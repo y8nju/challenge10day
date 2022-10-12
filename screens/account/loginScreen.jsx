@@ -1,15 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { Alert, Image, Keyboard, Pressable, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { CommonActions, useIsFocused} from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { AppContext } from "../../context/app-context";
+import { sendLoginReq } from "../../util/accountAPI";
 
 import defaultStyle from "../style/defaultStyle";
 
 import CustomText from "../../components/customText";
 import CustomButton from "../../components/customButton";
-import { AppContext } from "../../context/app-context";
-import { sendLoginReq } from "../../util/accountAPI";
 import LoadingOverlay from "../../components/loadingOverlay";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import IosToast from "../../components/iosToast";
 
 export default function LoginScreen({ navigation, route }) {
 	const [loading, setLoading] = useState(false);
@@ -21,14 +23,22 @@ export default function LoginScreen({ navigation, route }) {
 		if(route.params) {
 			switch(route.params.staus) {
 				case 'signup':
-					ToastAndroid.show("만나서 반가워요. 로그인 해주실거죠?", ToastAndroid.SHORT);
+					{
+						Platform.OS === 'ios' ? IosToast('만나서 반가워요') :
+						ToastAndroid.show("만나서 반가워요", ToastAndroid.SHORT);
+					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'logout':
-					Alert.alert('aa', 'aaaa')
-					ToastAndroid.show("다음에 또 만나요", ToastAndroid.SHORT);
+					{
+						Platform.OS === 'ios' ? IosToast('다음에 또 만나요') :
+						ToastAndroid.show("다음에 또 만나요", ToastAndroid.SHORT);
+					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 				case 'passChange':
-					ToastAndroid.show("비밀번호가 변경되어 로그아웃 되었어요", ToastAndroid.SHORT);
+					{
+						Platform.OS === 'ios' ? IosToast('비밀번호가 변경되어 로그아웃 되었어요') :
+						ToastAndroid.show("비밀번호가 변경되어 로그아웃 되었어요", ToastAndroid.SHORT);
+					}
 					return navigation.dispatch(CommonActions.setParams({ status: '' }));
 			}
 		}
