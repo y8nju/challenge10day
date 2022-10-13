@@ -1,15 +1,19 @@
-import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useContext, useState } from "react";
 import { Alert, Image, StyleSheet, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import CustomButton from "../../components/customButton";
 
 import CustomText from "../../components/customText";
+import LoadingOverlay from "../../components/loadingOverlay";
+import { AppContext } from "../../context/app-context";
+import { deleteid } from "../../util/accountAPI";
 
 export default function WithdrawScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(true);
 	const [chkColor, setChkCOlor] = useState('#bbb');
-
+	const ctx = useContext(AppContext);
 	const checkHandle = () => {
 		setIsDisabled(!isDisabled);
 		if (isDisabled) {
@@ -29,6 +33,18 @@ export default function WithdrawScreen({ navigation }) {
 					setLoading(true);
 					!async function () {
 						try {
+							const data = await AsyncStorage.getItem("authentication")
+							const datad = JSON.parse(data);
+							const response = await deleteid(datad.data.userId);
+							if (response.result) {
+								ctx.dispatch({ type: "logout" });
+								// params 수정 필요
+								navigation.navigate("UserStack", { screen: 'login', params: { status: 'passChange' } });
+							} else {
+								Alert.alert('작심10일', '탈퇴가 정상적으로 이루어지지 않았어요', [{
+									text: '확인'
+								}])
+							}
 							// navigation.navigate("HomeStack", { screen: 'withdrawSuccess', params: { status: 'success' } });
 						} catch (e) {
 							Alert.alert('작심10일', '탈퇴가 정상적으로 이루어지지 않았어요')
@@ -44,11 +60,11 @@ export default function WithdrawScreen({ navigation }) {
 
 	return (<View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
 		{loading && <LoadingOverlay />}
-		<View style={{alignItems:'center', paddingVertical: 20}}>
-			<Image source={require('../../assets/images/textLogo.png')} resizeMode="contain" style={{width: 180, height: 80}}  />
+		<View style={{ alignItems: 'center', paddingVertical: 20 }}>
+			<Image source={require('../../assets/images/textLogo.png')} resizeMode="contain" style={{ width: 180, height: 80 }} />
 		</View>
 		<View style={{ paddingHorizontal: 24 }}>
-			<CustomText style={{ fontSize: 18 }} weight={600}>
+			<CustomText style={{ fontSize: 18 }} weight={500}>
 				서비스 탈퇴 전{'\n'}아래 주의 사항을 꼭 확인해주세요.
 			</CustomText>
 			<View style={{ marginTop: 24 }}>
@@ -75,7 +91,7 @@ export default function WithdrawScreen({ navigation }) {
 					onPress={checkHandle}
 				/>
 			</View>
-			<CustomButton title={"탈퇴"} onPress={accountDeleteHandle} disabled={isDisabled} style={{borderRadius: 0}}/>
+			<CustomButton title={"탈퇴"} onPress={accountDeleteHandle} disabled={isDisabled} style={{ borderRadius: 0 }} />
 		</View>
 	</View >);
 }

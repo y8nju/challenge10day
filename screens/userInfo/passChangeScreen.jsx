@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alert, Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
 
 import defaultStyle from "../style/defaultStyle";
 
 import CustomButton from "../../components/customButton";
 import CustomText from "../../components/customText";
+import { changepassword } from "../../util/accountAPI";
+import LoadingOverlay from "../../components/loadingOverlay";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppContext } from "../../context/app-context";
 
 export default function PassChangeScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);
@@ -12,6 +16,7 @@ export default function PassChangeScreen({ navigation }) {
 	const [newPass, setNewPass] = useState('');
 	const [passchkText, setPassChkText] = useState('');
 	const [newPassChkText, setNewPassChkText] = useState('');
+	const ctx = useContext(AppContext);
 	useEffect(()=> {
 		// 기존 패스워드와 비교하여 동일하지 않으면  
 		// setPassChkText('비밀번호가 일치하지 않아요')
@@ -39,7 +44,17 @@ export default function PassChangeScreen({ navigation }) {
 						setLoading(true);
 						!async function () {
 							try {
-								navigation.navigate("UserStack", { screen: 'login', params: { status: 'passChange' } });
+								const data = await AsyncStorage.getItem("authentication")
+								const datad = JSON.parse(data);
+								const response = await changepassword(datad.data.userId,pass,newPass);
+								if(response.result){
+									ctx.dispatch({type:"logout"});
+									navigation.navigate("UserStack", { screen: 'login', params: { status: 'passChange' } });
+								} else {
+									Alert.alert('작심10일','입력하신 비밀번호가 일치하지 않았어요',[{
+										text:'확인'
+									}])
+								}
 							} catch (e) {
 								Alert.alert('작심10일', '비밀번호가 정상적으로 변경되지 않았어요', [{
 							text: '확인'
@@ -62,14 +77,16 @@ export default function PassChangeScreen({ navigation }) {
 				<TextInput style={defaultStyle.input} secureTextEntry={true}
 					onChangeText={(txt) => setPass(txt)}
 					value={pass}
-					placeholder="현재 사용 중인 비밀번호를 입력해주세요" />
+					placeholder="현재 사용 중인 비밀번호를 입력해주세요"
+					placeholderTextColor="#dfdfdf" />
 				{passchkText.length > 0 && <View style={{marginTop: 10}}>
 					<CustomText style={defaultStyle.chkTxt} >{passchkText}</CustomText>
 				</View>}
 				<TextInput style={[defaultStyle.input, {marginTop: 14}]} secureTextEntry={true}
 					onChangeText={(txt) => setNewPass(txt)}
 					value={newPass}
-					placeholder="변경할 비밀번호를 입력해주세요" />
+					placeholder="변경할 비밀번호를 입력해주세요"
+					placeholderTextColor="#dfdfdf" />
 				{newPassChkText.length > 0 && <View style={{marginTop: 10}}>
 					<CustomText style={defaultStyle.chkTxt} >{newPassChkText}</CustomText>
 				</View>}

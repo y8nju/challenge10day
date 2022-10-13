@@ -5,10 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import { useFonts } from 'expo-font';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+// Screen
 import TodoScreen from './screens/todo/todoScreen';
 import LoginScreen from './screens/account/loginScreen';
 import FeedScreen from './screens/feed/feedScreen';
@@ -24,17 +26,19 @@ import ChallengeAddScreen from './screens/challenge/challengeAddScreen';
 import ChallengeChangeScreen from './screens/challenge/callengeChangeScreen';
 import ChallengeDetailScreen from './screens/challenge/challengeDetailScreen';
 import CustomText from './components/customText';
+import { AppContext, AppContextProvider } from './context/app-context';
+import { useContext } from 'react';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 
-
 function HomeStackNavigator() {
 	return (<Stack.Navigator initialRouteName="home" screenOptions={{
 		headerStyle: { backgroundColor: "#f2f2f2" },
 		headerShadowVisible: false,
+		headerBackTitleVisible: false,
 		headerTintColor: "#504d49",
 		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
 		animation: 'slide_from_right'
@@ -53,6 +57,7 @@ function FeedStackNavigator() {
 	return (<Stack.Navigator initialRouteName="feed" screenOptions={{
 		headerStyle: { backgroundColor: "#f2f2f2" },
 		headerShadowVisible: false,
+		headerBackTitleVisible: false,
 		headerTintColor: "#504d49",
 		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
 		animation: 'slide_from_right'
@@ -88,10 +93,22 @@ function TodoDrawerNavigator() {
 			options={{ title: '완료' }} />
 	</Drawer.Navigator>)
 }
+
+function AccountStackNavigator() {
+	const ctx = useContext(AppContext)
+	return( <>
+	 {ctx.value ? <UserStackNavigator/>:<GuestStackNavigator/>}
+	 </>
+	 )
+   }
+
+
+
 function UserStackNavigator() {
 	return (<Stack.Navigator initialRouteName="userInfo" screenOptions={{
 		headerStyle: { backgroundColor: "#f2f2f2" },
 		headerShadowVisible: false,
+		headerBackTitleVisible: false,
 		headerTintColor: "#504d49",
 		headerTitleAlign: "center",
 		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
@@ -110,6 +127,7 @@ function GuestStackNavigator() {
 		initialRouteName="login" screenOptions={{
 			headerStyle: { backgroundColor: "#f2f2f2" },
 			headerShadowVisible: false,
+			headerBackTitleVisible: false,
 			headerTintColor: "#504d49",
 			headerTitleAlign: "center",
 			headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
@@ -137,51 +155,55 @@ export default function App() {
 		return <></>
 	}
 	return (<>
-		<StatusBar style="auto" />
-		<NavigationContainer>
-			<Tab.Navigator screenOptions={{
-				tabBarLabelStyle: { fontFamily: 'Neo-Bd', paddingBottom: 5 },
-				tabBarActiveTintColor: "#fb5438",
-				tabBarStyle: { backgroundColor: '#f2f2f2' }
-			}}>
-				{/* challenge */}
-				<Tab.Screen name="HomeStack" component={HomeStackNavigator}
-					options={{
-						title: '챌린지',
-						headerShown: false, unmountOnBlur: true,
-						tabBarIcon: ({ focused, color, }) => (
-							<MaterialCommunityIcons name={focused ? 'card-bulleted' : 'card-bulleted-outline'} color={color} size={26} />
-						)
-					}} />
-				{/* feeed */}
-				<Tab.Screen name="FeedStack" component={FeedStackNavigator}
-					options={{
-						title: '피드',
-						headerShown: false, unmountOnBlur: true,
-						tabBarIcon: ({ focused, color, }) => (
-							<MaterialCommunityIcons name={focused ? 'image-multiple' : 'image-multiple-outline'} color={color} size={focused ? 24 : 22} />
-						)
-					}} />
-				{/* todo < drawer */}
-				<Tab.Screen name="TodoDrawer" component={TodoDrawerNavigator}
-					options={{
-						title: '투두',
-						headerShown: false, unmountOnBlur: true,
-						tabBarIcon: ({ focused, color, }) => (
-							<MaterialCommunityIcons name={focused ? 'check-circle' : 'check-circle-outline'} color={color} size={24} />
-						)
-					}} />
-				{/* user */}
-				<Tab.Screen name="UserStack" component={UserStackNavigator}
-					options={{
-						title: '마이 페이지',
-						headerShown: false, unmountOnBlur: true,
-						tabBarIcon: ({ focused, color, }) => (
-							<MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} />
-						)
-					}} />
-			</Tab.Navigator>
-		</NavigationContainer>
+		<RootSiblingParent> 
+			<StatusBar style="auto" />
+			<AppContextProvider>
+				<NavigationContainer>
+					<Tab.Navigator screenOptions={{
+						tabBarLabelStyle: { fontFamily: 'Neo-Bd', paddingBottom: 5 },
+						tabBarActiveTintColor: "#fb5438",
+						tabBarStyle: { backgroundColor: '#f2f2f2' }
+					}}>
+						{/* challenge */}
+						<Tab.Screen name="HomeStack" component={HomeStackNavigator}
+							options={{
+								title: '챌린지',
+								headerShown: false, unmountOnBlur: true,
+								tabBarIcon: ({ focused, color, }) => (
+									<MaterialCommunityIcons name={focused ? 'card-bulleted' : 'card-bulleted-outline'} color={color} size={26} />
+								)
+							}} />
+						{/* feeed */}
+						<Tab.Screen name="FeedStack" component={FeedStackNavigator}
+							options={{
+								title: '피드',
+								headerShown: false, unmountOnBlur: true,
+								tabBarIcon: ({ focused, color, }) => (
+									<MaterialCommunityIcons name={focused ? 'image-multiple' : 'image-multiple-outline'} color={color} size={focused ? 24 : 22} />
+								)
+							}} />
+						{/* todo < drawer */}
+						<Tab.Screen name="TodoDrawer" component={TodoDrawerNavigator}
+							options={{
+								title: '투두',
+								headerShown: false, unmountOnBlur: true,
+								tabBarIcon: ({ focused, color, }) => (
+									<MaterialCommunityIcons name={focused ? 'check-circle' : 'check-circle-outline'} color={color} size={24} />
+								)
+							}} />
+						{/* user */}
+						<Tab.Screen name="UserStack" component={AccountStackNavigator}
+							options={{
+								title: '마이 페이지',
+								headerShown: false, unmountOnBlur: true,
+								tabBarIcon: ({ focused, color, }) => (
+									<MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={24} />
+								)
+							}} />
+					</Tab.Navigator>
+				</NavigationContainer>
+			</AppContextProvider>
+  		</RootSiblingParent>
 	</>
 	);
 }

@@ -12,7 +12,7 @@ const windowWidth = Dimensions.get('window').width;
 export default function FeedDetailScreen({navigation, route}) {
 	const {data} = route.params;
 	const focused = useIsFocused();
-	const date = new Date(data.createdAt.slice(0,10));
+	const date = new Date(data.createAt.slice(0,10));
 
 	const [emoji, setEmoji] = useState(null);
 
@@ -34,7 +34,7 @@ export default function FeedDetailScreen({navigation, route}) {
 	
 	return(<View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
 		<View style={styles.imageArea}>
-			<ImageBackground source={data.imgURI} resizeMode="cover" style={{flex: 1}}/>
+			<ImageBackground source={{uri:data.imgURI}} resizeMode="cover" style={{flex: 1}}/>
 		</View>
 		<View style={{padding: 26}}>
 			<View style={styles.row}>
@@ -42,7 +42,7 @@ export default function FeedDetailScreen({navigation, route}) {
 				<CustomText style={{fontSize: 20}}>{date.getMonth()+1}월 {date.getDate()}일</CustomText>
 			</View>
 			<CustomText style={{textAlign: 'justify', fontSize: 18, lineHeight: 24}} type={'hand'}>
-				{data.content}
+				{data.comment}
 			</CustomText>
 		</View>
 	</View>)

@@ -2,9 +2,12 @@ import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import CustomText from "../../components/customText";
+import { useContext } from "react";
+import { AppContext } from "../../context/app-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function UserInfoScreen({ navigation }) {
-
+	const ctx = useContext(AppContext);
 	// 로그아웃
 	const logoutHandle = () => {
 		Alert.alert("작심10일", "로그아웃 할까요?", [
@@ -13,9 +16,12 @@ export default function UserInfoScreen({ navigation }) {
 			}, {
 				text: '로그아웃',
 				onPress: () => {
-					navigation.navigate("UserStack", { screen: 'login', params: { status: 'logout' } });
-				}
+					ctx.dispatch({type:"logout"});
+                    AsyncStorage.removeItem("authentication").then(()=>{
+                        navigation.navigate("login");
+				})
 			}
+		}
 		])
 	}
 	// 비밀번호 변경
@@ -30,11 +36,11 @@ export default function UserInfoScreen({ navigation }) {
 	return (<View style={defaultStyle.wrap}>
 		<View style={{ paddingHorizontal: 20 }}>
 			<View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, paddingBottom: 20, marginBottom: 16 }}>
-				<CustomText style={{ fontSize: 14, textAlign: 'center' }} weight={700}>계정id</CustomText>
+				<CustomText style={{ fontSize: 14, textAlign: 'center' }} weight={500}>{ctx && ctx.value.data.userId}</CustomText>
 			</View>
 			<Pressable onPress={passChangeHandele}>
 				<View style={styles.infoItemRow}>
-					<CustomText weight={700}>비밀번호 변경</CustomText>
+					<CustomText weight={500}>비밀번호 변경</CustomText>
 					<View style={{ overflow: 'hidden', borderRadius: 8 }}>
 						<MaterialCommunityIcons name="chevron-right" size={18} color="#000" />
 					</View>
@@ -42,7 +48,7 @@ export default function UserInfoScreen({ navigation }) {
 			</Pressable>
 			<Pressable onPress={logoutHandle}>
 				<View style={styles.infoItemRow}>
-					<CustomText weight={700}>로그아웃</CustomText>
+					<CustomText weight={500}>로그아웃</CustomText>
 					<View style={{ overflow: 'hidden', borderRadius: 8 }}>
 						<MaterialCommunityIcons name="chevron-right" size={18} color="#000" />
 					</View>
@@ -50,7 +56,7 @@ export default function UserInfoScreen({ navigation }) {
 			</Pressable>
 			<Pressable onPress={accountDeleteHandle}>
 				<View style={styles.infoItemRow}>
-					<CustomText weight={700}>서비스 탈퇴</CustomText>
+					<CustomText weight={500}>서비스 탈퇴</CustomText>
 					<View style={{ overflow: 'hidden', borderRadius: 8 }}>
 						<MaterialCommunityIcons name="chevron-right" size={18} color="#000" />
 					</View>

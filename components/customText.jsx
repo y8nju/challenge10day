@@ -4,7 +4,7 @@ export default function CustomText({ children, style, weight, type }) {
 	if (!type) {
 		if (weight === 300) {
 			return (<Text style={[{ fontFamily: 'Neo-Lt', color: '#504d49' }, style]}>{children}</Text>)
-		} else if (weight === 700) {
+		} else if (weight === 500) {
 			return (<Text style={[{ fontFamily: 'Neo-Bd', color: '#504d49' }, style]}>{children}</Text>)
 		} else if (weight === 800) {
 			return (<Text style={[{ fontFamily: 'Neo-Eb', color: '#504d49' }, style]}>{children}</Text>)
