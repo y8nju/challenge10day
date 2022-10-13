@@ -36,7 +36,7 @@ export default function UserInfoScreen({ navigation }) {
 	return (<View style={defaultStyle.wrap}>
 		<View style={{ paddingHorizontal: 20 }}>
 			<View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, paddingBottom: 20, marginBottom: 16 }}>
-				<CustomText style={{ fontSize: 14, textAlign: 'center' }} weight={500}>계정id</CustomText>
+				<CustomText style={{ fontSize: 14, textAlign: 'center' }} weight={500}>{ctx && ctx.value.data.userId}</CustomText>
 			</View>
 			<Pressable onPress={passChangeHandele}>
 				<View style={styles.infoItemRow}>
