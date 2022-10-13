@@ -3,13 +3,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 
+const SERVER_IP = "http://192.168.4.97:8080"
 
 
 // 챌린지 생성
 export async function addchallenge(title, isnotification, checked, hournotification = null) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.post(process.env.SERVER_IP + "/api/challenge/addchallenge", {
+    const response = await axios.post(SERVER_IP + "/api/challenge/addchallenge", {
         title, userId: datad.data.userId, isnotification, checked, hournotification
     }, {
         headers: {
@@ -25,7 +26,7 @@ export async function addchallenge(title, isnotification, checked, hournotificat
 export async function readchallenge(isEnd) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.post(process.env.SERVER_IP + "/api/challenge/readchallenge", {
+    const response = await axios.post(SERVER_IP + "/api/challenge/readchallenge", {
         userId: datad.data.userId, isEnd: isEnd
     }, {
         headers: {
@@ -43,7 +44,7 @@ export async function readonechallenge(id) {
     console.log(id);
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.post(process.env.SERVER_IP + "/api/challenge/readonechallenge", {
+    const response = await axios.post(SERVER_IP + "/api/challenge/readonechallenge", {
         id
     }, {
         headers: {
@@ -58,7 +59,7 @@ export async function readonechallenge(id) {
 //챌린지 시간 수정하기
 export async function updatechallenge(id, isnotification, hournotification = null) {
     const token = await AsyncStorage.getItem("authentication");
-    const response = await axios.put(process.env.SERVER_IP + "/api/challenge/updatechallenge", {
+    const response = await axios.put(SERVER_IP + "/api/challenge/updatechallenge", {
         id, isnotification, hournotification
     }, {
         headers: {
@@ -74,7 +75,7 @@ export async function updatechallenge(id, isnotification, hournotification = nul
 export async function deletechallenge(id) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.post(process.env.SERVER_IP + "/api/challenge/deletechallenge", {
+    const response = await axios.post(SERVER_IP + "/api/challenge/deletechallenge", {
         id
     }, {
         headers: {

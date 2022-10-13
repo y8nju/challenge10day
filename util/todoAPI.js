@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+const SERVER_IP = "http://192.168.4.97:8080"
 // todo 생성
 export async function addtodo(todoText) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data)
     console.log(datad);
-    const response = await axios.post(process.env.SERVER_IP + "/api/todo/addtodo", {
+    const response = await axios.post(SERVER_IP + "/api/todo/addtodo", {
         writer: datad.data.name, todoText
     }, {
         headers: {
@@ -21,7 +22,7 @@ export async function addtodo(todoText) {
 // todo 전체 불러오기
 export async function getalltodo(writer) {
     const token = await AsyncStorage.getItem("authentication");
-    const response = await axios.post(process.env.SERVER_IP + "/api/todo/getalltodo", {
+    const response = await axios.post(SERVER_IP + "/api/todo/getalltodo", {
         writer
     }, {
         headers: {
@@ -37,7 +38,7 @@ export async function getalltodo(writer) {
 export async function getcompletedtodo(ing) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.post(process.env.SERVER_IP + "/api/todo/getcompletedtodo", {
+    const response = await axios.post(SERVER_IP + "/api/todo/getcompletedtodo", {
         writer: datad.data.name, ing
     }, {
         headers: {
@@ -53,7 +54,7 @@ export async function getcompletedtodo(ing) {
 export async function updatetodo(id, todoText) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.put(process.env.SERVER_IP + "/api/todo/updatetodo", {
+    const response = await axios.put(SERVER_IP + "/api/todo/updatetodo", {
         id, todoText
     }, {
         headers: {
@@ -69,7 +70,7 @@ export async function updatetodo(id, todoText) {
 export async function completedtodo(id, ing) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.put(process.env.SERVER_IP + "/api/todo/completedtodo", {
+    const response = await axios.put(SERVER_IP + "/api/todo/completedtodo", {
         id, ing
     }, {
         headers: {
@@ -85,7 +86,7 @@ export async function completedtodo(id, ing) {
 export async function deletetodo(id) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.post(process.env.SERVER_IP + "/api/todo/deletetodo", {
+    const response = await axios.post(SERVER_IP + "/api/todo/deletetodo", {
         id
     }, {
         headers: {
