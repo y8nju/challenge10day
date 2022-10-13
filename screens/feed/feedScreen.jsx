@@ -6,7 +6,7 @@ import NotContent from "../../components/notContentComponent ";
 import NotLogin from "../../components/notLogin";
 import { getalldata } from "../../util/dataAPI";
 
-const SERVER_IP = "http://192.168.4.59:8080"
+const SERVER_IP = "http://192.168.4.97:8080"
 
 const windowWidth = Dimensions.get('window').width;
 // const dumi = [
@@ -43,12 +43,14 @@ export default function FeedScreen({ navigation }) {
 	}, [])
 	useEffect(() => {
 		!async function () {
+			if(login === true) {
 			const response = await getalldata()
 			const newData = response.result.map((elm) => {
 				const imgURI = SERVER_IP + "/" + elm.image
 				return { ...elm, imgURI }
 			})
 			setFeedList(newData);
+		}
 		}()
 	}, [focused])
 
