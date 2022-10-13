@@ -3,13 +3,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 
-
-const SERVER_IP = "http://192.168.4.97:8080"
 // 데이터 등록
 export async function adddata(imgData, day, emoji, comment, targetId) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.post(SERVER_IP + "/api/data/adddata", {
+    const response = await axios.post(process.env.SERVER_IP + "/api/data/adddata", {
         imgData, day, emoji, comment, targetId, userId: datad.data.userId
     }, {
         headers: {
@@ -25,7 +23,7 @@ export async function adddata(imgData, day, emoji, comment, targetId) {
 export async function updatedata(id, comment, emoji) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.put(SERVER_IP + "/api/data/updatedata", {
+    const response = await axios.put(process.env.SERVER_IP + "/api/data/updatedata", {
         id, comment, emoji
     }, {
         headers: {
@@ -40,7 +38,7 @@ export async function updatedata(id, comment, emoji) {
 // 데이터 삭제
 export async function deletedata(id) {
     const token = await AsyncStorage.getItem("authentication");
-    const response = await axios.delete(SERVER_IP + "/api/data/deletedata", {
+    const response = await axios.delete(process.env.SERVER_IP + "/api/data/deletedata", {
         id
     }, {
         headers: {
@@ -55,7 +53,7 @@ export async function deletedata(id) {
 // 데이터 하나 불러오기
 export async function getdata(id) {
     const token = await AsyncStorage.getItem("authentication");
-    const response = await axios.get(SERVER_IP + "/api/data/getdata", {
+    const response = await axios.get(process.env.SERVER_IP + "/api/data/getdata", {
         id
     }, {
         headers: {
@@ -71,7 +69,7 @@ export async function getdata(id) {
 export async function getalldata() {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
-    const response = await axios.post(SERVER_IP + "/api/data/getalldata", {
+    const response = await axios.post(process.env.SERVER_IP + "/api/data/getalldata", {
         userId: datad.data.userId
     }, {
         headers: {
