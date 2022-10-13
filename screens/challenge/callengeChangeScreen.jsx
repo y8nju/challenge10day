@@ -12,7 +12,6 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import CustomButton from "../../components/customButton";
 
 
-//================================================================================================
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
@@ -23,15 +22,14 @@ Notifications.setNotificationHandler({
 		shouldSetBadge: false,
 	}),
 });
-//================================================================================================
 
 export default function ChallengeChangeScreen({ navigation, route }) {
-	//================================================================================================
+
 	const [expoPushToken, setExpoPushToken] = useState('');
 	const [notification, setNotification] = useState(false);
 	const notificationListener = useRef();
 	const responseListner = useRef();
-	//================================================================================================
+  
 	useEffect(() => {
 		registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
@@ -48,7 +46,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			Notifications.removeNotificationSubscription(responseListner.current);
 		};
 	}, []);
-	//================================================================================================
+  
 	const { data } = route.params;
 	const [loading, setLoading] = useState(false);
 	const [title, setTitle] = useState(data.title)
@@ -69,7 +67,6 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 		console.log(format(new Date(time), 'p', { locale: ko }));
 		// 선택된 시간 확인하기!
 		setDate(time)
-		//================================================================
 		//알림 설정.
 		const identifier = Notifications.cancelAllScheduledNotificationsAsync({
 			content: {
@@ -105,6 +102,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			},
 			{ text: 'OK', onPress: () => console.log('OK Pressed') },
 		]);
+
 		const hour = Number(format(new Date(time), 'H', { locale: ko, format: 'HH:mm:ss' })) + "시";
 		const minute = Number(format(new Date(time), 'm', { locale: ko, format: 'MM:dd HH:mm' })) + "분";
 		const afternoonhour = Number(format(new Date(time), 'hh', { locale: ko, format: 'HH:mm:ss' })) + "시";
@@ -115,7 +113,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 		}
 
 	};
-	//=========================================================================================
+
 	const ChallengeChangeHandle = () => {
 		// 챌린지 추가
 		setLoading(true);
@@ -171,8 +169,39 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 
 		return token;
 	}
+  
+	//expo token
+	async function registerForPushNotificationsAsync() {
+		let token;
 
-	//================================================================================================
+		if (Platform.OS === 'android') {
+			await Notifications.setNotificationChannelAsync('default', {
+				name: 'default',
+				importance: Notifications.AndroidImportance.MAX,
+				vibrationPattern: [0, 250, 250, 250],
+				lightColor: '#FF231F7C',
+			});
+		}
+
+		if (Device.isDevice) {
+			const { status: existingStatus } = await Notifications.getPermissionsAsync();
+			let finalStatus = existingStatus;
+			if (existingStatus !== 'granted') {
+				const { status } = await Notifications.requestPermissionsAsync();
+				finalStatus = status;
+			}
+			if (finalStatus !== 'granted') {
+				alert('Failed to get push token for push notification!');
+				return;
+			}
+			token = (await Notifications.getExpoPushTokenAsync()).data;
+			console.log(token);
+		} else {
+			alert('Must use physical device for Push Notifications');
+		}
+
+		return token;
+	}
 
 	return (<TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
 		<View style={defaultStyle.wrap}>
@@ -186,6 +215,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 						placeholder="새로운 습관의 이름을 입력해주세요" />
 				</View>
 				<View style={{ marginTop: 30 }}>
+
 					<View style={[styles.row, { paddingRight: 14 }]}>
 						<CustomText style={{ flex: 1, color: '#8e8e8f' }}>알림설정</CustomText>
 						<Switch
@@ -202,6 +232,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 						<Pressable onPress={showTimePicker}>
 							{/* 설정해놓은 알림 시간 있으면 보여주기 */}
 							<CustomText>{format(new Date(date), 'p', { locale: ko })}</CustomText>
+
 						</Pressable>
 						<DateTimePickerModal
 							isVisible={isDatePickerVisible}
@@ -223,8 +254,6 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 						unfillColor="#ddd"
 						isChecked={checked}
 						onPress={checkHandle}
-
-
 					/>
 				</View>
 				<View style={{ marginTop: 30 }}>

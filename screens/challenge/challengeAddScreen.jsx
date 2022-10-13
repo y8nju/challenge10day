@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Keyboard, StyleSheet, Switch, TextInput, TouchableWithoutFeedback, View, Pressable, Alert } from "react-native";
+
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { format } from "date-fns";
 import ko from "date-fns/esm/locale/ko/index.js";
@@ -12,8 +13,6 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import CustomButton from "../../components/customButton";
 import { addchallenge } from "../../util/challengeAPI";
 
-//======================================================================================
-
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
@@ -24,7 +23,7 @@ Notifications.setNotificationHandler({
 		shouldSetBadge: false,
 	}),
 });
-//======================================================================================
+
 export default function ChallengeAddScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);
 	const [title, setTitle] = useState()
@@ -34,13 +33,10 @@ export default function ChallengeAddScreen({ navigation }) {
 	const [checked, setChecked] = useState(null);
 	const [chkColor, setChkCOlor] = useState('#bbb');
 
-	//================================================================================================
 	const [expoPushToken, setExpoPushToken] = useState('');
 	const [notification, setNotification] = useState(false);
 	const notificationListener = useRef();
 	const responseListner = useRef();
-	//================================================================================================
-
 
 	useEffect(() => {
 		registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -59,8 +55,6 @@ export default function ChallengeAddScreen({ navigation }) {
 		};
 	}, []);
 
-	//================================================================================================
-
 	const showTimePicker = () => {
 		setDatePickerVisibility(true);
 	};
@@ -75,6 +69,7 @@ export default function ChallengeAddScreen({ navigation }) {
 			content: {
 				title: "Challenge's 10 Days",
 				body: `${(Number(format(new Date(time), 'H', { locale: ko, format: 'HH:mm:ss' })))} : ${(Number(format(new Date(time), 'm', { locale: ko, format: 'MM:dd HH:mm' })))} 시간으로 알림이 추가 되었습니다.`,
+
 			},
 
 			//원하는 시간으로 변경
@@ -106,7 +101,6 @@ export default function ChallengeAddScreen({ navigation }) {
 		}
 	};
 
-	//=========================================================================================
 
 	const ChallengeAddHandle = () => {
 		// 챌린지 추가
@@ -138,7 +132,6 @@ export default function ChallengeAddScreen({ navigation }) {
 		}
 	}
 
-	//============================================================================================
 	//expo token
 
 	async function registerForPushNotificationsAsync() {
@@ -173,7 +166,6 @@ export default function ChallengeAddScreen({ navigation }) {
 		return token;
 	}
 
-	//============================================================================================
 
 	return (<TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
 		<View style={defaultStyle.wrap}>
