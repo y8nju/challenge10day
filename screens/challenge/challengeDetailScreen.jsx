@@ -16,6 +16,7 @@ import ConfirmItem from "../../components/confirmItem";
 import { adddata } from "../../util/dataAPI";
 import Cameraitem from "../../components/cameraitem";
 import Canvasitem from "../../components/canvasitem";
+import ImageModal from "../../components/imageModal";
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -24,7 +25,9 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 	const { data } = route.params
 	const [loading, setLoading] = useState(false);
 	const [confirmList, setConfirmList] = useState([]);
+	const [confirmBtn,setConfirmBtn] = useState(false);
 	const [addModalVisible, setAddModalVisible] = useState(false);
+	const [imageModalVisible, setImageModalVisible] = useState(false);
 	const [content, setContent] = useState('');
 	const [emoji, setEmoji] = useState(null);
 	const [dayd, setDayd] = useState(null);
@@ -106,13 +109,16 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 			}
 		])
 	}
+
 	const confirmHandle = async () => {
 		if (img64 !== null && emoji !== null && content.trim().length > 0) {
+			setConfirmBtn(true)
 			const response = await adddata(img64, dayd, emoji, content, data._id)
 			if (response.type === true) {
 				data.data.push(response.result)
 				setImg64(null);
 				setImgdata(null);
+				setConfirmBtn(false)
 				setAddModalVisible(false)
 			} else {
 				Alert.alert("에러", "현재 서버와 통신이 원활하지 않습니다.")
@@ -130,7 +136,11 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 	}
 
 	const imgdataHandle = (data) => {
-		setImgdata(data)
+			setImgdata(data);
+			setImageModalVisible(true)
+	}
+	const imgdatadisableHandle = () => {
+		setImageModalVisible(false);
 	}
 	const Img64Handle = (data) => {
 		setImg64(data);
@@ -164,12 +174,13 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 						스티커는 하루 한 번만 붙일 수 있어요
 					</CustomText>
 					<View style={{marginTop: 30,}}>
-				{imgdata && <Canvasitem onPress={Img64Handle} datauri={imgdata} />}
 				</View>
 				</View>
 			</View>
+	
 			<Modal animationType="slide" transparent={true} visible={addModalVisible}
 				onRequestClose={() => setAddModalVisible(false)}>
+				<ImageModal onPress={imgdatadisableHandle} onImg64={Img64Handle} datauri={imgdata} imageModalVisible={imageModalVisible}  setImageModalVisible={setImageModalVisible} />
 				<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
 					<View style={styles.modalArea}>
 						<Pressable style={styles.touchArea} onPress={() => setAddModalVisible(false)}></Pressable>
@@ -179,7 +190,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 									<CustomText>취소</CustomText>
 								</Pressable>
 								<CustomText weight={500} style={{ fontSize: 20 }}>인증하기</CustomText>
-								<Pressable style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={confirmHandle}>
+								<Pressable disabled={confirmBtn} style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={confirmHandle}>
 									<CustomText>인증</CustomText>
 								</Pressable>
 							</View>
@@ -195,9 +206,9 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 								</View>
 								<View style={{ flexDirection: 'row' }}>
 									{/* 카메라 */}
-									{!imgdata && <Cameraitem onPress={imgdataHandle} />}
+									{!img64 && <Cameraitem onPress={imgdataHandle} />}
 									
-									{imgdata && <Pressable style={styles.cameraArea}>
+									{img64 && <Pressable style={styles.cameraArea}>
 										<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 											<Image style={{ width: "100%", height: "100%" }} source={{ uri: `data:image/jpeg;base64,${img64}` }} resizeMode={"cover"} />
 										</View>

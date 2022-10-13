@@ -24,7 +24,7 @@ export default function Cameraitem({onPress}) {
             }
         }
         const result = await launchCameraAsync({
-            quality: 1,
+            quality: 0.4,
             allowsEditing: true,
             aspect: [1, 1],
             exif: true,
