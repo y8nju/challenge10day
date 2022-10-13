@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, Modal, Pressable, StyleSheet, View, TextInput, ToastAndroid, Alert } from "react-native";
+import { FlatList, Modal, Pressable, StyleSheet, View, TextInput, ToastAndroid, Alert, KeyboardAvoidingView } from "react-native";
 import { CommonActions, useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -143,6 +143,7 @@ export default function TodoScreen({ navigation, route }) {
 		{/* 추가 모달 */}
 		<Modal animationType="slide" transparent={true} visible={addModalVisible}
 			onRequestClose={() => setAddModalVisible(false)}>
+				<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
 			<View style={styles.modalArea}>
 				<Pressable style={styles.touchArea} onPress={() => setAddModalVisible(false)}></Pressable>
 				<View style={styles.modalContent}>
@@ -156,10 +157,12 @@ export default function TodoScreen({ navigation, route }) {
 					<CustomButton title={"확인"} onPress={todoAddHandle} />
 				</View>
 			</View>
+			</KeyboardAvoidingView>
 		</Modal>
 		{/* 수정 모달 */}
 		<Modal animationType="slide" transparent={true} visible={updateModalVisible}
 			onRequestClose={() => setUpdateModalVisible(false)}>
+			<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>				
 			<View style={styles.modalArea}>
 				<Pressable style={styles.touchArea} onPress={() => setUpdateModalVisible(false)}></Pressable>
 				<View style={styles.modalContent}>
@@ -177,6 +180,7 @@ export default function TodoScreen({ navigation, route }) {
 					</View>
 				</View>
 			</View>
+			</KeyboardAvoidingView>
 		</Modal>
 	</View>}</>)
 }
