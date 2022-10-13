@@ -6,7 +6,7 @@ import NotContent from "../../components/notContentComponent ";
 import NotLogin from "../../components/notLogin";
 import { getalldata } from "../../util/dataAPI";
 
-const SERVER_IP = "http://192.168.4.97:8080"
+const SERVER_IP = "http://192.168.4.59:8080"
 
 const windowWidth = Dimensions.get('window').width;
 // const dumi = [
@@ -45,7 +45,7 @@ export default function FeedScreen({ navigation }) {
 		!async function () {
 			const response = await getalldata()
 			const newData = response.result.map((elm) => {
-				const imgURI = SERVER_IP+"/"+ elm.image
+				const imgURI = SERVER_IP + "/" + elm.image
 				return { ...elm, imgURI }
 			})
 			setFeedList(newData);
@@ -55,7 +55,7 @@ export default function FeedScreen({ navigation }) {
 
 	function FeedItem({ data }) {
 		return (<Pressable style={styles.itemArea} onPress={() => navigation.navigate('feedDetail', { data: data })}>
-			<ImageBackground source={{uri:data.imgURI}} resizeMode="cover" style={{ flex: 1 }} />
+			<ImageBackground source={{ uri: data.imgURI }} resizeMode="cover" style={{ flex: 1 }} />
 		</Pressable>)
 	}
 	return (<>
