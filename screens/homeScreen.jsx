@@ -90,7 +90,6 @@ export default function HomeScreen({ navigation, route }) {
 					let data
 					if(challengetype === "ing"){
 						data = response.result.filter((elm)=>{
-							console.log(elm);
 							if(elm.checked === "true" && elm.data.length<10){
 								return elm
 							} else if(elm.checked === null && new Date().getDate()-new Date(elm.createdAt).getDate()<10){

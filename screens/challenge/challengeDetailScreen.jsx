@@ -27,7 +27,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 	const { data } = route.params
 	const [loading, setLoading] = useState(false);
 	const [confirmList, setConfirmList] = useState([]);
-	const [confirmBtn,setConfirmBtn] = useState(false);
+	const [confirmBtn, setConfirmBtn] = useState(false);
 	const [addModalVisible, setAddModalVisible] = useState(false);
 	const [imageModalVisible, setImageModalVisible] = useState(false);
 	const [content, setContent] = useState('');
@@ -48,35 +48,41 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 			}
 		};
 		let newArr = []
-		if(data.checked == null){
-		if (data.data.length > 0) {
-			let afterArr = data.data.sort((a, b) => a.day - b.day)
-			for (let i = 0; i < afterArr[afterArr.length - 1].day; i++) {
-				if (afterArr[i]?.day) {
-					newArr[afterArr[i]?.day - 1] = afterArr[i]
-				}
-				if (newArr[i] === undefined) {
-					newArr[i] = ({ day: null, confirm: false })
+		if (data.checked == null) {
+			if (data.data.length > 0) {
+				let afterArr = data.data.sort((a, b) => a.day - b.day)
+				for (let i = 0; i < afterArr[afterArr.length - 1].day; i++) {
+					if (afterArr[i]?.day) {
+						newArr[afterArr[i]?.day - 1] = afterArr[i]
+					}
+					if (newArr[i] === undefined) {
+						newArr[i] = ({ day: null, confirm: false })
+					}
 				}
 			}
+		} else if(data.checked === "true") {
+			if (data.data.length > 0) {
+				newArr = [...data.data]
+			}
 		}
-	} else {
-		if(data.data.length > 0){
-			newArr = [...data.data]
-		}
-	}
 		let confirmArr2 = newArr
 		let confirmArr3;
 		if (confirmArr2.length > 0) {
+			if(data.checked == null){
 			let today = new Date().getDate();
 			let lastDate = new Date(confirmArr2[confirmArr2.length - 1].createAt).getDate();
-			for(let j = (today-lastDate);j>0;j--){
+			for (let j = (today - lastDate); j > 0; j--) {
 				if (j == 1) {
 					confirmArr2.push({ day: 0, num: confirmArr2.length + 1 });
 				} else if (j > 1) {
 					confirmArr2.push({ day: confirmArr2.length + 1, confirm: false });
 				}
 			}
+		} else {
+			if(new Date().getDate()-new Date(confirmArr2[confirmArr2.length-1].createAt).getDate()>0){
+				confirmArr2.push({ day: 0, num: Number((confirmArr2[confirmArr2.length-1].day))+1 });
+			}
+		}
 			confirmArr3 = confirmArr2.concat(confirmArr.slice(-(confirmArr.length - confirmArr2.length)));
 			setConfirmList(confirmArr3);
 		} else {
@@ -167,8 +173,8 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 	}
 
 	const imgdataHandle = (data) => {
-			setImgdata(data);
-			setImageModalVisible(true)
+		setImgdata(data);
+		setImageModalVisible(true)
 	}
 	const imgdatadisableHandle = () => {
 		setImageModalVisible(false);
@@ -204,14 +210,14 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 					<CustomText style={{ fontSize: 16, color: '#8e8e8f' }} type={'hand'}>
 						스티커는 하루 한 번만 붙일 수 있어요
 					</CustomText>
-					<View style={{marginTop: 30,}}>
-				</View>
+					<View style={{ marginTop: 30, }}>
+					</View>
 				</View>
 			</View>
-	
+
 			<Modal animationType="slide" transparent={true} visible={addModalVisible}
 				onRequestClose={() => setAddModalVisible(false)}>
-				<ImageModal onPress={imgdatadisableHandle} onImg64={Img64Handle} datauri={imgdata} imageModalVisible={imageModalVisible}  setImageModalVisible={setImageModalVisible} />
+				<ImageModal onPress={imgdatadisableHandle} onImg64={Img64Handle} datauri={imgdata} imageModalVisible={imageModalVisible} setImageModalVisible={setImageModalVisible} />
 				<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
 					<View style={styles.modalArea}>
 						<Pressable style={styles.touchArea} onPress={() => setAddModalVisible(false)}></Pressable>
@@ -238,7 +244,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 								<View style={{ flexDirection: 'row' }}>
 									{/* 카메라 */}
 									{!img64 && <Cameraitem onPress={imgdataHandle} />}
-									
+
 									{img64 && <Pressable style={styles.cameraArea}>
 										<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 											<Image style={{ width: "100%", height: "100%" }} source={{ uri: `data:image/jpeg;base64,${img64}` }} resizeMode={"cover"} />
