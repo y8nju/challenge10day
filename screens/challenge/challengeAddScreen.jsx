@@ -60,15 +60,13 @@ export default function ChallengeAddScreen({ navigation }) {
 	};
 	const confirmHandle = (time) => {
 		setDatePickerVisibility(false);
-		console.log("선택시간: ", time);
-		console.log(format(new Date(time), 'ppp', { locale: ko }));
 		// 선택된 시간 확인하기!
 		setDate(time)
 
 		Notifications.scheduleNotificationAsync({
 			content: {
 				title: "Challenge's 10 Days",
-				body: `${(Number(format(new Date(time), 'H', { locale: ko, format: 'HH:mm:ss' })))} : ${(Number(format(new Date(time), 'm', { locale: ko, format: 'MM:dd HH:mm' })))} 시간으로 알림이 추가 되었습니다.`,
+				body: title,
 
 			},
 
@@ -79,26 +77,6 @@ export default function ChallengeAddScreen({ navigation }) {
 				repeats: true,
 			},
 		});
-
-		Alert.alert('알림추가하기', '알림을 추가하시겠습니까?', [
-			{
-				text: 'Cancel',
-				onPress: () => console.log('Cancel Pressed'),
-				style: 'cancel',
-			},
-			{ text: 'OK', onPress: () => console.log('OK Pressed') },
-		]);
-		console.log(Number(format(new Date(time), 'H', { locale: ko, format: 'HH:mm:ss' })) + "시");
-		console.log(Number(format(new Date(time), 'm', { locale: ko, format: 'MM:dd HH:mm' })) + "분");
-
-		const hour = Number(format(new Date(time), 'H', { locale: ko, format: 'HH:mm:ss' })) + "시";
-		const minute = Number(format(new Date(time), 'm', { locale: ko, format: 'MM:dd HH:mm' })) + "분";
-		const afternoonhour = Number(format(new Date(time), 'hh', { locale: ko, format: 'HH:mm:ss' })) + "시";
-		if (hour < 12) {
-			console.log(`오전 ${hour} ${minute}으로 알림이 도착하였습니다`);
-		} else {
-			console.log(`오후 ${hour} ${minute}으로 알림이 도착하었습니다.`);
-		}
 	};
 
 
@@ -109,6 +87,7 @@ export default function ChallengeAddScreen({ navigation }) {
 			try {
 				const response = !isEnabled ? await addchallenge(title, isEnabled, checked) : await addchallenge(title, isEnabled, checked, date)
 				if (response.type === true) {
+					confirmHandle(date);
 					navigation.navigate('home', { status: 'add' });
 				} else {
 					Alert.alert("에러", "현재 서버와 연결이 좋지 않습니다.")
@@ -128,7 +107,6 @@ export default function ChallengeAddScreen({ navigation }) {
 			setChkCOlor('#bbb');
 		} else {
 			setChkCOlor('#fb5438');
-			scheduleAndCancel();
 		}
 	}
 
@@ -205,7 +183,7 @@ export default function ChallengeAddScreen({ navigation }) {
 							isVisible={isDatePickerVisible}
 							mode="time"
 							date={date}
-							onConfirm={confirmHandle}
+							onConfirm={(data)=>{setDate(data);setDatePickerVisibility(false);}}
 							onCancel={() => setDatePickerVisibility(false)}
 						/>
 					</View>}

@@ -52,11 +52,9 @@ export default function LoginScreen({ navigation, route }) {
 		!async function () {
 			try {
 				const recv = await sendLoginReq(inputValues.userId, inputValues.password);
-				console.log(recv);
                 if (recv.registered) {
 					ctx.dispatch({type:"login",payload:recv})
                     AsyncStorage.setItem("authentication",JSON.stringify(recv))
-					console.log("recv",recv)
 					navigation.navigate("HomeStack", { screen: 'home', params: { status: 'login' } });
                 }
 				// AsyncStorage.setItem('authentication', JSON.stringify(userData));

@@ -18,6 +18,8 @@ import Cameraitem from "../../components/cameraitem";
 import Canvasitem from "../../components/canvasitem";
 import ImageModal from "../../components/imageModal";
 
+import * as Notifications from 'expo-notifications';
+
 const windowWidth = Dimensions.get('window').width;
 
 
@@ -61,12 +63,13 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 		let confirmArr3;
 		if (confirmArr2.length > 0) {
 			let today = new Date().getDate();
-			let lastDate = new Date(confirmArr2[confirmArr2.length - 1].createdAt).getDate();
-			if (today - lastDate == 1) {
-				confirmArr2.push({ day: 0, num: confirmArr2.length + 1 });
-			} else if (today - lastDate > 1) {
-				confirmArr2.push({ day: confirmArr2.length + 1, confirm: false });
-				confirmArr2.push({ day: 0, num: confirmArr2.length + 2 });
+			let lastDate = new Date(confirmArr2[confirmArr2.length - 1].createAt).getDate();
+			for(let j = (today-lastDate);j>0;j--){
+				if (j == 1) {
+					confirmArr2.push({ day: 0, num: confirmArr2.length + 1 });
+				} else if (j > 1) {
+					confirmArr2.push({ day: confirmArr2.length + 1, confirm: false });
+				}
 			}
 			confirmArr3 = confirmArr2.concat(confirmArr.slice(-(confirmArr.length - confirmArr2.length)));
 			setConfirmList(confirmArr3);
@@ -76,6 +79,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 		}
 		//========================
 	}, [addModalVisible])
+
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -96,6 +100,17 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 						try {
 							let response = await deletechallenge(data._id)
 							if (response.type === true) {
+								const identifier = Notifications.cancelAllScheduledNotificationsAsync({
+									content: {
+										title: '알림이 취소되었습니다.',
+										body: "알림이 취소되었습니다.",
+										data: { data: 'data' },
+									},
+									trigger: {
+										second: 1,
+									}
+								});
+								Notifications.cancelAllScheduledNotificationsAsync(identifier);
 								navigation.navigate('home', { status: 'deleted' });
 							} else {
 								Alert.alert("에러", "현재 서버와 통신이 원할하지 않습니다.")
@@ -109,6 +124,16 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 			}
 		])
 	}
+
+	const cancleHandle = () => {
+		setContent("");
+		setEmoji(null);
+		setImgdata(null)
+		setImg64(null)
+		setAddModalVisible(false)
+
+	}
+
 
 	const confirmHandle = async () => {
 		if (img64 !== null && emoji !== null && content.trim().length > 0) {
@@ -186,7 +211,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 						<Pressable style={styles.touchArea} onPress={() => setAddModalVisible(false)}></Pressable>
 						<View style={styles.modalContent}>
 							<View style={styles.modalHeader}>
-								<Pressable style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={() => setAddModalVisible(false)}>
+								<Pressable style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={cancleHandle}>
 									<CustomText>취소</CustomText>
 								</Pressable>
 								<CustomText weight={500} style={{ fontSize: 20 }}>인증하기</CustomText>

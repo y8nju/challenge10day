@@ -19,7 +19,6 @@ export default function HomeScreen({ navigation, route }) {
 	const [challengeList, setChallengeList] = useState([]);
 	const [login, setLogin] = useState(false)
 	const focused = useIsFocused();
-
 	useEffect(() => {
 		// setRefresh(true);
 		if (route.params) {
@@ -29,37 +28,48 @@ export default function HomeScreen({ navigation, route }) {
 						Platform.OS === 'ios' ? IosToast('만나서 반가워요') :
 							ToastAndroid.show("만나서 반가워요", ToastAndroid.SHORT);
 					}
-					return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					// return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					navigation.navigate("HomeStack", { screen: 'home'});
+					break;
 				case 'login':
 					{
 						Platform.OS === 'ios' ? IosToast('어서오세요') :
 							ToastAndroid.show("어서오세요", ToastAndroid.SHORT);
 					}
-					return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					// return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					navigation.navigate("HomeStack", { screen: 'home'});
+					break;
 				case 'add':
 					{
 						Platform.OS === 'ios' ? IosToast('새로운 습관을 시작했어요') :
 							ToastAndroid.show("새로운 습관을 시작했어요", ToastAndroid.SHORT);
 					}
-					return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					// return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					navigation.navigate("HomeStack", { screen: 'home'});
+					break;
 				case 'deleted':
 					{
 						Platform.OS === 'ios' ? IosToast('습관을 지웠어요') :
 							ToastAndroid.show("습관을 지웠어요", ToastAndroid.SHORT);
 					}
-					return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					// return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					navigation.navigate("HomeStack", { screen: 'home'});
+					break;
 				case 'change':
 					{
 						Platform.OS === 'ios' ? IosToast('습관을 수정했어요') :
 							ToastAndroid.show("습관을 수정했어요", ToastAndroid.SHORT)
 					}
-					return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					// return navigation.dispatch(CommonActions.setParams({ status: '' }));
+					navigation.navigate("HomeStack", { screen: 'home'});
+					break;
 			}
 		}
 		// setRefresh(false);
 	}, [focused]);
 
 	useEffect(() => {
+		if(login === false ){
 		AsyncStorage.getItem("authentication").then((data) => {
 			const token = JSON.parse(data)
 			if (token == null) {
@@ -68,6 +78,7 @@ export default function HomeScreen({ navigation, route }) {
 				setLogin(true)
 			}
 		})
+	}
 	}, [])
 
 
@@ -76,12 +87,35 @@ export default function HomeScreen({ navigation, route }) {
 			if (login) {
 				const response = await readchallenge(challengetype)
 				if (response.type === true) {
-					setChallengeList(response.result)
+					let data
+					if(challengetype === "ing"){
+						data = response.result.filter((elm)=>{
+							if(elm.checked === true && elm.data.length<10){
+								return elm
+							} else if(elm.checked === null && new Date().getDate()-new Date(elm.createdAt).getDate()<10){
+								return elm
+							}
+						})
+					} else if(challengetype === "false"){
+						data = response.result.filter((elm)=>{
+						if(elm.checked === null && new Date().getDate()-new Date(elm.createdAt).getDate()>10 && elm.data.length < 10){
+							return elm
+						}
+					})
+					} else if(challengetype === "success"){
+						data = response.result.filter((elm)=>{
+							if(elm.checked === true && elm.data.length===10){
+								return elm
+							} else if(elm.checked === null && elm.data.length === 10){
+								return elm
+							}
+						 })
+					}
+					setChallengeList(data??[])
 				}
 			}
 		}();
-
-	}, [challengetype, focused,login])
+	}, [challengetype,focused,login])
 
 	return (<>{!login && <NotLogin />}
 		{login && <View style={defaultStyle.wrap}>
