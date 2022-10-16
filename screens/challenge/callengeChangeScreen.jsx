@@ -14,6 +14,7 @@ import CustomButton from "../../components/customButton";
 
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import { updatechallenge } from "../../util/challengeAPI";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -24,14 +25,12 @@ Notifications.setNotificationHandler({
 });
 
 export default function ChallengeChangeScreen({ navigation, route }) {
-
-	const [expoPushToken, setExpoPushToken] = useState('');
+	// const [expoPushToken, setExpoPushToken] = useState('');
 	const [notification, setNotification] = useState(false);
 	const notificationListener = useRef();
 	const responseListner = useRef();
-  
 	useEffect(() => {
-		registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+		// registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
 		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
 			setNotification(notification);
@@ -46,13 +45,15 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			Notifications.removeNotificationSubscription(responseListner.current);
 		};
 	}, []);
-  
+
 	const { data } = route.params;
+	console.log(data);
 	const [loading, setLoading] = useState(false);
 	const [title, setTitle] = useState(data.title)
 	// 알림 설정했으면 true, 아니면 false
-	const [isEnabled, setIsEnabled] = useState(true);
-	const [date, setDate] = useState(new Date());
+	const [isEnabled, setIsEnabled] = useState(data.isnotification);
+	const [date, setDate] = useState(new Date(data.hournotification) ?? new Date());
+	console.log(date);
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const [checked, setChecked] = useState(true);
 	const [chkColor, setChkCOlor] = useState('#fb5438');
@@ -63,10 +64,6 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 
 	const confirmHandle = (time) => {
 		setDatePickerVisibility(false);
-		console.log("설정된시간: ", time);
-		console.log(format(new Date(time), 'p', { locale: ko }));
-		// 선택된 시간 확인하기!
-		setDate(time)
 		//알림 설정.
 		const identifier = Notifications.cancelAllScheduledNotificationsAsync({
 			content: {
@@ -94,40 +91,53 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 				repeats: true,
 			},
 		});
-		Alert.alert('알림수정하기', '알림을 수정하시겠습니까?', [
-			{
-				text: 'Cancel',
-				onPress: () => console.log('Cancel Pressed'),
-				style: 'cancel',
-			},
-			{ text: 'OK', onPress: () => console.log('OK Pressed') },
-		]);
-
-		const hour = Number(format(new Date(time), 'H', { locale: ko, format: 'HH:mm:ss' })) + "시";
-		const minute = Number(format(new Date(time), 'm', { locale: ko, format: 'MM:dd HH:mm' })) + "분";
-		const afternoonhour = Number(format(new Date(time), 'hh', { locale: ko, format: 'HH:mm:ss' })) + "시";
-		if (hour < 12) {
-			console.log(`오전 ${afternoonhour} ${minute}으로 알림이 설정되었습니다.`);
-		} else {
-			console.log(`오후 ${afternoonhour} ${minute}으로 알림이 설정되었습니다.`);
-		}
-
 	};
 
-	const ChallengeChangeHandle = () => {
-		// 챌린지 추가
-		setLoading(true);
-		!async function () {
-			try {
-				navigation.navigate('home', { status: 'change' });
-			} catch (e) {
-				console.log(e);
+	const ChallengeChangeHandle = async () => {
+
+		let response;
+		if (isEnabled === false) {
+			response = await updatechallenge(data._id, isEnabled)
+			if(response.type === true){
+			const identifier = Notifications.cancelAllScheduledNotificationsAsync({
+				content: {
+					title: '알림이 취소되었습니다.',
+					body: "알림이 취소되었습니다.",
+					data: { data: 'data' },
+				},
+				trigger: {
+					second: 1,
+				}
+			});
+			Notifications.cancelAllScheduledNotificationsAsync(identifier);
+		}
+		} else if(isEnabled === true) {
+			response = await updatechallenge(data._id, isEnabled, date)
+			if(response.type === true){
+				confirmHandle(date);
 			}
-			setLoading(false);
-		}();
+		}
+		console.log("data",response);
+		console.log("is",isEnabled)
+		if (response.type === true) {
+			// 챌린지 추가
+			setLoading(true);
+			!async function () {
+				try {
+					navigation.navigate('home', { status: 'change' });
+				} catch (e) {
+					console.log(e);
+				}
+				setLoading(false);
+			}();
+		} else {
+			Alert.alert("에러", "현재 서버와 연결 상태가 좋지 않습니다.")
+		}
+
+
 	}
 
-	const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+	const toggleSwitch = () => {setIsEnabled(previousState => !previousState)};
 
 	const checkHandle = () => {
 		setChecked(!checked);
@@ -137,39 +147,6 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			setChkCOlor('#fb5438');
 		}
 	}
-	//expo token
-	async function registerForPushNotificationsAsync() {
-		let token;
-
-		if (Platform.OS === 'android') {
-			await Notifications.setNotificationChannelAsync('default', {
-				name: 'default',
-				importance: Notifications.AndroidImportance.MAX,
-				vibrationPattern: [0, 250, 250, 250],
-				lightColor: '#FF231F7C',
-			});
-		}
-
-		if (Device.isDevice) {
-			const { status: existingStatus } = await Notifications.getPermissionsAsync();
-			let finalStatus = existingStatus;
-			if (existingStatus !== 'granted') {
-				const { status } = await Notifications.requestPermissionsAsync();
-				finalStatus = status;
-			}
-			if (finalStatus !== 'granted') {
-				alert('Failed to get push token for push notification!');
-				return;
-			}
-			token = (await Notifications.getExpoPushTokenAsync()).data;
-			console.log(token);
-		} else {
-			alert('Must use physical device for Push Notifications');
-		}
-
-		return token;
-	}
-  
 	//expo token
 	async function registerForPushNotificationsAsync() {
 		let token;
@@ -238,7 +215,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 							isVisible={isDatePickerVisible}
 							mode="time"
 							date={date}
-							onConfirm={confirmHandle}
+							onConfirm={(date) => { setDate(date); setDatePickerVisibility(false); }}
 							onCancel={() => setDatePickerVisibility(false)}
 						/>
 					</View>}

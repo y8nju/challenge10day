@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 
-const SERVER_IP = "http://192.168.4.97:8080"
+const SERVER_IP = "http://192.168.219.100:8080"
 
 
 // 챌린지 생성
@@ -58,13 +58,14 @@ export async function readonechallenge(id) {
 
 //챌린지 시간 수정하기
 export async function updatechallenge(id, isnotification, hournotification = null) {
-    const token = await AsyncStorage.getItem("authentication");
+    const data = await AsyncStorage.getItem("authentication");
+    const datad = JSON.parse(data);
     const response = await axios.put(SERVER_IP + "/api/challenge/updatechallenge", {
         id, isnotification, hournotification
     }, {
         headers: {
             common: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${datad.token}`
             }
         }
     })
