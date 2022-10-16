@@ -25,12 +25,12 @@ Notifications.setNotificationHandler({
 });
 
 export default function ChallengeChangeScreen({ navigation, route }) {
-	// const [expoPushToken, setExpoPushToken] = useState('');
+	const [expoPushToken, setExpoPushToken] = useState('');
 	const [notification, setNotification] = useState(false);
 	const notificationListener = useRef();
 	const responseListner = useRef();
 	useEffect(() => {
-		// registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+		registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
 		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
 			setNotification(notification);
@@ -80,7 +80,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 		Notifications.scheduleNotificationAsync({
 			content: {
 				title: "Challenge's 10 Days",
-				body: `${Number(format(new Date(time), 'H', { locale: ko, format: ' HH:mm:ss' }))} : ${Number(format(new Date(time), 'm', { locale: ko, format: ' MM:dd HH:mm' }))} 시간으로 변경되었습니다.`,
+				body: `${Number(format(new Date(time), 'H', { locale: ko, format: ' HH:mm:ss' }))} : ${Number(format(new Date(time), 'm', { locale: ko, format: ' MM:dd HH:mm' }))} 챌린지 알림입니다.`,
 				data: { data: 'data' },
 			},
 
@@ -99,16 +99,16 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 		if (isEnabled === false) {
 			response = await updatechallenge(data._id, isEnabled)
 			if(response.type === true){
-			const identifier = Notifications.cancelAllScheduledNotificationsAsync({
-				content: {
-					title: '알림이 취소되었습니다.',
-					body: "알림이 취소되었습니다.",
-					data: { data: 'data' },
-				},
-				trigger: {
-					second: 1,
-				}
-			});
+			const identifier = Notifications.scheduleNotificationAsync({
+        content: {
+          title: "알림이 취소되었습니다.",
+          body: "알림이 취소되었습니다.",
+          data: { data: "data" },
+        },
+        trigger: {
+          second: 1,
+        },
+      });
 			Notifications.cancelAllScheduledNotificationsAsync(identifier);
 		}
 		} else if(isEnabled === true) {
@@ -123,12 +123,12 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			// 챌린지 추가
 			setLoading(true);
 			!async function () {
+				setLoading(false);
 				try {
 					navigation.navigate('home', { status: 'change' });
 				} catch (e) {
 					console.log(e);
 				}
-				setLoading(false);
 			}();
 		} else {
 			Alert.alert("에러", "현재 서버와 연결 상태가 좋지 않습니다.")
@@ -147,6 +147,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			setChkCOlor('#fb5438');
 		}
 	}
+
 	//expo token
 	async function registerForPushNotificationsAsync() {
 		let token;

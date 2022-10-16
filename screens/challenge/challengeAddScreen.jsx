@@ -84,6 +84,7 @@ export default function ChallengeAddScreen({ navigation }) {
 		// 챌린지 추가
 		setLoading(true);
 		!async function () {
+			setLoading(false);
 			try {
 				const response = !isEnabled ? await addchallenge(title, isEnabled, checked) : await addchallenge(title, isEnabled, checked, date)
 				if (response.type === true) {
@@ -95,7 +96,6 @@ export default function ChallengeAddScreen({ navigation }) {
 			} catch (e) {
 				console.log(e);
 			}
-			setLoading(false);
 		}();
 	}
 

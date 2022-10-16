@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 
-const SERVER_IP = "http://192.168.219.100:8080"
+const SERVER_IP = "http://211.119.122.68:8080"
 
 
 // 챌린지 생성
