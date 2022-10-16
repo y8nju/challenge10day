@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { StyleSheet, Pressable, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { colors } from "../screens/style/defaultStyle";
 import { completedtodo } from "../util/todoAPI";
 
 import CustomText from "./customText";
-
 
 export default function TodoItem({ completedPress,todoPress, data }) {
 	const [checked, setChecked] = useState(data.ing);
@@ -19,7 +19,7 @@ export default function TodoItem({ completedPress,todoPress, data }) {
 	return (<View style={styles.todoItem}>
 		<BouncyCheckbox
 			size={18}
-			fillColor="#fb5438"
+			fillColor={colors.main}
 			isChecked={checked}
 			disabled={checked}
 			onPress={completedHandle}/>

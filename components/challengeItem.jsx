@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import ko from "date-fns/esm/locale/ko/index.js";
 
 import CustomText from "../components/customText";
+import { colors } from "../screens/style/defaultStyle";
 
 export default function ChallengeItem({data}) {
 	const navigation = useNavigation();
@@ -15,20 +16,20 @@ export default function ChallengeItem({data}) {
 		<CircularProgress
 			value={[data.data.length,]}
 			radius={30}
-			activeStrokeColor={'#ffba5d'}
-			inActiveStrokeColor={'#e1d3c1'}
+			activeStrokeColor={colors.sub}
+			inActiveStrokeColor={colors.mid}
 			inActiveStrokeOpacity={0.3}
-			progressValueColor={'#8e8e8f'}
+			progressValueColor={colors.darkGray}
 			maxValue={10}
 			titleStyle={{fontFamily: 'Neo-Bd'}}
 		/>
 		</View>
 		<View style={{marginLeft: 20, flex: 1}}>
 			<Text style={{fontSize: 18, fontFamily: 'Neo-Bd' }} numberOfLines={1}>{data.title}</Text>
-			<CustomText style={{color: '#8e8e8f', marginTop: 10, fontSize: 12}}>{format(new Date(data.createdAt), 'P', {locale: ko})} ~ {format(new Date(data.createdAt).setDate(new Date(data.createdAt).getDate()+9), 'P', {locale: ko})} </CustomText>
+			<CustomText style={{color: colors.darkGray, marginTop: 10, fontSize: 12}}>{format(new Date(data.createdAt), 'P', {locale: ko})} ~ {format(new Date(data.createdAt).setDate(new Date(data.createdAt).getDate()+9), 'P', {locale: ko})} </CustomText>
 		</View>
 		<Pressable onPress={() => navigation.navigate('challengeChange', {data: data})} style={{marginRight: -8, padding: 8}}>
-			<MaterialCommunityIcons name="chevron-right-circle" size={24} color="#ffba5d" />
+			<MaterialCommunityIcons name="chevron-right-circle" size={24} color={colors.sub} />
 		</Pressable>
 	</Pressable>)
 }

@@ -1,5 +1,4 @@
-
-import { View } from 'react-native';
+import { useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,6 +8,10 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 
 import { useFonts } from 'expo-font';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { AppContext, AppContextProvider } from './context/app-context';
+
+import { colors } from './screens/style/defaultStyle';
 
 // Screen
 import TodoScreen from './screens/todo/todoScreen';
@@ -25,9 +28,6 @@ import FeedUpdateScreen from './screens/feed/feedUptaeScreen';
 import ChallengeAddScreen from './screens/challenge/challengeAddScreen';
 import ChallengeChangeScreen from './screens/challenge/callengeChangeScreen';
 import ChallengeDetailScreen from './screens/challenge/challengeDetailScreen';
-import CustomText from './components/customText';
-import { AppContext, AppContextProvider } from './context/app-context';
-import { useContext } from 'react';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -36,11 +36,11 @@ const Drawer = createDrawerNavigator();
 
 function HomeStackNavigator() {
 	return (<Stack.Navigator initialRouteName="home" screenOptions={{
-		headerStyle: { backgroundColor: "#f2f2f2" },
+		headerStyle: { backgroundColor: colors.bg },
 		headerShadowVisible: false,
 		headerBackTitleVisible: false,
-		headerTintColor: "#504d49",
-		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
+		headerTintColor: colors.black,
+		headerTitleStyle: { fontFamily: "Neo-Bd", color: colors.black },
 		animation: 'slide_from_right'
 	}}>
 		<Stack.Screen name="home" component={HomeScreen}
@@ -55,11 +55,11 @@ function HomeStackNavigator() {
 }
 function FeedStackNavigator() {
 	return (<Stack.Navigator initialRouteName="feed" screenOptions={{
-		headerStyle: { backgroundColor: "#f2f2f2" },
+		headerStyle: { backgroundColor: colors.bg },
 		headerShadowVisible: false,
 		headerBackTitleVisible: false,
-		headerTintColor: "#504d49",
-		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
+		headerTintColor: colors.black,
+		headerTitleStyle: { fontFamily: "Neo-Bd", color: colors.black },
 		animation: 'slide_from_right'
 	}}>
 		<Stack.Screen name="feed" component={FeedScreen}
@@ -72,13 +72,13 @@ function FeedStackNavigator() {
 }
 function TodoDrawerNavigator() {
 	return (<Drawer.Navigator initialRouteName="todoIng" screenOptions={{
-		headerStyle: { backgroundColor: "#f2f2f2" },
+		headerStyle: { backgroundColor: colors.bg },
 		headerShadowVisible: false,
-		headerTintColor: "#504d49",
-		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
-		drawerActiveTintColor: "#fb5438",
+		headerTintColor: colors.black,
+		headerTitleStyle: { fontFamily: "Neo-Bd", color: colors.black },
+		drawerActiveTintColor: colors.main,
 		drawerActiveBackgroundColor: "transparent",
-		drawerInactiveTintColor: "#8E8E8F",
+		drawerInactiveTintColor: colors.darkGray,
 		drawerStyle: {
 			paddingTop: 60,
 			paddingLeft: 10
@@ -97,21 +97,20 @@ function TodoDrawerNavigator() {
 function AccountStackNavigator() {
 	const ctx = useContext(AppContext)
 	return( <>
-	 {ctx.value ? <UserStackNavigator/>:<GuestStackNavigator/>}
-	 </>
-	 )
-   }
+		{ctx.value ? <UserStackNavigator/>:<GuestStackNavigator/>}
+	</>)
+}
 
 
 
 function UserStackNavigator() {
 	return (<Stack.Navigator initialRouteName="userInfo" screenOptions={{
-		headerStyle: { backgroundColor: "#f2f2f2" },
+		headerStyle: { backgroundColor: colors.bg },
 		headerShadowVisible: false,
 		headerBackTitleVisible: false,
-		headerTintColor: "#504d49",
+		headerTintColor: colors.black,
 		headerTitleAlign: "center",
-		headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
+		headerTitleStyle: { fontFamily: "Neo-Bd", color: colors.black },
 		animation: 'slide_from_right'
 	}}>
 		<Stack.Screen name="userInfo" component={UserInfoScreen}
@@ -125,12 +124,12 @@ function UserStackNavigator() {
 function GuestStackNavigator() {
 	return (<Stack.Navigator
 		initialRouteName="login" screenOptions={{
-			headerStyle: { backgroundColor: "#f2f2f2" },
+			headerStyle: { backgroundColor: colors.bg },
 			headerShadowVisible: false,
 			headerBackTitleVisible: false,
-			headerTintColor: "#504d49",
+			headerTintColor: colors.black,
 			headerTitleAlign: "center",
-			headerTitleStyle: { fontFamily: "Neo-Bd", color: "#504d49" },
+			headerTitleStyle: { fontFamily: "Neo-Bd", color: colors.black },
 			animation: 'slide_from_right'
 		}}>
 		<Stack.Screen name="login" component={LoginScreen}
@@ -161,8 +160,8 @@ export default function App() {
 				<NavigationContainer>
 					<Tab.Navigator screenOptions={{
 						tabBarLabelStyle: { fontFamily: 'Neo-Bd', paddingBottom: 5 },
-						tabBarActiveTintColor: "#fb5438",
-						tabBarStyle: { backgroundColor: '#f2f2f2' }
+						tabBarActiveTintColor: colors.main,
+						tabBarStyle: { backgroundColor: colors.bg }
 					}}>
 						{/* challenge */}
 						<Tab.Screen name="HomeStack" component={HomeStackNavigator}

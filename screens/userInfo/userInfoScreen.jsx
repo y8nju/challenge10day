@@ -1,10 +1,13 @@
+import { useContext } from "react";
 import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { AppContext } from "../../context/app-context";
+
+import { colors } from "../style/defaultStyle";
 
 import CustomText from "../../components/customText";
-import { useContext } from "react";
-import { AppContext } from "../../context/app-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function UserInfoScreen({ navigation }) {
 	const ctx = useContext(AppContext);
@@ -35,7 +38,7 @@ export default function UserInfoScreen({ navigation }) {
 
 	return (<View style={defaultStyle.wrap}>
 		<View style={{ paddingHorizontal: 20 }}>
-			<View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, paddingBottom: 20, marginBottom: 16 }}>
+			<View style={{ borderBottomColor: colors.gray, borderBottomWidth: 1, paddingBottom: 20, marginBottom: 16 }}>
 				<CustomText style={{ fontSize: 14, textAlign: 'center' }} weight={500}>{ctx && ctx.value.data.userId}</CustomText>
 			</View>
 			<Pressable onPress={passChangeHandele}>
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 20,
 		paddingHorizontal: 20,
 		borderRadius: 14,
-		backgroundColor: "#ededed",
+		backgroundColor: colors.lightGray,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',

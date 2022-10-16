@@ -1,27 +1,23 @@
 import { useEffect, useState } from "react";
-import { Keyboard, TouchableWithoutFeedback, View, FlatList, StyleSheet, Pressable, Modal, Button, TextInput, Image, Dimensions, ImageBackground, Alert, KeyboardAvoidingView } from "react-native";
+import { Keyboard, TouchableWithoutFeedback, View, FlatList, StyleSheet, Pressable, Modal, TextInput, Image, Dimensions, Alert, KeyboardAvoidingView } from "react-native";
+import * as Notifications from 'expo-notifications';
 import { format } from "date-fns";
 import ko from "date-fns/esm/locale/ko/index.js";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { deletechallenge } from "../../util/challengeAPI";
+import { adddata } from "../../util/dataAPI";
 import Emoji from "../../util/emoji";
 
-import defaultStyle from "../style/defaultStyle";
+import defaultStyle, { colors } from "../style/defaultStyle";
 
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
 import HeaderRightButton from "../../components/headerRightButton";
-import { deletechallenge } from "../../util/challengeAPI";
 import ConfirmItem from "../../components/confirmItem";
-import { adddata } from "../../util/dataAPI";
 import Cameraitem from "../../components/cameraitem";
-import Canvasitem from "../../components/canvasitem";
 import ImageModal from "../../components/imageModal";
 
-import * as Notifications from 'expo-notifications';
-
 const windowWidth = Dimensions.get('window').width;
-
 
 export default function ChallengeDetailScreen({ navigation, route }) {
 	const { data } = route.params
@@ -187,7 +183,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 		return (<Pressable onPress={() => setEmoji(data.id)}
 			style={[styles.emojiItem, emoji == data.id && { backgroundColor: '#e1d3c14d' }]}>
 			<Image source={data.uri} resizeMode='cover' style={styles.emojiIcon} />
-			<CustomText style={[{ textAlign: 'center', marginTop: 2, color: '#8e8e8f' }, emoji == data.id && { color: '#504d49' }]} type={'hand'}>{data.name}</CustomText>
+			<CustomText style={[{ textAlign: 'center', marginTop: 2, color: colors.darkGray }, emoji == data.id && { color: colors.black }]} type={'hand'}>{data.name}</CustomText>
 		</Pressable>)
 	}
 
@@ -196,8 +192,8 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 			{loading && <LoadingOverlay />}
 			<View style={{ flex: 1, paddingHorizontal: 26 }}>
 				<View style={{ marginBottom: 20, alignItems: 'center' }}>
-					<CustomText style={{ fontSize: 20, color: '#fb5438' }} weight={500}>{data.title}</CustomText>
-					<CustomText style={{ color: '#8e8e8f', marginTop: 8 }}>{format(new Date(data.createdAt), 'P', { locale: ko })} ~</CustomText>
+					<CustomText style={{ fontSize: 20, color: colors.main }} weight={500}>{data.title}</CustomText>
+					<CustomText style={{ color: colors.darkGray, marginTop: 8 }}>{format(new Date(data.createdAt), 'P', { locale: ko })} ~</CustomText>
 				</View>
 				<View>
 					{confirmList ? <FlatList data={confirmList}
@@ -207,7 +203,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 					/> : <></>}
 				</View>
 				<View style={{ marginTop: 30, alignItems: 'center', flex: 1 }}>
-					<CustomText style={{ fontSize: 16, color: '#8e8e8f' }} type={'hand'}>
+					<CustomText style={{ fontSize: 16, color: colors.darkGray }} type={'hand'}>
 						스티커는 하루 한 번만 붙일 수 있어요
 					</CustomText>
 					<View style={{ marginTop: 30, }}>
@@ -306,9 +302,9 @@ const styles = StyleSheet.create({
 		width: 110,
 		height: 110,
 		borderWidth: 1,
-		borderColor: '#ddd',
+		borderColor: colors.gray,
 		borderRadius: 4,
-		backgroundColor: "#ededed",
+		backgroundColor: colors.lightGray,
 	},
 	emojiItem: {
 		justifyContent: 'center',

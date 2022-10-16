@@ -25,8 +25,8 @@ export function AppContextProvider({ children }) {
             const token = JSON.parse(data)
             if(data){
                 valid(token).then((newdata)=>{
-                   dispatch({type:"login",payload:newdata});
-                   setDone(true);
+                    dispatch({type:"login",payload:newdata});
+                    setDone(true);
                 })
         } else {
             setDone(true);

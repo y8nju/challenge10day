@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { addtodo, completedtodo, getcompletedtodo, updatetodo } from "../../util/todoAPI";
 
-import defaultStyle from "../style/defaultStyle";
+import defaultStyle, { colors } from "../style/defaultStyle";
 
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
@@ -16,10 +16,6 @@ import NotLogin from "../../components/notLogin";
 import NotContent from "../../components/notContentComponent ";
 import IosToast from "../../components/iosToast";
 
-const dumi = [
-	// test 를 위한 더미 데이터!
-	{ _id: 1, todoText: '아이고', ing: true }
-]
 // 해당 페이지 구현 완료 후, lodaing 액션 추가
 
 export default function TodoScreen({ navigation, route }) {
@@ -172,7 +168,7 @@ export default function TodoScreen({ navigation, route }) {
 						onChangeText={(txt) => setCheckedTodoText({ ...checkedTodoText, todoText: txt })} />
 					<View style={{ flexDirection: 'row' }}>
 						<View style={{ flex: 1 }}>
-							<CustomButton title={"취소"} color={"#ddd"} onPress={() => setUpdateModalVisible(false)} />
+							<CustomButton title={"취소"} color={colors.gray} onPress={() => setUpdateModalVisible(false)} />
 						</View>
 						<View style={{ flex: 1, marginLeft: 10 }}>
 							<CustomButton title={"수정"} onPress={todoUpdateHandle} />

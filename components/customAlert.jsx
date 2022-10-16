@@ -1,5 +1,5 @@
 import { Modal, Pressable, StyleSheet, View } from "react-native";
-
+import { colors } from "../screens/style/defaultStyle";
 import CustomText from "./customText";
 
 export default function CustomAlert({visible, setVisible, content}) {
@@ -8,19 +8,19 @@ export default function CustomAlert({visible, setVisible, content}) {
     <View style={styles.modalArea}>
         <Pressable style={styles.touchArea} onPress={() => setVisible(!visible)}></Pressable>
         <View style={styles.alertContainer}>
-            <CustomText style={{color: '#fb5438'}}>작심10일</CustomText>
+            <CustomText style={{color: colors.main}}>작심10일</CustomText>
             <CustomText style={{marginTop: 10}}>{content}</CustomText>
             <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 30}}>
                 <View style={{ overflow: 'hidden', borderRadius: 8 }}>
                     <Pressable android_ripple={{ color: "#00000008" }} 
                         style={{ paddingHorizontal: 4, paddingVertical: 8 }}
                         onPress={() => setVisible(!visible)}>
-                        <CustomText style={{fontSize: 12, color: "#8e8e8f"}}>취소</CustomText>
+                        <CustomText style={{fontSize: 12, color: colors.darkGray}}>취소</CustomText>
                     </Pressable>
                 </View>
                 <View style={{ overflow: 'hidden', borderRadius: 8, marginLeft: 16 }}>
                     <Pressable android_ripple={{ color: "#00000008", marginLeft: 10 }} style={{ paddingHorizontal: 4, paddingVertical: 8 }}>
-                        <CustomText style={{fontSize: 12, color: "#8e8e8f"}}>확인</CustomText>
+                        <CustomText style={{fontSize: 12, color: colors.darkGray}}>확인</CustomText>
                     </Pressable>
                 </View>
             </View>
@@ -46,6 +46,6 @@ const styles = StyleSheet.create({
         borderRadius:10,
         padding: 24,
         paddingBottom: 18,
-        backgroundColor: "#f2f2f2"
+        backgroundColor: colors.bg
     }
 })

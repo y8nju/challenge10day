@@ -1,13 +1,16 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext, useState } from "react";
 import { Alert, Image, StyleSheet, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import CustomButton from "../../components/customButton";
 
-import CustomText from "../../components/customText";
-import LoadingOverlay from "../../components/loadingOverlay";
 import { AppContext } from "../../context/app-context";
 import { deleteid } from "../../util/accountAPI";
+
+import { colors } from "../style/defaultStyle";
+
+import LoadingOverlay from "../../components/loadingOverlay";
+import CustomButton from "../../components/customButton";
+import CustomText from "../../components/customText";
 
 export default function WithdrawScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);
@@ -17,7 +20,7 @@ export default function WithdrawScreen({ navigation }) {
 	const checkHandle = () => {
 		setIsDisabled(!isDisabled);
 		if (isDisabled) {
-			setChkCOlor('#fb5438');
+			setChkCOlor(colors.main);
 		} else {
 			setChkCOlor('#bbb');
 		}
@@ -58,7 +61,7 @@ export default function WithdrawScreen({ navigation }) {
 		])
 	}
 
-	return (<View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
+	return (<View style={{ flex: 1, backgroundColor: colors.bg }}>
 		{loading && <LoadingOverlay />}
 		<View style={{ alignItems: 'center', paddingVertical: 20 }}>
 			<Image source={require('../../assets/images/textLogo.png')} resizeMode="contain" style={{ width: 180, height: 80 }} />
@@ -78,15 +81,15 @@ export default function WithdrawScreen({ navigation }) {
 			</View>
 		</View>
 		<View style={{ marginTop: 'auto' }}>
-			<View style={{ backgroundColor: '#ededed', padding: 20, }}>
+			<View style={{ backgroundColor: colors.lightGray, padding: 20, }}>
 				<BouncyCheckbox
 					size={18}
 					style={{ margin: 0 }}
 					text="안내사항을 모두 확인했으며, 탈퇴 시 회원 정보는 모두 삭제 및 복구가 불가함에 동의합니다 "
-					textStyle={{ fontFamily: 'Neo-Rg', fontSize: 12, color: '#8e8e8f', textDecorationLine: 'none' }}
+					textStyle={{ fontFamily: 'Neo-Rg', fontSize: 12, color: colors.darkGray, textDecorationLine: 'none' }}
 					disableBuiltInState
 					fillColor={chkColor}
-					unfillColor="#ddd"
+					unfillColor={colors.gray}
 					isChecked={!isDisabled}
 					onPress={checkHandle}
 				/>
@@ -98,7 +101,7 @@ export default function WithdrawScreen({ navigation }) {
 
 const styles = StyleSheet.create({
 	withdrawText: {
-		color: '#8e8e8f',
+		color: colors.darkGray,
 		marginBottom: 16,
 		lineHeight: 20
 	}

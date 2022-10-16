@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppContext } from "../../context/app-context";
 import { sendLoginReq } from "../../util/accountAPI";
 
-import defaultStyle from "../style/defaultStyle";
+import defaultStyle, { colors } from "../style/defaultStyle";
 
 import CustomText from "../../components/customText";
 import CustomButton from "../../components/customButton";
@@ -95,7 +95,7 @@ export default function LoginScreen({ navigation, route }) {
 			<View style={{ marginTop: 24, width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
 				<CustomText style={{ textAlign: 'center' }}>계정이 없으신가요?</CustomText>
 				<Pressable onPress={moveRegisterHandle}>
-					<CustomText style={{ color: '#fb5438' }}> 가입하기</CustomText>
+					<CustomText style={{ color: colors.main }}> 가입하기</CustomText>
 				</Pressable>
 			</View>
 		</View>

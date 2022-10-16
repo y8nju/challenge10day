@@ -1,4 +1,4 @@
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native"
+import { Modal, StyleSheet, View } from "react-native"
 import Canvasitem from "./canvasitem"
 
 export default function ImageModal({ onPress,onImg64,imageModalVisible, setImageModalVisible,datauri}) {
@@ -28,8 +28,6 @@ const styles = StyleSheet.create({
 	modalContent: {
 		marginTop: 'auto',
 		width: '100%',
-		borderTopLeftRadius: 32,
-		borderTopRightRadius: 32,
 		backgroundColor: '#fff',
 		overflow: 'hidden',
 	}

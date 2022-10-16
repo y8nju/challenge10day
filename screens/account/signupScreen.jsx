@@ -1,14 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { Alert, Image, Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { AppContext } from "../../context/app-context";
+import { sendRegisterReq } from "../../util/accountAPI";
 
 import defaultStyle from "../style/defaultStyle";
 
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
 import CustomButton from "../../components/customButton";
-import { sendRegisterReq } from "../../util/accountAPI";
-import { AppContext } from "../../context/app-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignupScreen({ navigation }) {
 	const [loading, setLoading] = useState(false);

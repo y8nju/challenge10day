@@ -1,20 +1,20 @@
 import { useEffect, useState, useRef } from "react";
 import { Keyboard, StyleSheet, Switch, TextInput, TouchableWithoutFeedback, View, Pressable, Alert } from "react-native";
-
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { format } from "date-fns";
 import ko from "date-fns/esm/locale/ko/index.js";
 
-import defaultStyle from "../style/defaultStyle";
-
-import CustomText from "../../components/customText";
-import LoadingOverlay from "../../components/loadingOverlay";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import CustomButton from "../../components/customButton";
 import { addchallenge } from "../../util/challengeAPI";
 
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+import defaultStyle, { colors } from "../style/defaultStyle";
+
+import LoadingOverlay from "../../components/loadingOverlay";
+import CustomText from "../../components/customText";
+import CustomButton from "../../components/customButton";
+
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -106,7 +106,7 @@ export default function ChallengeAddScreen({ navigation }) {
 		if (checked) {
 			setChkCOlor('#bbb');
 		} else {
-			setChkCOlor('#fb5438');
+			setChkCOlor(colors.main);
 		}
 	}
 
@@ -150,7 +150,7 @@ export default function ChallengeAddScreen({ navigation }) {
 			{loading && <LoadingOverlay />}
 			<View style={{ paddingHorizontal: 24 }}>
 				<View>
-					<CustomText style={{ textAlign: 'center', fontSize: 16, color: '#8e8e8f', lineHeight: 22 }} type={'hand'}>
+					<CustomText style={{ textAlign: 'center', fontSize: 16, color: colors.darkGray, lineHeight: 22 }} type={'hand'}>
 						10일동안 새로운 습관을 만들어요{'\n'}
 						한 번 만든 습관은 변경이 어려워요! {'\n'}
 						만들기 전 한 번 더 확인해주세요
@@ -165,17 +165,17 @@ export default function ChallengeAddScreen({ navigation }) {
 				</View>
 				<View style={{ marginTop: 30 }}>
 					<View style={styles.row}>
-						<CustomText style={{ flex: 1, color: '#8e8e8f' }}>알림설정</CustomText>
+						<CustomText style={{ flex: 1, color: colors.darkGray }}>알림설정</CustomText>
 						<Switch
-							trackColor={{ false: '#ddd', true: '#e1d3c1' }}
-							thumbColor={isEnabled ? '#ffba5d' : '#f4f3f4'}
-							ios_backgroundColor="#ddd"
+							trackColor={{ false: colors.gray, true: colors.mid }}
+							thumbColor={isEnabled ? colors.sub : '#f4f3f4'}
+							ios_backgroundColor={colors.gray}
 							onValueChange={toggleSwitch}
 							value={isEnabled}
 						/>
 					</View>
 					{isEnabled && <View style={[styles.row, { paddingVerticla: 20, paddingRight: 20 }]}>
-						<CustomText style={{ flex: 1, color: '#8e8e8f' }}>시간</CustomText>
+						<CustomText style={{ flex: 1, color: colors.darkGray }}>시간</CustomText>
 						<Pressable onPress={showTimePicker}>
 							<CustomText>{format(new Date(date), 'p', { locale: ko })}</CustomText>
 						</Pressable>
@@ -196,7 +196,7 @@ export default function ChallengeAddScreen({ navigation }) {
 						text="정해진 시간 안에 인증을 놓쳐도 10일 동안 습관을 계속 유지 합니다"
 						textStyle={{ fontFamily: 'Neo-Lt', fontSize: 12, textDecorationLine: 'none' }}
 						fillColor={chkColor}
-						unfillColor="#ddd"
+						unfillColor={colors.gray}
 						isChecked={checked}
 						onPress={checkHandle}
 					/>

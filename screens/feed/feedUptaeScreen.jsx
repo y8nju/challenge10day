@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { Alert, Dimensions, Image, ImageBackground, Keyboard, KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { useIsFocused} from "@react-navigation/native";
 
+import { updatedata } from "../../util/dataAPI";
 import Emoji from "../../util/emoji";
 
-import defaultStyle from "../style/defaultStyle";
+import defaultStyle, { colors } from "../style/defaultStyle";
 
 import LoadingOverlay from "../../components/loadingOverlay";
 import CustomText from "../../components/customText";
 import HeaderRightButton from "../../components/headerRightButton";
-import { updatedata } from "../../util/dataAPI";
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -67,7 +67,7 @@ export default function FeedUpdateScreen({navigation, route}) {
 		])
 	}
 	return(<SafeAreaView>
-		<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "position" : 'scroll'} style={{ backgroundColor: '#f2f2f2' }}>
+		<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "position" : 'scroll'} style={{ backgroundColor: colors.bg }}>
 			<TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
 				<>{loading && <LoadingOverlay />}
 					<ScrollView style={{ marginBottom: 36 }}>
@@ -96,12 +96,12 @@ const styles = StyleSheet.create({
 	imageArea: {
 		width: windowWidth,
 		height: windowWidth,
-		backgroundColor: '#ddd'
+		backgroundColor: colors.gray
 	},
 	row: {
 		flexDirection: 'row', 
 		alignItems: 'center',
-		borderBottomColor: '#ddd', 
+		borderBottomColor: colors.gray, 
 		borderBottomWidth: 1, 
 		marginBottom: 16, 
 		paddingBottom: 12

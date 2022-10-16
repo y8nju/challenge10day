@@ -1,10 +1,22 @@
 import { StyleSheet } from "react-native";
 
+
+export const colors ={
+	main: '#fb5438', 
+	sub: '#ffba5d',
+	mid: '#e1d3c1',
+	black: '#504d49',
+	darkGray: '#8e8e8f',
+	gray: '#ddd',
+	lightGray: '#ededed',
+	bg: '#f2f2f2'
+}
+
 export default defaultStyle = StyleSheet.create({
 	wrap: {
 		flex: 1,
 		paddingVertical: 30,
-		backgroundColor: '#f2f2f2',
+		backgroundColor: colors.bg,
 		position: 'relative'
 	},
 	inputArea: {
@@ -15,9 +27,9 @@ export default defaultStyle = StyleSheet.create({
 		height: 40,
 		fontFamily: 'Neo-Rg',
 		borderWidth: 1,
-		borderColor: '#ddd',
+		borderColor: colors.gray,
 		borderRadius: 4,
-		backgroundColor: '#f2f2f2',
+		backgroundColor: colors.bg,
 		padding: 10,
 	},
 	inputTitle: {
@@ -29,9 +41,9 @@ export default defaultStyle = StyleSheet.create({
 		textAlign: 'justify',
 		lineHeight: 24,
 		borderWidth: 1,
-		borderColor: '#ddd',
+		borderColor: colors.gray,
 		borderRadius: 4,
-		backgroundColor: '#f2f2f2',
+		backgroundColor: colors.bg,
 		padding: 10,
 		textAlignVertical: "top",
 	},

@@ -1,10 +1,13 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { Dimensions, FlatList, ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { getalldata } from "../../util/dataAPI";
+import { colors } from "../style/defaultStyle";
+
 import NotContent from "../../components/notContentComponent ";
 import NotLogin from "../../components/notLogin";
-import { getalldata } from "../../util/dataAPI";
 
 const SERVER_IP = "http://192.168.219.100:8080"
 
@@ -62,7 +65,7 @@ export default function FeedScreen({ navigation }) {
 	}
 	return (<>
 		{!login && <NotLogin />}
-		{login && <View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
+		{login && <View style={{ flex: 1, backgroundColor: colors.bg }}>
 			{feedList.length == 0 && <NotContent type="피드" />}
 			{feedList.length > 0 ? <FlatList style={{ flex: 1 }} data={feedList}
 				keyExtractor={({ _id }) => _id}
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
 	itemArea: {
 		width: (windowWidth - 6) / 3,
 		height: (windowWidth - 6) / 3,
-		backgroundColor: '#ddd',
+		backgroundColor: colors.gray,
 		margin: 1,
 	}
 })

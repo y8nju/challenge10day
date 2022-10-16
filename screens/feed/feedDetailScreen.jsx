@@ -4,6 +4,8 @@ import { useIsFocused} from "@react-navigation/native";
 
 import Emoji from "../../util/emoji";
 
+import { colors } from "../style/defaultStyle";
+
 import CustomText from "../../components/customText";
 import HeaderRightButton from "../../components/headerRightButton";
 
@@ -32,7 +34,7 @@ export default function FeedDetailScreen({navigation, route}) {
 		}
 	}, [focused])
 	
-	return(<View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
+	return(<View style={{flex: 1, backgroundColor: colors.bg}}>
 		<View style={styles.imageArea}>
 			<ImageBackground source={{uri:data.imgURI}} resizeMode="cover" style={{flex: 1}}/>
 		</View>
@@ -51,12 +53,12 @@ const styles = StyleSheet.create({
 	imageArea: {
 		width: windowWidth,
 		height: windowWidth,
-		backgroundColor: '#ddd'
+		backgroundColor: colors.gray
 	},
 	row: {
 		flexDirection: 'row', 
 		alignItems: 'center',
-		borderBottomColor: '#ddd', 
+		borderBottomColor: colors.gray, 
 		borderBottomWidth: 1, 
 		marginBottom: 16, 
 		paddingBottom: 12

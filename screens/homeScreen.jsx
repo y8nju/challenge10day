@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { FlatList, Pressable, StyleSheet, Text, ToastAndroid, View } from "react-native"
-import { CommonActions, useIsFocused } from "@react-navigation/native";
+import { FlatList, Pressable, StyleSheet, ToastAndroid, View } from "react-native"
+import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { readchallenge } from "../util/challengeAPI";
 
-import defaultStyle from "./style/defaultStyle"
+import defaultStyle, { colors } from "./style/defaultStyle"
+
 import ChallengeItem from "../components/challengeItem";
 import CustomText from "../components/customText";
 import NotLogin from "../components/notLogin";
@@ -109,7 +110,7 @@ export default function HomeScreen({ navigation, route }) {
 							} else if(elm.checked === null && elm.data.length === 10){
 								return elm
 							}
-						 })
+						})
 					}
 					setChallengeList(data??[])
 				}
@@ -130,16 +131,16 @@ export default function HomeScreen({ navigation, route }) {
 				<View style={styles.row}>
 					{/* 챌린지 타입 선택 */}
 					<Pressable onPress={() => selChallengeType('ing')}
-						style={[styles.selBtn, challengetype == 'ing' ? { backgroundColor: '#8e8e8f' } : { backgroundColor: '#fff' }]}>
-						<CustomText style={[challengetype == 'ing' ? { color: '#fff' } : { color: '#8e8e8f' }]}>진행 중</CustomText>
+						style={[styles.selBtn, challengetype == 'ing' ? { backgroundColor: colors.darkGray } : { backgroundColor: '#fff' }]}>
+						<CustomText style={[challengetype == 'ing' ? { color: '#fff' } : { color: colors.darkGray }]}>진행 중</CustomText>
 					</Pressable>
 					<Pressable onPress={() => selChallengeType('false')}
-						style={[styles.selBtn, challengetype == 'false' ? { backgroundColor: '#8e8e8f' } : { backgroundColor: '#fff' }]}>
-						<CustomText style={[challengetype == 'false' ? { color: '#fff' } : { color: '#8e8e8f' }]}>실패</CustomText>
+						style={[styles.selBtn, challengetype == 'false' ? { backgroundColor: colors.darkGray } : { backgroundColor: '#fff' }]}>
+						<CustomText style={[challengetype == 'false' ? { color: '#fff' } : { color: colors.darkGray }]}>실패</CustomText>
 					</Pressable>
 					<Pressable onPress={() => selChallengeType('success')}
-						style={[styles.selBtn, challengetype == 'success' ? { backgroundColor: '#8e8e8f' } : { backgroundColor: '#fff' }]}>
-						<CustomText style={[challengetype == 'success' ? { color: '#fff' } : { color: '#8e8e8f' }]}>완료</CustomText>
+						style={[styles.selBtn, challengetype == 'success' ? { backgroundColor: colors.darkGray } : { backgroundColor: '#fff' }]}>
+						<CustomText style={[challengetype == 'success' ? { color: '#fff' } : { color: colors.darkGray }]}>완료</CustomText>
 					</Pressable>
 				</View>
 				{challengeList.length==0 && <NotContent type="챌린저스" />}
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
 		bottom: 30,
 		right: 24,
 		borderRadius: 50,
-		backgroundColor: '#fb5438',
+		backgroundColor: colors.main,
 		overflow: 'hidden',
 		shadowColor: "#000",
 		shadowOffset: {

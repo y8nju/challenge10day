@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { launchCameraAsync, PermissionStatus, useCameraPermissions } from "expo-image-picker";
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { colors } from '../screens/style/defaultStyle';
 
 
 export default function Cameraitem({onPress}) {
@@ -51,8 +52,8 @@ const styles = StyleSheet.create({
 		width: 110,
 		height: 110,
 		borderWidth: 1,
-		borderColor: '#ddd',
+		borderColor: colors.gray,
 		borderRadius: 4,
-		backgroundColor: "#ededed",
+		backgroundColor: colors.lightGray,
 	},
 })

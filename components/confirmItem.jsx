@@ -1,6 +1,7 @@
 import { Dimensions, ImageBackground, Pressable, StyleSheet } from 'react-native';
-import CustomText from './customText';
 import Emoji from "../util/emoji"
+import { colors } from '../screens/style/defaultStyle';
+import CustomText from './customText';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -11,7 +12,7 @@ export default function ConfirmItem({ data,onModal }) {
             // 인증할 수 있는 아이템도 해당 조건에 추가
             return (<Pressable onPress={()=>{onModal(data.num)}}
                 style={[styles.itemArea, { backgroundColor: '#fff' }]}>
-                <CustomText type={'hand'} style={{ color: '#ffba5d', fontSize: 24 }}>{data.num}</CustomText>
+                <CustomText type={'hand'} style={{ color: colors.sub, fontSize: 24 }}>{data.num}</CustomText>
             </Pressable>)
         }
         return (<Pressable style={[styles.itemArea, { backgroundColor: '#e9e9e9' }]}>
