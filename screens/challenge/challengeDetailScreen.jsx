@@ -48,6 +48,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 			}
 		};
 		let newArr = []
+		if(data.checked == null){
 		if (data.data.length > 0) {
 			let afterArr = data.data.sort((a, b) => a.day - b.day)
 			for (let i = 0; i < afterArr[afterArr.length - 1].day; i++) {
@@ -59,6 +60,11 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 				}
 			}
 		}
+	} else {
+		if(data.data.length > 0){
+			newArr = [...data.data]
+		}
+	}
 		let confirmArr2 = newArr
 		let confirmArr3;
 		if (confirmArr2.length > 0) {
