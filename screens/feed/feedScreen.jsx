@@ -33,7 +33,6 @@ const windowWidth = Dimensions.get('window').width;
 export default function FeedScreen({ navigation }) {
 	const [login, setLogin] = useState(false);
 	const [feedList, setFeedList] = useState([]); // feed 데이터 들어옴
-	const focused = useIsFocused()
 	useEffect(() => {
 		AsyncStorage.getItem("authentication").then((data) => {
 			const token = JSON.parse(data)
@@ -55,7 +54,7 @@ export default function FeedScreen({ navigation }) {
 			setFeedList(newData);
 		}
 		}()
-	}, [focused])
+	}, [login])
 
 
 	function FeedItem({ data }) {
