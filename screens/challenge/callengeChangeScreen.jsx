@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Keyboard, StyleSheet, Switch, TextInput, TouchableWithoutFeedback, View, Pressable, Alert } from "react-native";
+import { Keyboard, StyleSheet, Switch, TextInput, TouchableWithoutFeedback, View, Pressable, Alert, Platform } from "react-native";
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -62,19 +62,27 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 	const confirmHandle = async (time) => {
 		setDatePickerVisibility(false);
 
+		if(data.isnotification === true){
 		let datad = await Notifications.getAllScheduledNotificationsAsync();
-
+		console.log("datad",datad);
 		let itentifier = datad.find(elm => {
-			if (title == elm.content.body && elm.trigger.dateComponents.hour == new Date(data.hournotification).getHours() &&
+			if(Platform.OS === "android"){
+				if (title == elm.content.body && elm.trigger.hour == new Date(data.hournotification).getHours() &&
+				elm.trigger.minute == new Date(data.hournotification).getMinutes()) {
+				return true
+			}
+			} else if (Platform.OS==="ios"){
+				if (title == elm.content.body && elm.trigger.dateComponents.hour == new Date(data.hournotification).getHours() &&
 				elm.trigger.dateComponents.minute == new Date(data.hournotification).getMinutes()) {
 				return true
+			}
 			}
 		})
 		
 		let cancelid = itentifier.identifier
 
 		await Notifications.cancelScheduledNotificationAsync(cancelid)
-
+	}
 		//알림 설정.
 		await Notifications.scheduleNotificationAsync({
 			content: {
@@ -100,12 +108,20 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			response = await updatechallenge(data._id, checked, isEnabled)
 			if (response.type === true) {
 				let datad = await Notifications.getAllScheduledNotificationsAsync();
-
+				console.log("datad",datad);
 				let itentifier = datad.find(elm => {
-					if (title == elm.content.body && elm.trigger.dateComponents.hour == new Date(data.hournotification).getHours() &&
+					if(Platform.OS === "android"){
+						if (title == elm.content.body && elm.trigger.hour == new Date(data.hournotification).getHours() &&
+						elm.trigger.minute == new Date(data.hournotification).getMinutes()) {
+						return true
+					}
+					} else if (Platform.OS==="ios"){
+						if (title == elm.content.body && elm.trigger.dateComponents.hour == new Date(data.hournotification).getHours() &&
 						elm.trigger.dateComponents.minute == new Date(data.hournotification).getMinutes()) {
 						return true
 					}
+					}
+					
 				})
 				await Notifications.cancelScheduledNotificationAsync(itentifier.identifier)
 			}
