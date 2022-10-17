@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 
-const SERVER_IP = "http://192.168.4.97:8080"
+const SERVER_IP = process.env.SERVER_IP
 // 데이터 등록
 export async function adddata(imgData, day, emoji, comment, targetId) {
     const data = await AsyncStorage.getItem("authentication");

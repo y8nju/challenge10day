@@ -1,0 +1,24 @@
+{
+  "cli": {
+    "version": ">= 2.4.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "env": {
+        "SERVER_IP": "http://192.168.4.97:8080"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

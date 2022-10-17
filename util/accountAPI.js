@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const SERVER_IP = "http://192.168.4.97:8080"
+const SERVER_IP = process.env.SERVER_IP
 // 로그인 인증
 export async function sendLoginReq(userId, password) {
     const response = await axios.post(SERVER_IP + "/api/account/auth", {

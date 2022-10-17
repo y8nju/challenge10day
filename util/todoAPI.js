@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const SERVER_IP = "http://192.168.4.97:8080"
+const SERVER_IP = process.env.SERVER_IP
 // todo 생성
 export async function addtodo(todoText) {
     const data = await AsyncStorage.getItem("authentication");

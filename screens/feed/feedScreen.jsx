@@ -10,7 +10,7 @@ import NotContent from "../../components/notContentComponent ";
 import NotLogin from "../../components/notLogin";
 import { AppContext } from "../../context/app-context";
 
-const SERVER_IP = "http://192.168.4.97:8080"
+const SERVER_IP = process.env.SERVER_IP
 
 const windowWidth = Dimensions.get('window').width;
 // const dumi = [
