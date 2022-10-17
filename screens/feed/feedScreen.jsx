@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Dimensions, FlatList, ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
+import { Dimensions, FlatList, Image, ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -53,7 +53,7 @@ export default function FeedScreen({ navigation }) {
 
 	function FeedItem({ data }) {
 		return (<Pressable style={styles.itemArea} onPress={() => navigation.navigate('feedDetail', { data: data })}>
-			<ImageBackground source={{ uri: data.imgURI }} resizeMode="cover" style={{ flex: 1 }} />
+			<Image source={{ uri: data.imgURI }} resizeMode="cover" style={{ width: "100%", height: '110%' }} />
 		</Pressable>)
 	}
 	return (<>
@@ -74,5 +74,6 @@ const styles = StyleSheet.create({
 		height: (windowWidth - 6) / 3,
 		backgroundColor: colors.gray,
 		margin: 1,
+		justifyContent: 'flex-end'
 	}
 })
