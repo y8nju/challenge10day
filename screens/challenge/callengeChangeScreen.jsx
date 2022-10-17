@@ -46,13 +46,11 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 	}, []);
 
 	const { data } = route.params;
-	console.log(data);
 	const [loading, setLoading] = useState(false);
 	const [title, setTitle] = useState(data.title)
 	// 알림 설정했으면 true, 아니면 false
 	const [isEnabled, setIsEnabled] = useState(data.isnotification);
 	const [date, setDate] = useState(new Date(data.hournotification) ?? new Date());
-	console.log(date);
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const [checked, setChecked] = useState(true);
 	const [chkColor, setChkCOlor] = useState(colors.main);
@@ -116,8 +114,6 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 				confirmHandle(date);
 			}
 		}
-		console.log("data",response);
-		console.log("is",isEnabled)
 		if (response.type === true) {
 			// 챌린지 추가
 			setLoading(true);
