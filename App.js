@@ -155,7 +155,7 @@ export default function App() {
 	}
 	return (<>
 		<RootSiblingParent> 
-			<StatusBar style="auto" />
+			<StatusBar style="light" />
 			<AppContextProvider>
 				<NavigationContainer>
 					<Tab.Navigator screenOptions={{

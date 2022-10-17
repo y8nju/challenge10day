@@ -105,7 +105,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 
 		let response;
 		if (isEnabled === false) {
-			response = await updatechallenge(data._id, checked, isEnabled)
+			response = await updatechallenge(data._id, checked, title, isEnabled)
 			if(data.isnotification === true){
 				if (response.type === true) {
 				let datad = await Notifications.getAllScheduledNotificationsAsync();
@@ -128,7 +128,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			}
 		}
 		} else if (isEnabled === true) {
-			response = await updatechallenge(data._id, checked, isEnabled, date)
+			response = await updatechallenge(data._id, checked, title, isEnabled, date)
 			if (response.type === true) {
 				confirmHandle(date);
 			}

@@ -46,32 +46,34 @@ export default function Canvasitem({ onPress,datauri,onImg64 }) {
 	return (
 		<Pressable style={{flex:1}}>
 			<View style={{ flex: 1,justifyContent: 'center', alignItems: 'center',backgroundColor:"#000" }}>
-				<Canvas style={{ flex: 1, width: "100%", height: "100%" }} ref={ref}>
-					{image && (
-						<Image
-							image={image}
-							fit="contain"
-							x={0}
-							y={screen.height/4}
-							width={screen.width}
-							height={screen.width}
+				<View style={styles.imageWrap}>
+					<Canvas style={{ flex: 1, width: "100%", height: "100%" }} ref={ref}>
+						{image && (
+							<Image
+								image={image}
+								fit="contain"
+								x={0}
+								y={0}
+								width={screen.width}
+								height={screen.width}
+							/>
+						)}
+						<Text
+							x={screen.width / 2 - (fontSize*6) / 2 }
+							y={screen.width / 2}
+							text={todayDate+" ("+todayDay+")"}
+							font={dateFont}
+							color="white"
 						/>
-					)}
-					<Text
-						x={screen.width / 2 - (fontSize*6) / 2 }
-						y={screen.width + fontSize * 0.5}
-						text={todayDate+" ("+todayDay+")"}
-						font={dateFont}
-						color="white"
-					/>
-					<Text
-						x={screen.width / 4}
-						y={screen.width + fontSize * 2.5}
-						text={todayTime}
-						font={timeFont}
-						color="white"
-					/>
-				</Canvas>
+						<Text
+							x={screen.width / 4}
+							y={screen.width / 2 + fontSize * 2}
+							text={todayTime}
+							font={timeFont}
+							color="white"
+						/>
+					</Canvas>
+				</View>
 				<View style={{position:"absolute", bottom:40, flexDirection:"row", justifyContent: 'space-between', width: '100%' }}>
 					<CustomButton onPress={cancelHandle} title="취소" color="transparent" textStyle={{fontSize: 14}} style={{marginLeft: 50}} />
 					<CustomButton onPress={pressHandle} title="확인" color="transparent" textStyle={{color: "#fb5538", fontSize: 14}} style={{marginRight: 50}} />
@@ -82,4 +84,8 @@ export default function Canvasitem({ onPress,datauri,onImg64 }) {
 }
 
 const styles = StyleSheet.create({
+	imageWrap: {
+		width: screen.width,
+		height: screen.width
+	}
 })

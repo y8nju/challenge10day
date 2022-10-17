@@ -53,7 +53,7 @@ export default function FeedScreen({ navigation }) {
 
 	function FeedItem({ data }) {
 		return (<Pressable style={styles.itemArea} onPress={() => navigation.navigate('feedDetail', { data: data })}>
-			<Image source={{ uri: data.imgURI }} resizeMode="cover" style={{ width: "100%", height: '110%' }} />
+			<Image source={{ uri: data.imgURI }} resizeMode="cover" style={{ flex: 1 }} />
 		</Pressable>)
 	}
 	return (<>

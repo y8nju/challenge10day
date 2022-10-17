@@ -79,6 +79,7 @@ export default function TodoScreen({ navigation, route }) {
 			} catch (e) {
 				console.log(e);
 			}
+			setTodo('');
 			setLoading(false);
 		}();
 	}

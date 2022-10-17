@@ -236,7 +236,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 
 									{img64 && <Pressable style={styles.cameraArea}>
 										<View style={{ width: 110, height: 110, justifyContent: 'flex-end', alignItems: 'center'}}>
-											<Image style={{ width: 110, height: 120 }} source={{ uri: `data:image/jpeg;base64,${img64}` }} resizeMode={"cover"} />
+											<Image style={{ width: '100%', height: '100%' }} source={{ uri: `data:image/jpeg;base64,${img64}` }} resizeMode={"cover"} />
 										</View>
 									</Pressable>}
 									<TextInput style={[defaultStyle.textArea, { flex: 1, height: 110, backgroundColor: '#fff', marginLeft: 10 }]}

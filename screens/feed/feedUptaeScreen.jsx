@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
 	imageArea: {
 		width: windowWidth,
 		height: windowWidth,
-		backgroundColor: colors.gray
+		backgroundColor: '#f2f2f2',
 	},
 	row: {
 		flexDirection: 'row', 

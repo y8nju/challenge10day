@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { Dimensions, Image, ImageBackground, StyleSheet, View } from "react-native";
 import { useIsFocused} from "@react-navigation/native";
 
 import Emoji from "../../util/emoji";
@@ -36,7 +36,7 @@ export default function FeedDetailScreen({navigation, route}) {
 	
 	return(<View style={{flex: 1, backgroundColor: colors.bg}}>
 		<View style={styles.imageArea}>
-			<Image source={{uri:data.imgURI}} resizeMode="cover" style={{width: '100%', height: "110%"}}/>
+			<ImageBackground source={{uri:data.imgURI}} resizeMode="cover" style={{ width: '100%', height: '100%' }} />
 		</View>
 		<View style={{padding: 26}}>
 			<View style={styles.row}>
@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
 		width: windowWidth,
 		height: windowWidth,
 		backgroundColor: '#f2f2f2',
-		justifyContent: 'flex-end'
 	},
 	row: {
 		flexDirection: 'row', 

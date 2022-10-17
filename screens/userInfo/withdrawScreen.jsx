@@ -75,8 +75,7 @@ export default function WithdrawScreen({ navigation }) {
 					· 탈퇴 시, 작심10일 서비스 이용이 불가해요.
 				</CustomText>
 				<CustomText style={styles.withdrawText}>
-					· 작심10일 서비스를 탈퇴하더라도 등록하신 챌린지와 피드는 유지돼요.{'\n'}
-					작심10일 서비스에 등록한 챌린지와 피드 삭제를 원하시는 경우, 탈퇴 전 삭제해 주세요
+					· 작심10일 서비스를 탈퇴 시, 챌린지와 피드는 모두 삭제됩니다
 				</CustomText>
 			</View>
 		</View>
