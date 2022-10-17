@@ -68,7 +68,11 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 					confirmArr2.push({ day: confirmArr2.length + 1, confirm: false });
 				}
 			}
-			confirmArr3 = confirmArr2.concat(confirmArr.slice(-(confirmArr.length - confirmArr2.length)));
+			if(confirmArr2.length !== 10){
+				confirmArr3 = confirmArr2.concat(confirmArr.slice(-(confirmArr.length - confirmArr2.length)));
+			} else if( confirmArr2.length == 10){
+				confirmArr3 = confirmArr2
+			}
 			setConfirmList(confirmArr3);
 		} else {
 			confirmArr3 = confirmArr;

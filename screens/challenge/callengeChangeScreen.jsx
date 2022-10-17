@@ -62,7 +62,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 	const confirmHandle = async (time) => {
 		setDatePickerVisibility(false);
 
-		if(data.isnotification === true){
+		if(data.isnotification === true && isEnabled === true){
 		let datad = await Notifications.getAllScheduledNotificationsAsync();
 		console.log("datad",datad);
 		let itentifier = datad.find(elm => {
@@ -106,7 +106,8 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 		let response;
 		if (isEnabled === false) {
 			response = await updatechallenge(data._id, checked, isEnabled)
-			if (response.type === true) {
+			if(data.isnotification === true){
+				if (response.type === true) {
 				let datad = await Notifications.getAllScheduledNotificationsAsync();
 				console.log("datad",datad);
 				let itentifier = datad.find(elm => {
@@ -125,12 +126,15 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 				})
 				await Notifications.cancelScheduledNotificationAsync(itentifier.identifier)
 			}
+		}
 		} else if (isEnabled === true) {
 			response = await updatechallenge(data._id, checked, isEnabled, date)
 			if (response.type === true) {
 				confirmHandle(date);
 			}
 		}
+
+
 		if (response.type === true) {
 			// 챌린지 추가
 			setLoading(true);
