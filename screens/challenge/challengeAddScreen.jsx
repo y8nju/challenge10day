@@ -60,6 +60,8 @@ export default function ChallengeAddScreen({ navigation }) {
 	};
 	const confirmHandle = (time) => {
 		setDatePickerVisibility(false);
+		console.log("선택시간: ", time);
+		console.log(format(new Date(time), 'ppp', { locale: ko }))
 		// 선택된 시간 확인하기!
 		setDate(time)
 
@@ -183,7 +185,7 @@ export default function ChallengeAddScreen({ navigation }) {
 							isVisible={isDatePickerVisible}
 							mode="time"
 							date={date}
-							onConfirm={(data)=>{setDate(data);setDatePickerVisibility(false);}}
+							onConfirm={(data) => { setDate(data); setDatePickerVisibility(false); }}
 							onCancel={() => setDatePickerVisibility(false)}
 						/>
 					</View>}
