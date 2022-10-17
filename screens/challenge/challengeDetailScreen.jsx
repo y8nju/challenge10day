@@ -21,6 +21,7 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function ChallengeDetailScreen({ navigation, route }) {
 	const { data } = route.params
+	const {challengetype} = route.params
 	const [loading, setLoading] = useState(false);
 	const [confirmList, setConfirmList] = useState([]);
 	const [confirmBtn, setConfirmBtn] = useState(false);
@@ -44,41 +45,29 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 			}
 		};
 		let newArr = []
-		if (data.checked == null) {
-			if (data.data.length > 0) {
-				let afterArr = data.data.sort((a, b) => a.day - b.day)
-				for (let i = 0; i < afterArr[afterArr.length - 1].day; i++) {
-					if (afterArr[i]?.day) {
-						newArr[afterArr[i]?.day - 1] = afterArr[i]
-					}
-					if (newArr[i] === undefined) {
-						newArr[i] = ({ day: null, confirm: false })
-					}
+		if (data.data.length > 0) {
+			let afterArr = data.data.sort((a, b) => a.day - b.day)
+			for (let i = 0; i < afterArr[afterArr.length - 1].day; i++) {
+				if (afterArr[i]?.day) {
+					newArr[afterArr[i]?.day - 1] = afterArr[i]
 				}
-			}
-		} else if(data.checked === "true") {
-			if (data.data.length > 0) {
-				newArr = [...data.data]
+				if (newArr[i] === undefined) {
+					newArr[i] = ({ day: null, confirm: false })
+				}
 			}
 		}
 		let confirmArr2 = newArr
 		let confirmArr3;
-		if (confirmArr2.length > 0) {
-			if(data.checked == null){
+		if (confirmArr2.length > 0 ) {
 			let today = new Date().getDate();
 			let lastDate = new Date(confirmArr2[confirmArr2.length - 1].createAt).getDate();
 			for (let j = (today - lastDate); j > 0; j--) {
-				if (j == 1) {
+				if (j == 1 && challengetype !== "false") {
 					confirmArr2.push({ day: 0, num: confirmArr2.length + 1 });
 				} else if (j > 1) {
 					confirmArr2.push({ day: confirmArr2.length + 1, confirm: false });
 				}
 			}
-		} else {
-			if(new Date().getDate()-new Date(confirmArr2[confirmArr2.length-1].createAt).getDate()>0){
-				confirmArr2.push({ day: 0, num: Number((confirmArr2[confirmArr2.length-1].day))+1 });
-			}
-		}
 			confirmArr3 = confirmArr2.concat(confirmArr.slice(-(confirmArr.length - confirmArr2.length)));
 			setConfirmList(confirmArr3);
 		} else {
@@ -193,7 +182,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 			<View style={{ flex: 1, paddingHorizontal: 26 }}>
 				<View style={{ marginBottom: 20, alignItems: 'center' }}>
 					<CustomText style={{ fontSize: 20, color: colors.main }} weight={500}>{data.title}</CustomText>
-					<CustomText style={{ color: colors.darkGray, marginTop: 8 }}>{format(new Date(data.createdAt), 'P', { locale: ko })} ~</CustomText>
+					{data.data.length > 0 && <CustomText style={{ color: colors.darkGray, marginTop: 8 }}>{format(new Date(data.data[0]?.createAt??null), 'P', { locale: ko })} ~</CustomText>}
 				</View>
 				<View>
 					{confirmList ? <FlatList data={confirmList}

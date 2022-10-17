@@ -58,12 +58,12 @@ export default function ChallengeAddScreen({ navigation }) {
 	const showTimePicker = () => {
 		setDatePickerVisibility(true);
 	};
-	const confirmHandle = (time) => {
+	const confirmHandle = async (time) => {
 		setDatePickerVisibility(false);
 		// 선택된 시간 확인하기!
 		setDate(time)
 
-		Notifications.scheduleNotificationAsync({
+	 	await Notifications.scheduleNotificationAsync({
 			content: {
 				title: "Challenge's 10 Days",
 				body: title,
@@ -72,11 +72,16 @@ export default function ChallengeAddScreen({ navigation }) {
 
 			//원하는 시간으로 변경
 			trigger: {
+				channelId:title,
 				hour: Number(format(new Date(time), 'H', { locale: ko })),
 				minute: Number(format(new Date(time), 'm'), { locale: ko }),
 				repeats: true,
 			},
 		});
+
+		let data = await Notifications.getAllScheduledNotificationsAsync();
+		console.log(data[0].trigger.dateComponents);
+
 	};
 
 

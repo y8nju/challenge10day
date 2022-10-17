@@ -79,27 +79,28 @@ export default function HomeScreen({ navigation, route }) {
 					let data
 					if(challengetype === "ing"){
 						data = response.result.filter((elm)=>{
-							if(elm.checked === "true" && elm.data.length<10){
-								return elm
-							} else if(elm.checked === null){
-								if(elm.data[0] !== undefined && (new Date().getDate() - new Date(elm.data[0].createAt).getDate())<=10){
+							if(elm.checked === true){
+								if(elm.data[0]?.createAt == undefined){
 									return elm
-								} else if(elm.data[0] === undefined){
+								} else if(elm.data[0]?.createAt !== undefined && (Date.now() - new Date(elm.data[0]?.createAt))<864000000){
+									return elm
+								}
+							} else if((elm.checked === null || elm.checked === false)){
+								if(elm.data[0]?.createAt == undefined){
+									return elm
+								} else if(elm.data[0]?.createAt !== undefined && (Date.now() - new Date(elm.data[elm.data.length-1].createAt)< 86400000)){
 									return elm
 								}
 							}
 						})
-					} else if(challengetype === "false"){
+					} else if(challengetype === false){
 						data = response.result.filter((elm)=>{
-						if(elm.checked === null && elm.data.length < 10){
-							if(elm.data[0] !== undefined && (new Date().getDate() - new Date(elm.data[0].createAt).getDate())>10){
+						if((elm.checked === null || elm.checked === false) && (Date.now() - new Date(elm.data[elm.data.length-1]?.createAt) > 86400000)){
 								return elm
-							}
-						}
-					})
+						}})
 					} else if(challengetype === "success"){
 						data = response.result.filter((elm)=>{
-							if(elm.checked === "true" && elm.data.length===10){
+							if(elm.checked === true && (Date.now() - new Date(elm.data[0]?.createAt))>864000000){
 								return elm
 							} else if(elm.checked === null && elm.data.length === 10){
 								return elm
@@ -140,7 +141,7 @@ export default function HomeScreen({ navigation, route }) {
 				{challengeList.length==0 && <NotContent type="챌린저스" />}
 				{challengeList.length>0 && <FlatList style={{ flex: 1 }} data={challengeList}
 					keyExtractor={({ _id }) => _id}
-					renderItem={({ item }) => <ChallengeItem data={item} />}
+					renderItem={({ item }) => <ChallengeItem data={item} challengetype={challengetype} />}
 				/>}
 			</View>
 			<View style={styles.addBtn}>

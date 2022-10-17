@@ -57,11 +57,11 @@ export async function readonechallenge(id) {
 }
 
 //챌린지 시간 수정하기
-export async function updatechallenge(id, isnotification, hournotification = null) {
+export async function updatechallenge(id,checked, isnotification, hournotification = null) {
     const data = await AsyncStorage.getItem("authentication");
     const datad = JSON.parse(data);
     const response = await axios.put(SERVER_IP + "/api/challenge/updatechallenge", {
-        id, isnotification, hournotification
+        id,checked ,isnotification, hournotification
     }, {
         headers: {
             common: {

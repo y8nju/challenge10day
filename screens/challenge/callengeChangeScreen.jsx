@@ -52,37 +52,40 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 	const [isEnabled, setIsEnabled] = useState(data.isnotification);
 	const [date, setDate] = useState(new Date(data.hournotification) ?? new Date());
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-	const [checked, setChecked] = useState(true);
+	const [checked, setChecked] = useState(data.checked);
 	const [chkColor, setChkCOlor] = useState(colors.main);
 
 	const showTimePicker = () => {
 		setDatePickerVisibility(true);
 	};
 
-	const confirmHandle = (time) => {
+	const confirmHandle = async (time) => {
 		setDatePickerVisibility(false);
-		//알림 설정.
-		const identifier = Notifications.cancelAllScheduledNotificationsAsync({
-			content: {
-				title: '알림이 취소되었습니다.',
-				body: "알림이 취소되었습니다.",
-				data: { data: 'data' },
-			},
-			trigger: {
-				second: 1,
-			}
-		});
-		Notifications.cancelAllScheduledNotificationsAsync(identifier);
 
-		Notifications.scheduleNotificationAsync({
+		let datad = await Notifications.getAllScheduledNotificationsAsync();
+
+		let itentifier = datad.find(elm => {
+			if (title == elm.content.body && elm.trigger.dateComponents.hour == new Date(data.hournotification).getHours() &&
+				elm.trigger.dateComponents.minute == new Date(data.hournotification).getMinutes()) {
+				return true
+			}
+		})
+		
+		let cancelid = itentifier.identifier
+
+		await Notifications.cancelScheduledNotificationAsync(cancelid)
+
+		//알림 설정.
+		await Notifications.scheduleNotificationAsync({
 			content: {
 				title: "Challenge's 10 Days",
-				body: `${Number(format(new Date(time), 'H', { locale: ko, format: ' HH:mm:ss' }))} : ${Number(format(new Date(time), 'm', { locale: ko, format: ' MM:dd HH:mm' }))} 시간으로 변경되었습니다.`,
-				data: { data: 'data' },
+				body: title,
+
 			},
 
 			//원하는 시간으로 변경
 			trigger: {
+				channelId: title,
 				hour: Number(format(new Date(time), 'H', { locale: ko })),
 				minute: Number(format(new Date(time), 'm'), { locale: ko }),
 				repeats: true,
@@ -94,23 +97,21 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 
 		let response;
 		if (isEnabled === false) {
-			response = await updatechallenge(data._id, isEnabled)
-			if(response.type === true){
-			const identifier = Notifications.cancelAllScheduledNotificationsAsync({
-				content: {
-					title: '알림이 취소되었습니다.',
-					body: "알림이 취소되었습니다.",
-					data: { data: 'data' },
-				},
-				trigger: {
-					second: 1,
-				}
-			});
-			Notifications.cancelAllScheduledNotificationsAsync(identifier);
-		}
-		} else if(isEnabled === true) {
-			response = await updatechallenge(data._id, isEnabled, date)
-			if(response.type === true){
+			response = await updatechallenge(data._id, checked, isEnabled)
+			if (response.type === true) {
+				let datad = await Notifications.getAllScheduledNotificationsAsync();
+
+				let itentifier = datad.find(elm => {
+					if (title == elm.content.body && elm.trigger.dateComponents.hour == new Date(data.hournotification).getHours() &&
+						elm.trigger.dateComponents.minute == new Date(data.hournotification).getMinutes()) {
+						return true
+					}
+				})
+				await Notifications.cancelScheduledNotificationAsync(itentifier.identifier)
+			}
+		} else if (isEnabled === true) {
+			response = await updatechallenge(data._id, checked, isEnabled, date)
+			if (response.type === true) {
 				confirmHandle(date);
 			}
 		}
@@ -132,7 +133,7 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 
 	}
 
-	const toggleSwitch = () => {setIsEnabled(previousState => !previousState)};
+	const toggleSwitch = () => { setIsEnabled(previousState => !previousState) };
 
 	const checkHandle = () => {
 		setChecked(!checked);
