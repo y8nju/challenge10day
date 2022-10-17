@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet, ToastAndroid, View } from "react-native"
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -13,12 +13,14 @@ import CustomText from "../components/customText";
 import NotLogin from "../components/notLogin";
 import IosToast from "../components/iosToast";
 import NotContent from "../components/notContentComponent ";
+import { AppContext } from "../context/app-context";
 
 export default function HomeScreen({ navigation, route }) {
+	const ctx = useContext(AppContext)
 	const [loading, setLoading] = useState(false);
 	const [challengetype, selChallengeType] = useState('ing'); // 진행 중: ing, 실패: false, 완료: success << 상태에 따라서 challengeList가 바뀜
 	const [challengeList, setChallengeList] = useState([]);
-	const [login, setLogin] = useState(false)
+	const [login, setLogin] = useState(ctx.value === null?false:true)
 	const focused = useIsFocused();
 	useEffect(() => {
 		// setRefresh(true);
@@ -70,20 +72,6 @@ export default function HomeScreen({ navigation, route }) {
 	}, [focused]);
 
 	useEffect(() => {
-		if(login === false ){
-		AsyncStorage.getItem("authentication").then((data) => {
-			const token = JSON.parse(data)
-			if (token == null) {
-				setLogin(false)
-			} else {
-				setLogin(true)
-			}
-		})
-	}
-	}, [])
-
-
-	useEffect(() => {
 		!async function () {
 			if (login) {
 				const response = await readchallenge(challengetype)
@@ -122,7 +110,7 @@ export default function HomeScreen({ navigation, route }) {
 				}
 			}
 		}();
-	}, [challengetype,focused,login])
+	}, [challengetype,focused])
 
 	return (<>{!login && <NotLogin />}
 		{login && <View style={defaultStyle.wrap}>

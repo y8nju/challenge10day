@@ -19,24 +19,27 @@ const authReducer = (state, action) => {
 
 export function AppContextProvider({ children }) {
     const [auth, dispatch] = useReducer(authReducer, null);
-    const [done,setDone] = useState(false);
+    const [done, setDone] = useState(false);
     useEffect(() => {
         AsyncStorage.getItem("authentication").then((data) => {
             const token = JSON.parse(data)
-            if(data){
-                valid(token).then((newdata)=>{
-                    dispatch({type:"login",payload:newdata});
+                valid(token).then((newdata) => {
+                    if(newdata.result === true){
+                        dispatch({ type: "login", payload: newdata });
+                    } else {
+                        dispatch({type:"logout"})
+                    }
+                    setDone(true);
+                }).catch((e)=>{
+                    dispatch({type:"logout"})
                     setDone(true);
                 })
-        } else {
-            setDone(true);
-        }
-    })
+        })
     }, [])
 
-        if(!done){
-            return <LoadingOverlay />
-        }
+    if (!done) {
+        return <LoadingOverlay />
+    }
 
     return (<AppContext.Provider value={{ value: auth, dispatch }}>
         {children}

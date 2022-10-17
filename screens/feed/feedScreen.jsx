@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Dimensions, FlatList, ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -8,6 +8,7 @@ import { colors } from "../style/defaultStyle";
 
 import NotContent from "../../components/notContentComponent ";
 import NotLogin from "../../components/notLogin";
+import { AppContext } from "../../context/app-context";
 
 const SERVER_IP = "http://192.168.4.97:8080"
 
@@ -31,18 +32,11 @@ const windowWidth = Dimensions.get('window').width;
 
 
 export default function FeedScreen({ navigation }) {
-	const [login, setLogin] = useState(false);
+	const ctx = useContext(AppContext)
+	const [login, setLogin] = useState(ctx.value === null?false:true)
 	const [feedList, setFeedList] = useState([]); // feed 데이터 들어옴
-	useEffect(() => {
-		AsyncStorage.getItem("authentication").then((data) => {
-			const token = JSON.parse(data)
-			if (token == null) {
-				setLogin(false)
-			} else {
-				setLogin(true)
-			}
-		})
-	}, [])
+	const focused = useIsFocused();
+	console.log("22")
 	useEffect(() => {
 		!async function () {
 			if(login === true) {
@@ -54,7 +48,7 @@ export default function FeedScreen({ navigation }) {
 			setFeedList(newData);
 		}
 		}()
-	}, [login])
+	}, [focused])
 
 
 	function FeedItem({ data }) {

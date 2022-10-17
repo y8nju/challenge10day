@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FlatList, Modal, Pressable, StyleSheet, View, TextInput, ToastAndroid, Alert, KeyboardAvoidingView } from "react-native";
 import { CommonActions, useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -15,10 +15,12 @@ import TodoItem from "../../components/todoItem";
 import NotLogin from "../../components/notLogin";
 import NotContent from "../../components/notContentComponent ";
 import IosToast from "../../components/iosToast";
+import { AppContext } from "../../context/app-context";
 
 // 해당 페이지 구현 완료 후, lodaing 액션 추가
 
 export default function TodoScreen({ navigation, route }) {
+	const ctx = useContext(AppContext)
 	const [loading, setLoading] = useState(false);
 	const [addModalVisible, setAddModalVisible] = useState(false);
 	const [updateModalVisible, setUpdateModalVisible] = useState(false);
@@ -26,18 +28,7 @@ export default function TodoScreen({ navigation, route }) {
 	const [todoList, setTodoList] = useState({})
 	const [toto, setTodo] = useState('')
 	const focused = useIsFocused();
-	const [login,setLogin] = useState(false);
-
-	useEffect(() => {
-		AsyncStorage.getItem("authentication").then((data) => {
-			const token = JSON.parse(data)
-			if (token == null) {
-				setLogin(false)
-			} else {
-				setLogin(true)
-			} 
-		})
-	}, [])
+	const [login,setLogin] = useState(ctx.value === null?false:true);
 
 	useEffect(() => {
 		navigation.setOptions({
