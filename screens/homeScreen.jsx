@@ -93,14 +93,20 @@ export default function HomeScreen({ navigation, route }) {
 						data = response.result.filter((elm)=>{
 							if(elm.checked === "true" && elm.data.length<10){
 								return elm
-							} else if(elm.checked === null && new Date().getDate()-new Date(elm.createdAt).getDate()<10){
-								return elm
+							} else if(elm.checked === null){
+								if(elm.data[0] !== undefined && (new Date().getDate() - new Date(elm.data[0].createAt).getDate())<=10){
+									return elm
+								} else if(elm.data[0] === undefined){
+									return elm
+								}
 							}
 						})
 					} else if(challengetype === "false"){
 						data = response.result.filter((elm)=>{
-						if(elm.checked === null && new Date().getDate()-new Date(elm.createdAt).getDate()>10 && elm.data.length < 10){
-							return elm
+						if(elm.checked === null && elm.data.length < 10){
+							if(elm.data[0] !== undefined && (new Date().getDate() - new Date(elm.data[0].createAt).getDate())>10){
+								return elm
+							}
 						}
 					})
 					} else if(challengetype === "success"){
