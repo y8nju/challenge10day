@@ -37,7 +37,7 @@ export default function Canvasitem({ onPress,datauri,onImg64 }) {
 				}
 			} catch(e){
 			}
-			}, 1000)
+			}, 2000)
 	}
 	const cancelHandle = () => {
 		onPress(false)
