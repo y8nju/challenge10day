@@ -78,10 +78,11 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			}
 			}
 		})
-		
-		let cancelid = itentifier.identifier
+		if(itentifier?.identifier !== undefined){
+			let cancelid = itentifier.identifier
 
-		await Notifications.cancelScheduledNotificationAsync(cancelid)
+			await Notifications.cancelScheduledNotificationAsync(cancelid)
+		}
 	}
 		//알림 설정.
 		await Notifications.scheduleNotificationAsync({
