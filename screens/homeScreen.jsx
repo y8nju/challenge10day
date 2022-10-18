@@ -88,7 +88,7 @@ export default function HomeScreen({ navigation, route }) {
 							} else if((elm.checked === null || elm.checked === false)){
 								if(elm.data[0]?.createAt == undefined){
 									return elm
-								} else if(elm.data[0]?.createAt !== undefined && elm.data.length !== 10 && (Date.now() - new Date(elm.data[elm.data.length-1].createAt) < (48-(new Date(elm.data[elm.data.length-1].createAt).getHours()))*60*60*1000)){
+								} else if(elm.data[0]?.createAt !== undefined && elm.data.length !== 10 && (Date.now() - new Date(elm.data[elm.data.length-1]?.createAt) < (48-(new Date(elm.data[elm.data.length-1]?.createAt).getHours()))*60*60*1000)){
 									return elm
 								}
 							}
