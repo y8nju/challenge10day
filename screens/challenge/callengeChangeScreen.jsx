@@ -124,7 +124,9 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 					}
 					
 				})
-				await Notifications.cancelScheduledNotificationAsync(itentifier.identifier)
+				if(itentifier?.identifier === undefined){
+					await Notifications.cancelScheduledNotificationAsync(itentifier.identifier)
+				}
 			}
 		}
 		} else if (isEnabled === true) {
