@@ -109,7 +109,6 @@ export default function ChallengeChangeScreen({ navigation, route }) {
 			if(data.isnotification === true){
 				if (response.type === true) {
 				let datad = await Notifications.getAllScheduledNotificationsAsync();
-				console.log("datad",datad);
 				let itentifier = datad.find(elm => {
 					if(Platform.OS === "android"){
 						if (title == elm.content.body && elm.trigger.hour == new Date(data.hournotification).getHours() &&

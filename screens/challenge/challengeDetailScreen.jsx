@@ -33,7 +33,6 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 
 	const [imgdata, setImgdata] = useState(null)
 	const [img64, setImg64] = useState(null);
-
 	useEffect(() => {
 		//========================인증 데이터 조건 
 		let confirmArr = []
@@ -58,7 +57,7 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 		}
 		let confirmArr2 = newArr
 		let confirmArr3;
-		if (confirmArr2.length > 0 ) {
+		if (confirmArr2.length > 0) {
 			let today = new Date().getDate();
 			let lastDate = new Date(confirmArr2[confirmArr2.length - 1].createAt).getDate();
 			for (let j = (today - lastDate); j > 0; j--) {
@@ -68,10 +67,15 @@ export default function ChallengeDetailScreen({ navigation, route }) {
 					confirmArr2.push({ day: confirmArr2.length + 1, confirm: false });
 				}
 			}
-			if(confirmArr2.length !== 10){
+			if(confirmArr2.length < 10){
 				confirmArr3 = confirmArr2.concat(confirmArr.slice(-(confirmArr.length - confirmArr2.length)));
-			} else if( confirmArr2.length == 10){
-				confirmArr3 = confirmArr2
+			} else if( confirmArr2.length > 10){
+				for(let i = confirmArr2.length; i > 10;i--){
+					confirmArr2.pop()
+				}
+				if(confirmArr2.length == 10){
+					confirmArr3 = confirmArr2
+				}
 			}
 			setConfirmList(confirmArr3);
 		} else {
